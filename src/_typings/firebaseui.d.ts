@@ -27,7 +27,6 @@ declare module "firebaseui" {
         class AuthUI {
             constructor(auth: firebase.auth.Auth);
             start(containerCSSselector: string, config: IConfig): void;
-            static getInstance(): AuthUI;
         }
     }
 }

@@ -1,22 +1,27 @@
-import * as firebase from 'firebase';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { combineReducers, createStore } from 'redux';
+import { AuthReducer, IAuthState } from 'src/auth';
+import { IAppAction } from './common/redux';
 import { Home } from './home';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 
-const config = {
-  apiKey: "AIzaSyDWMGvNAvl10PX6nP0Fzar6Jtv1g6RNlyk",
-  authDomain: "board-game-night-planner.firebaseapp.com",
-  databaseURL: "https://board-game-night-planner.firebaseio.com",
-  messagingSenderId: "622458243132",
-  projectId: "board-game-night-planner",
-  storageBucket: "board-game-night-planner.appspot.com",
-};
-export const firebaseApp = firebase.initializeApp(config);
+export interface IAppState {
+  readonly auth: IAuthState;
+}
+
+export const store = createStore<IAppState, IAppAction, {}, {}>(
+  combineReducers({
+    auth: AuthReducer,
+  })
+);
 
 ReactDOM.render(
-  <Home />,
+  <Provider store={store}>
+    <Home />
+  </Provider>,
   document.getElementById('root') as HTMLElement
 );
 registerServiceWorker();
