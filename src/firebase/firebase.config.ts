@@ -1,4 +1,4 @@
-import * as firebase from 'firebase';
+import * as firebase from 'firebase/app';
 import * as firebaseui from 'firebaseui';
 import { store } from 'src';
 import { loginSuccess } from 'src/auth/auth.actions';
@@ -17,7 +17,7 @@ export const firebaseApp = firebase.initializeApp(config);
 const ui = new firebaseui.auth.AuthUI(firebaseApp.auth());
 const uiConfig: firebaseui.IConfig = {
     callbacks: {
-        signInSuccess: (currentUser: firebase.User, credential?: firebase.auth.AuthCredential) => {
+        signInSuccessWithAuthResult: (authResult, redirectUrl) => {
             return false;
         }
     },
@@ -35,10 +35,4 @@ firebaseApp.auth().onAuthStateChanged(user => {
     if (user) {
         store.dispatch(loginSuccess(user.uid));
     }
-    // else {
-    //     this.setState({
-    //         userId: undefined
-    //     });
-    //     this.ui.start('#firebaseui-auth-container', this.uiConfig);
-    // }
 });

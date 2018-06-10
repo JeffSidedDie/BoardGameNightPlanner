@@ -13,13 +13,20 @@ declare module "firebaseui" {
         tosUrl?: string;
     }
     interface ICallbacks {
-        signInSuccess?: (currentUser: firebase.User, credential?: firebase.auth.AuthCredential, redirectUrl?: string) => boolean;
+        signInSuccessWithAuthResult?: (authResult: AuthResult, redirectUrl: string) => boolean;
         uiShown?: () => void;
     }
     interface ISignInOption {
         provider: string;
         scopes?: Array<string>;
         requireDisplayName?: boolean;
+    }
+
+    interface AuthResult {
+        user?: firebase.User;
+        credential?: firebase.auth.AuthCredential;
+        operationType?: string;
+        additionalUserInfo?: firebase.auth.AdditionalUserInfo;
     }
 
     namespace auth {
