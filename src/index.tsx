@@ -31,6 +31,7 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
       <div>
+        <h1>Board Game Night Planner</h1>
         <Route path={Routes.Root} component={Auth} />
         <Route path={Routes.Events} component={Events} />
       </div>
