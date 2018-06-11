@@ -4,6 +4,17 @@
     "tslint-react",
     "tslint-config-prettier"
   ],
+  "rules": {
+    "quotemark": [
+      true,
+      "single",
+      "jsx-double"
+    ],
+    "semicolon": [
+      true,
+      "always"
+    ]
+  },
   "linterOptions": {
     "exclude": [
       "config/**/*.js",

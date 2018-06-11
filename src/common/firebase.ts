@@ -4,24 +4,26 @@ import 'firebase/firestore';
 import * as firebaseui from 'firebaseui';
 import { store } from 'src';
 import { loginSuccess } from 'src/auth/auth.actions';
+import { IUser } from 'src/models';
 
-export const firebaseApp = firebase.initializeApp({
-    apiKey: "AIzaSyDWMGvNAvl10PX6nP0Fzar6Jtv1g6RNlyk",
-    authDomain: "board-game-night-planner.firebaseapp.com",
-    databaseURL: "https://board-game-night-planner.firebaseio.com",
-    messagingSenderId: "622458243132",
-    projectId: "board-game-night-planner",
-    storageBucket: "board-game-night-planner.appspot.com",
+const firebaseApp = firebase.initializeApp({
+    apiKey: 'AIzaSyDWMGvNAvl10PX6nP0Fzar6Jtv1g6RNlyk',
+    authDomain: 'board-game-night-planner.firebaseapp.com',
+    databaseURL: 'https://board-game-night-planner.firebaseio.com',
+    messagingSenderId: '622458243132',
+    projectId: 'board-game-night-planner',
+    storageBucket: 'board-game-night-planner.appspot.com',
 });
 
-const auth = firebaseApp.auth();
-const db = firebase.firestore();
+export const auth = firebaseApp.auth();
+export const db = firebase.firestore();
 db.settings({
     timestampsInSnapshots: true,
 });
 
-enum Collections {
-    Users = "users",
+export enum Collections {
+    Users = 'users',
+    Events = 'events',
 }
 
 auth.onAuthStateChanged(user => {
@@ -37,11 +39,12 @@ export function firebaseUiAuthStart(elementId: string): void {
         callbacks: {
             signInSuccessWithAuthResult: (authResult, redirectUrl) => {
                 if (authResult.user) {
-                    db.collection(Collections.Users).doc(authResult.user.uid).set({
+                    const user: IUser = {
                         displayName: authResult.user.displayName,
                         email: authResult.user.email,
                         isAdmin: false,
-                    });
+                    };
+                    db.collection(Collections.Users).doc(authResult.user.uid).set(user);
                 }
                 return false;
             }
@@ -51,4 +54,4 @@ export function firebaseUiAuthStart(elementId: string): void {
             firebase.auth.GoogleAuthProvider.PROVIDER_ID,
         ],
     });
-};
+}

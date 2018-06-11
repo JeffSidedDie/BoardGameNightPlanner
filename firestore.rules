@@ -16,5 +16,9 @@ service cloud.firestore {
       allow create: if isSelf() && request.resource.data.isAdmin == false;
       allow update: if isSelf() && request.resource.data.isAdmin == resource.data.isAdmin;
     }
+
+    match /events/{eventId} {
+      allow read: if isSignedIn()
+    }
   }
 }

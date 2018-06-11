@@ -8,7 +8,7 @@ export interface ILoginComponentProperties {
 export class LoginComponent extends React.Component<ILoginComponentProperties> {
 
     public componentDidMount() {
-        this.props.loginStart("#firebaseui-auth-container");
+        this.props.loginStart('#firebaseui-auth-container');
     }
 
     public render() {

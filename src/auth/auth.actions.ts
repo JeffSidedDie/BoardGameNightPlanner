@@ -1,12 +1,12 @@
-import { firebaseApp, firebaseUiAuthStart } from "src/firebase";
-import { AppActionType, IAppAction } from "../common/redux";
+import { auth, firebaseUiAuthStart } from 'src/common/firebase';
+import { AppActionType, IAppAction } from 'src/common/redux';
 
 export interface IAuthLogoutAction extends IAppAction {
     readonly type: AppActionType.Auth_Logout;
 }
 
 export function logout(): IAuthLogoutAction {
-    firebaseApp.auth().signOut();
+    auth.signOut();
 
     return {
         type: AppActionType.Auth_Logout

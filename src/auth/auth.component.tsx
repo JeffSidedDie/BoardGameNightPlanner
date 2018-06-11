@@ -1,6 +1,7 @@
-import 'firebaseui/dist/firebaseui.css';
 import * as React from 'react';
+import { Redirect } from 'react-router';
 import { Login } from 'src/auth/login.container';
+import { Routes } from 'src/common/routes';
 
 export interface IAuthComponentProperties {
     readonly logout: () => void;
@@ -15,6 +16,7 @@ export class AuthComponent extends React.Component<IAuthComponentProperties> {
                 ? <div>
                     {this.props.userId}
                     <p><button type="button" onClick={this.props.logout}>Logout</button></p>
+                    <Redirect to={Routes.Events} />
                 </div>
                 : <Login />
             }

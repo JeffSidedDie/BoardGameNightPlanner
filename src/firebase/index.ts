@@ -1,1 +1,0 @@
-export { firebaseApp, firebaseUiAuthStart } from './firebase.config';
