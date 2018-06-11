@@ -12,6 +12,8 @@ import { Events, EventsReducer, IEventsState } from 'src/events';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 
+export const history = createBrowserHistory();
+
 export interface IAppState {
   readonly auth: IAuthState;
   readonly events: IEventsState;
@@ -27,7 +29,7 @@ export const store = createStore<IAppState, IAppAction, {}, {}>(
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={createBrowserHistory()}>
+    <Router history={history}>
       <div>
         <Route path={Routes.Root} component={Auth} />
         <Route path={Routes.Events} component={Events} />

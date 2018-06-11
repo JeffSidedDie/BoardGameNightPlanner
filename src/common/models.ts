@@ -6,14 +6,10 @@ export interface IUser {
     isAdmin: boolean;
 }
 
-export interface IAttendee {
-    displayName: string;
-    email: string;
-    userId: string;
-}
-
 export interface IEvent {
+    id: string;
     timestamp: firebase.firestore.Timestamp;
-    attendees: IAttendee[];
+    attendees: { [userId: string]: string };
     maxAttendees: number;
+    game: string;
 }

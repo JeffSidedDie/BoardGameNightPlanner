@@ -1,6 +1,5 @@
 import { connect, Dispatch } from 'react-redux';
 import { IAppState } from 'src';
-import { logout } from 'src/auth/auth.actions';
 import { AuthComponent, IAuthComponentProperties } from 'src/auth/auth.component';
 import { IAppAction } from 'src/common/redux';
 
@@ -14,9 +13,6 @@ function mapStateToProps(state: IAppState): Partial<IAuthComponentProperties> {
 // This should create proxy wrappers for actions used by the component
 function mapDispatchToProps(dispatch: Dispatch<IAppAction>): Partial<IAuthComponentProperties> {
     return {
-        logout: () => {
-            dispatch(logout());
-        },
     };
 }
 

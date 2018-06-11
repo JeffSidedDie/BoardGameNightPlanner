@@ -4,7 +4,7 @@ import 'firebase/firestore';
 import * as firebaseui from 'firebaseui';
 import { store } from 'src';
 import { loginSuccess } from 'src/auth/auth.actions';
-import { IUser } from 'src/models';
+import { IUser } from 'src/common/models';
 
 const firebaseApp = firebase.initializeApp({
     apiKey: 'AIzaSyDWMGvNAvl10PX6nP0Fzar6Jtv1g6RNlyk',
@@ -28,7 +28,7 @@ export enum Collections {
 
 auth.onAuthStateChanged(user => {
     if (user) {
-        store.dispatch(loginSuccess(user.uid));
+        store.dispatch(loginSuccess(user.uid, user.displayName!, user.email!));
     }
 });
 

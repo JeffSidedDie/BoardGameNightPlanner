@@ -7,6 +7,7 @@ import { IAppAction } from 'src/common/redux';
 // This is used to translate the state of the page to the props on the component
 function mapStateToProps(state: IAppState): Partial<ILoginComponentProperties> {
     return {
+        userId: state.auth.userId,
     };
 }
 

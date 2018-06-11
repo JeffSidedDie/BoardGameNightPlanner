@@ -4,6 +4,8 @@ import { AppActionType } from 'src/common/redux';
 
 export interface IAuthState {
     readonly userId?: string;
+    readonly displayName?: string;
+    readonly email?: string;
 }
 
 const initialState: IAuthState = {
@@ -26,6 +28,8 @@ function handleLoginStart(state: IAuthState, action: IAuthLoginStartAction) {
 function handleLoginSuccess(state: IAuthState, action: IAuthLoginSuccessAction) {
     return {
         ...state,
+        displayName: action.displayName,
+        email: action.email,
         userId: action.userId,
     };
 }

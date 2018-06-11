@@ -1,7 +1,7 @@
+import { IEvent } from 'src/common/models';
 import { createReducer } from 'src/common/redux';
 import { AppActionType } from 'src/common/redux';
 import { IEventsErrorAction, IEventsUpdatedAction } from 'src/events/events.actions';
-import { IEvent } from 'src/models';
 
 export interface IEventsState {
     readonly error: string;

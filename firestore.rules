@@ -17,8 +17,14 @@ service cloud.firestore {
       allow update: if isSelf() && request.resource.data.isAdmin == resource.data.isAdmin;
     }
 
-    match /events/{eventId} {
+    match /events/{event} {
       allow read: if isSignedIn()
+      allow update: if isSignedIn()
+        && request.writeFields.size() == 1
+        && (('attendees.' + request.auth.uid) in request.writeFields)
+        && (request.resource.data.attendees[(request.auth.uid)] == (request.auth.token.name) || !(request.auth.uid in request.resource.data.attendees))
+        && resource.data.attendees.size() < resource.data.maxAttendees
+
     }
   }
 }

@@ -1,8 +1,11 @@
 import 'firebaseui/dist/firebaseui.css';
 import * as React from 'react';
+import { Redirect } from 'react-router';
+import { Routes } from 'src/common/routes';
 
 export interface ILoginComponentProperties {
     readonly loginStart: (elementId: string) => void;
+    readonly userId?: string;
 }
 
 export class LoginComponent extends React.Component<ILoginComponentProperties> {
@@ -12,6 +15,11 @@ export class LoginComponent extends React.Component<ILoginComponentProperties> {
     }
 
     public render() {
-        return <div id="firebaseui-auth-container" />;
+        return <>
+            {this.props.userId
+                ? <Redirect to={Routes.Events} />
+                : <div id="firebaseui-auth-container" />
+            }
+        </>;
     }
 }
