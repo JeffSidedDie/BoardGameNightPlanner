@@ -1,4 +1,6 @@
+import * as FileSaver from 'file-saver';
 import * as firebase from 'firebase/app';
+import * as ics from 'ics-browser';
 import { Dispatch } from 'redux';
 import { Collections, db } from 'src/common/firebase';
 import { IEvent } from 'src/common/models';
@@ -51,6 +53,20 @@ export function attendEvent(event: IEvent) {
     return async (dispatch: Dispatch<IAppAction>, getState: () => IAppState) => {
         const state = getState();
         await db.collection(Collections.Events).doc(event.id).update(`attendees.${state.auth.userId}`, state.auth.displayName);
+
+        // create calendar event
+        const eventDate = event.timestamp.toDate();
+        const icsResult = ics.createEvent({
+            description: `Jeff's Weekly Board Game Night!\nFeatured Game: ${event.game.name}\nBGG Link: ${event.game.bggLink}`,
+            duration: { hours: 3 },
+            location: '3464 Roxboro Rd NE\, Apt 409\, Atlanta\, GA 30326\, USA',
+            start: [eventDate.getFullYear(), eventDate.getMonth() + 1, eventDate.getDate(), 19, 0],
+            title: 'Board Game Night',
+        });
+        if (icsResult.value) {
+            const blob = new Blob([icsResult.value], { type: 'text/calendar;charset=utf8' });
+            FileSaver.saveAs(blob, `Board Game Night ${eventDate.toDateString()}.ics`);
+        }
     };
 }
 
