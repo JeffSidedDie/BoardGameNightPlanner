@@ -43,6 +43,7 @@ export class EventsComponent extends React.Component<IEventsComponentProperties>
 
     private renderEvents() {
         if (!this.props.events) { return; }
+        this.props.events.sort((e1, e2) => e1.timestamp.toMillis() - e2.timestamp.toMillis());
 
         return this.props.events.map((e, index) => {
             const keys = Object.keys(e.attendees);
