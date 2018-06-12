@@ -44,18 +44,20 @@ export class EventsComponent extends React.Component<IEventsComponentProperties>
     private renderEvents() {
         if (!this.props.events) { return; }
 
-        return this.props.events.map((e, index) => (
-            <tr key={index}>
+        return this.props.events.map((e, index) => {
+            const keys = Object.keys(e.attendees);
+            const openSeats = e.game.maxPlayers - keys.length;
+            return <tr key={index}>
                 <td>{e.timestamp.toDate().toDateString()}</td>
-                <td>{e.game}</td>
-                <td>{Object.keys(e.attendees).map(key => e.attendees[key]).join(', ')}</td>
-                <td>{e.maxAttendees - Object.keys(e.attendees).length}</td>
-                <td>{e.attendees[this.props.currentUserId]
-                    ? <button type="button" onClick={this.unattendEvent(e)}>Unattend</button>
-                    : <button type="button" onClick={this.attendEvent(e)}>Attend</button>}
+                <td><a href={e.game.bggLink} target="_blank">{e.game.name}</a></td>
+                <td>{keys.map(key => e.attendees[key]).join(', ')}</td>
+                <td>{openSeats}</td>
+                <td>{!e.attendees[this.props.currentUserId] && openSeats > 0
+                    ? <button type="button" onClick={this.attendEvent(e)}>Attend</button>
+                    : <button type="button" onClick={this.unattendEvent(e)}>Unattend</button>}
                 </td>
-            </tr >
-        ));
+            </tr>;
+        });
     }
 
     private attendEvent(event: IEvent) {
