@@ -1,0 +1,10 @@
+/* Override a few firebase-ui styles */
+.firebaseui-idp-list {
+  margin: 0;
+}
+.firebaseui-idp-list > .firebaseui-list-item {
+  margin: 0;
+}
+.firebaseui-card-content {
+  padding: 0;
+}
