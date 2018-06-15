@@ -1,16 +1,29 @@
 import { createBrowserHistory } from 'history';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+
+// redux
 import { Provider } from 'react-redux';
 import { Route, Router } from 'react-router';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { Auth, AuthReducer, IAuthState } from 'src/auth';
 import { IAppAction } from 'src/common/redux';
+
+// routing
 import { Routes } from 'src/common/routes';
-import { Events, EventsReducer, IEventsState } from 'src/events';
+
+// css
+import 'skeleton-css/css/normalize.css';
+import 'skeleton-css/css/skeleton.css';
+import './bootstrap-utils.css';
 import './index.css';
+
+// service worker
 import registerServiceWorker from './registerServiceWorker';
+
+// app
+import { Events, EventsReducer, IEventsState } from 'src/events';
 
 export const history = createBrowserHistory();
 
@@ -30,10 +43,18 @@ export const store = createStore<IAppState, IAppAction, {}, {}>(
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-      <div>
-        <h1>Board Game Night Planner</h1>
-        <Route path={Routes.Root} component={Auth} />
-        <Route path={Routes.Events} component={Events} />
+      <div className="h-100">
+        <nav className="appbar d-flex align-items-center p-3">
+          <div className="flex-fill">
+            <h1 className="p-0 m-0">Board Game Night Planner</h1>
+          </div>
+          <div>
+            <Route path={Routes.Root} component={Auth} />
+          </div>
+        </nav>
+        <div className="container h-100">
+          <Route path={Routes.Events} component={Events} />
+        </div>
       </div>
     </Router>
   </Provider>,
