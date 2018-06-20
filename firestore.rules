@@ -20,6 +20,7 @@ service cloud.firestore {
     match /events/{event} {
       allow read: if isSignedIn()
       allow update: if isSignedIn()
+        && resource.data.timestamp.date() > request.time
         && request.writeFields.size() == 1
         && (('attendees.' + request.auth.uid) in request.writeFields)
         && ((request.resource.data.attendees[(request.auth.uid)] == (request.auth.token.name)

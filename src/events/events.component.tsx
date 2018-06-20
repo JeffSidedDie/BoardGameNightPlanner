@@ -48,14 +48,18 @@ export class EventsComponent extends React.Component<IEventsComponentProperties>
         return this.props.events.map((e, index) => {
             const keys = Object.keys(e.attendees);
             const openSeats = e.game.maxPlayers - keys.length;
+            const timestamp = e.timestamp.toDate();
+            const timestampMidnight = timestamp;
+            timestampMidnight.setHours(0, 0, 0, 0);
+            const now = new Date();
             return <tr key={index}>
-                <td>{e.timestamp.toDate().toDateString()}</td>
+                <td>{timestamp.toDateString()}</td>
                 <td><a href={e.game.bggLink} target="_blank">{e.game.name}</a></td>
                 <td>{keys.map(key => e.attendees[key]).join(', ')}</td>
                 <td>{openSeats}</td>
-                <td>{!e.attendees[this.props.currentUserId] && openSeats > 0
+                <td>{timestampMidnight > now && (!e.attendees[this.props.currentUserId] && openSeats > 0
                     ? <button type="button" onClick={this.attendEvent(e)}>Attend</button>
-                    : <button type="button" onClick={this.unattendEvent(e)}>Unattend</button>}
+                    : <button type="button" onClick={this.unattendEvent(e)}>Unattend</button>)}
                 </td>
             </tr>;
         });
