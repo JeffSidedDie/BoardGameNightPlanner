@@ -20,7 +20,7 @@ import './bootstrap-utils.css';
 import './index.css';
 
 // service worker
-import registerServiceWorker from './registerServiceWorker';
+// import registerServiceWorker from './registerServiceWorker';
 
 // app
 import { Events, EventsReducer, IEventsState } from 'src/events';
@@ -60,4 +60,4 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root') as HTMLElement
 );
-registerServiceWorker();
+// registerServiceWorker();
