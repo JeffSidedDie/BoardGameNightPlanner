@@ -52,7 +52,7 @@ export function eventsError(error: string): IEventsErrorAction {
 export function attendEvent(event: IEvent) {
     return async (dispatch: Dispatch<IAppAction>, getState: () => IAppState) => {
         const state = getState();
-        await db.collection(Collections.Events).doc(event.id).update(`attendees.${state.auth.userId}`, state.auth.displayName);
+        await db.collection(Collections.Events).doc(event.id).update(`attendees.${state.auth.userId}`, { name: state.auth.displayName });
 
         // create calendar event
         const eventDate = event.timestamp.toDate();

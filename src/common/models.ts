@@ -12,9 +12,14 @@ export interface IGame {
     maxPlayers: number;
 }
 
+export interface IAttendee {
+    name: string;
+    score?: number;
+}
+
 export interface IEvent {
     id: string;
     timestamp: firebase.firestore.Timestamp;
-    attendees: { [userId: string]: string };
+    attendees: { [userId: string]: IAttendee };
     game: IGame;
 }
