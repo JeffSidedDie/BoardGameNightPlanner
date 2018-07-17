@@ -66,7 +66,7 @@ export class EventsComponent extends React.Component<IEventsComponentProperties>
             return <tr key={index}>
                 <td>{timestamp.toDateString()}</td>
                 <td><a href={e.game.bggLink} target="_blank">{e.game.name}</a></td>
-                <td>{attendees.map(a => (<span>{a.name}{a.score ? `: ${a.score}` : ''}<br /></span>))}</td>
+                <td>{attendees.map((a, i) => (<span key={i}>{a.name}{a.score ? `: ${a.score}` : ''}<br /></span>))}</td>
                 <td>{openSeats}</td>
                 <td>{timestampMidnight > now && (!e.attendees[this.props.currentUserId] && openSeats > 0
                     ? <button type="button" onClick={this.attendEvent(e)}>Attend</button>
