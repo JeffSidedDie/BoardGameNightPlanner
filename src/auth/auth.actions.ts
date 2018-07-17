@@ -1,7 +1,5 @@
-import { history } from 'src';
 import { auth, firebaseUiAuthStart } from 'src/common/firebase';
 import { AppActionType, IAppAction } from 'src/common/redux';
-import { Routes } from '../common/routes';
 
 export interface IAuthLogoutAction extends IAppAction {
     readonly type: AppActionType.Auth_Logout;
@@ -9,7 +7,6 @@ export interface IAuthLogoutAction extends IAppAction {
 
 export function logout(): IAuthLogoutAction {
     auth.signOut();
-    history.push(Routes.Root);
     return {
         type: AppActionType.Auth_Logout
     };
@@ -35,7 +32,6 @@ export interface IAuthLoginSuccessAction extends IAppAction {
 }
 
 export function loginSuccess(userId: string, displayName: string, email: string, isAdmin: boolean): IAuthLoginSuccessAction {
-    history.push(Routes.Events);
     return {
         displayName,
         email,

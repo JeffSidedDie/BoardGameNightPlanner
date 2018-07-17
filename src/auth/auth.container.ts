@@ -1,8 +1,8 @@
 import { connect, Dispatch } from 'react-redux';
 import { IAppState } from 'src';
-import { loginStart, logout } from 'src/auth/auth.actions';
-import { AuthComponent, IAuthComponentProperties } from 'src/auth/auth.component';
 import { IAppAction } from 'src/common/redux';
+import { loginStart, logout } from './auth.actions';
+import { AuthComponent, IAuthComponentProperties } from './auth.component';
 
 // This is used to translate the state of the page to the props on the component
 function mapStateToProps(state: IAppState): Partial<IAuthComponentProperties> {

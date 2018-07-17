@@ -44,7 +44,7 @@ export function firebaseUiAuthStart(elementId: string): void {
                         displayName: authResult.user.displayName,
                         email: authResult.user.email,
                     };
-                    db.collection(Collections.Users).doc(authResult.user.uid).set(user);
+                    db.collection(Collections.Users).doc(authResult.user.uid).set(user, { merge: true });
                 }
                 return false;
             }

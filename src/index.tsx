@@ -4,10 +4,10 @@ import * as ReactDOM from 'react-dom';
 
 // redux
 import { Provider } from 'react-redux';
-import { Route, Router } from 'react-router';
+import { Route, Router, Switch } from 'react-router';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
-import { Auth, AuthReducer, IAuthState } from 'src/auth';
+import { Auth, AuthReducer, AuthRoute, IAuthState } from 'src/auth';
 import { IAppAction } from 'src/common/redux';
 
 // routing
@@ -25,7 +25,7 @@ import './index.css';
 // app
 import { Events, EventsReducer, IEventsState } from 'src/events';
 
-export const history = createBrowserHistory();
+const history = createBrowserHistory();
 
 export interface IAppState {
   readonly auth: IAuthState;
@@ -53,7 +53,9 @@ ReactDOM.render(
           </div>
         </nav>
         <div className="container h-100">
-          <Route path={Routes.Events} component={Events} />
+          <Switch>
+            <AuthRoute component={Events} />
+          </Switch>
         </div>
       </div>
     </Router>

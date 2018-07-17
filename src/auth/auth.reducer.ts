@@ -1,6 +1,6 @@
-import { IAuthLoginStartAction, IAuthLoginSuccessAction, IAuthLogoutAction } from 'src/auth/auth.actions';
 import { createReducer } from 'src/common/redux';
 import { AppActionType } from 'src/common/redux';
+import { IAuthLoginStartAction, IAuthLoginSuccessAction, IAuthLogoutAction } from './auth.actions';
 
 export interface IAuthState {
     readonly userId?: string;
