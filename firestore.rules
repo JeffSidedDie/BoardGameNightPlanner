@@ -13,8 +13,9 @@ service cloud.firestore {
         return request.auth.uid == userId;
       }
 
-      allow create: if isSelf() && request.resource.data.isAdmin == false;
-      allow update: if isSelf() && request.resource.data.isAdmin == resource.data.isAdmin;
+      allow get: if isSelf()
+      allow create: if isSelf() && !('isAdmin' in request.writeFields)
+      allow update: if isSelf() && !('isAdmin' in request.writeFields)
     }
 
     match /events/{event} {

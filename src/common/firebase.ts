@@ -26,9 +26,10 @@ export enum Collections {
     Events = 'events',
 }
 
-auth.onAuthStateChanged(user => {
+auth.onAuthStateChanged(async user => {
     if (user) {
-        store.dispatch(loginSuccess(user.uid, user.displayName!, user.email!));
+        const dbUser = await db.collection(Collections.Users).doc(user.uid).get();
+        store.dispatch(loginSuccess(user.uid, user.displayName!, user.email!, dbUser.data()!.isAdmin));
     }
 });
 
@@ -42,7 +43,6 @@ export function firebaseUiAuthStart(elementId: string): void {
                     const user: IUser = {
                         displayName: authResult.user.displayName,
                         email: authResult.user.email,
-                        isAdmin: false,
                     };
                     db.collection(Collections.Users).doc(authResult.user.uid).set(user);
                 }

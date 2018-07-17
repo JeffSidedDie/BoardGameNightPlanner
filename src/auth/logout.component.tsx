@@ -5,9 +5,7 @@ export interface ILogoutComponentProperties {
   readonly userId?: string;
 }
 
-export class LogoutComponent extends React.Component<
-  ILogoutComponentProperties
-> {
+export class Logout extends React.Component<ILogoutComponentProperties> {
   public render() {
     return (
       <>

@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 export interface IUser {
     displayName: string | null;
     email: string | null;
-    isAdmin: boolean;
+    isAdmin?: boolean;
 }
 
 export interface IGame {

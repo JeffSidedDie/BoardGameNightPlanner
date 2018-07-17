@@ -1,5 +1,8 @@
+import * as FileSaver from 'file-saver';
+import * as ics from 'ics-browser';
 import * as React from 'react';
 import { IEvent } from 'src/common/models';
+
 
 export interface IEventsComponentProperties {
     readonly currentUserId: string;
@@ -7,6 +10,7 @@ export interface IEventsComponentProperties {
     readonly events?: IEvent[];
     readonly attendEvent: (event: IEvent) => void;
     readonly unattendEvent: (event: IEvent) => void;
+    readonly addToCalendarEvent: (event: IEvent) => void;
     readonly subscribeEvents: () => void;
     readonly unsubscribeEvents: () => void;
 }
@@ -66,7 +70,7 @@ export class EventsComponent extends React.Component<IEventsComponentProperties>
                 <td>{openSeats}</td>
                 <td>{timestampMidnight > now && (!e.attendees[this.props.currentUserId] && openSeats > 0
                     ? <button type="button" onClick={this.attendEvent(e)}>Attend</button>
-                    : <button type="button" onClick={this.unattendEvent(e)}>Unattend</button>)}
+                    : <div><button type="button" onClick={this.unattendEvent(e)}>Unattend</button><button type="button" onClick={this.addToCalendarEvent(e)}>Add to Calendar</button></div>)}
                 </td>
             </tr>;
         });
@@ -78,5 +82,23 @@ export class EventsComponent extends React.Component<IEventsComponentProperties>
 
     private unattendEvent(event: IEvent) {
         return () => this.props.unattendEvent(event);
+    }
+
+    private addToCalendarEvent(event: IEvent) {
+        return () => {
+            // create calendar event
+            const eventDate = event.timestamp.toDate();
+            const icsResult = ics.createEvent({
+                description: `Jeff's Weekly Board Game Night!\nFeatured Game: ${event.game.name}\nBGG Link: ${event.game.bggLink}`,
+                duration: { hours: 3 },
+                location: '3464 Roxboro Rd NE\, Apt 409\, Atlanta\, GA 30326\, USA',
+                start: [eventDate.getFullYear(), eventDate.getMonth() + 1, eventDate.getDate(), 19, 0],
+                title: 'Board Game Night',
+            });
+            if (icsResult.value) {
+                const blob = new Blob([icsResult.value], { type: 'text/calendar;charset=utf8' });
+                FileSaver.saveAs(blob, `Board Game Night ${eventDate.toDateString()}.ics`);
+            }
+        };
     }
 }

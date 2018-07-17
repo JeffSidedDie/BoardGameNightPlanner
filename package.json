@@ -1,6 +1,6 @@
 {
   "name": "board-game-night-planner",
-  "version": "0.2.2",
+  "version": "0.3.2",
   "private": true,
   "dependencies": {
     "file-saver": "^1.3.8",

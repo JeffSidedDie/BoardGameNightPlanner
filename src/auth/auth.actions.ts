@@ -31,13 +31,15 @@ export interface IAuthLoginSuccessAction extends IAppAction {
     readonly userId: string;
     readonly displayName: string;
     readonly email: string;
+    readonly isAdmin: boolean;
 }
 
-export function loginSuccess(userId: string, displayName: string, email: string): IAuthLoginSuccessAction {
+export function loginSuccess(userId: string, displayName: string, email: string, isAdmin: boolean): IAuthLoginSuccessAction {
     history.push(Routes.Events);
     return {
         displayName,
         email,
+        isAdmin,
         type: AppActionType.Auth_LoginSuccess,
         userId,
     };

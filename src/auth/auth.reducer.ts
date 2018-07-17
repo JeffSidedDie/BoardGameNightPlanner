@@ -6,6 +6,7 @@ export interface IAuthState {
     readonly userId?: string;
     readonly displayName?: string;
     readonly email?: string;
+    readonly isAdmin?: boolean;
 }
 
 const initialState: IAuthState = {
@@ -30,6 +31,7 @@ function handleLoginSuccess(state: IAuthState, action: IAuthLoginSuccessAction) 
         ...state,
         displayName: action.displayName,
         email: action.email,
+        isAdmin: action.isAdmin,
         userId: action.userId,
     };
 }

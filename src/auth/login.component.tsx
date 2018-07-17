@@ -7,7 +7,7 @@ export interface ILoginComponentProperties {
   readonly userId?: string;
 }
 
-export class LoginComponent extends React.Component<ILoginComponentProperties> {
+export class Login extends React.Component<ILoginComponentProperties> {
   public componentDidMount() {
     this.props.loginStart('#firebaseui-auth-container');
   }
