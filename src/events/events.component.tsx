@@ -14,6 +14,45 @@ export interface IEventsComponentProperties {
   readonly unsubscribeEvents: () => void;
 }
 
+// TODO: delete this sample content
+const sampleDopples = [
+  {
+    id: 1,
+    name: 'Doppledore',
+  },
+  {
+    id: 2,
+    name: 'El Jeffe',
+  },
+  {
+    id: 3,
+    name: 'heyimsantiago',
+  },
+  {
+    id: 4,
+    name: 'Joxy',
+  },
+  {
+    id: 5,
+    name: 'kido',
+  },
+];
+
+const sampleNavItems = [
+  {
+    displayText: 'Board Games',
+    to: 'board-games',
+  },
+  {
+    displayText: 'Happy Hours',
+    to: 'happy-hours',
+  },
+  {
+    displayText: 'Pool Parties',
+    to: 'pool-parties',
+  },
+];
+
 export class EventsComponent extends React.Component<
   IEventsComponentProperties
 > {
@@ -28,18 +67,46 @@ export class EventsComponent extends React.Component<
   public render() {
     return (
       <>
-        <table>
-          <thead>
-            <tr>
-              <th>Timestamp</th>
-              <th>Game</th>
-              <th>Attendees</th>
-              <th>Open Seats</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>{this.renderEvents()}</tbody>
-        </table>
+        <div className="row">
+          {/* This is just an example left nav for El Jeffe */}
+          <div className="three columns nav">
+            <div className="nav_title">Navigation</div>
+            <ul className="nav_list">
+              {sampleNavItems.map(navItem => (
+                <li key={navItem.to} className="nav_item">
+                  <a className="nav_link" href="">
+                    {navItem.displayText}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            {/* This is just an example dropdown for El Jeffe to use elsewhere */}
+            <div className="my-3">
+              <label htmlFor="selectADopple">Select A Dopple</label>
+              <select id="selectADopple">
+                {sampleDopples.map(dopple => (
+                  <option key={dopple.id} value={dopple.id}>
+                    {dopple.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className="nine columns">
+            <table>
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Game</th>
+                  <th>Attendees</th>
+                  <th>Open Seats</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>{this.renderEvents()}</tbody>
+            </table>
+          </div>
+        </div>
         <span>{this.props.error}</span>
       </>
     );
