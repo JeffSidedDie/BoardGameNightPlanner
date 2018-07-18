@@ -44,7 +44,7 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
       <div className="h-100">
-        <nav className="appbar d-flex align-items-center p-3">
+        <nav className="appbar d-flex align-items-center p-3 mb-4">
           <div className="flex-fill">
             <h1 className="p-0 m-0">Board Game Night Planner</h1>
           </div>
