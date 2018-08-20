@@ -1,4 +1,5 @@
 export enum Routes {
     Root = '/',
-    Events = '/events'
+    Events = '/events',
+    Games = '/games'
 }

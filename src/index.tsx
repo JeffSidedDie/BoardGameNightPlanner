@@ -4,7 +4,8 @@ import * as ReactDOM from 'react-dom';
 
 // redux
 import { Provider } from 'react-redux';
-import { Route, Router, Switch } from 'react-router';
+import { Router, Switch } from 'react-router';
+import { Link } from 'react-router-dom';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { Auth, AuthReducer, AuthRoute, IAuthState } from 'src/auth';
@@ -24,6 +25,7 @@ import './index.css';
 
 // app
 import { Events, EventsReducer, IEventsState } from 'src/events';
+import { Games } from './games';
 
 const history = createBrowserHistory();
 
@@ -48,13 +50,16 @@ ReactDOM.render(
           <div className="flex-fill">
             <h1 className="p-0 m-0">Board Game Night Planner</h1>
           </div>
+          <Link to={Routes.Root}>Home</Link>
+          <Link to={Routes.Games}>Games</Link>
           <div>
-            <Route path={Routes.Root} component={Auth} />
+            <Auth />
           </div>
         </nav>
         <div className="container h-100">
           <Switch>
-            <AuthRoute component={Events} />
+            <AuthRoute path={Routes.Root} exact={true} component={Events} />
+            <AuthRoute path={Routes.Games} component={Games} />
           </Switch>
         </div>
       </div>
