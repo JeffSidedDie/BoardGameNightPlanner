@@ -14,7 +14,8 @@ export enum AppActionType {
     Auth_Logout = 'Auth_Logout',
     Auth_LoginStart = 'Auth_LoginStart',
     Auth_LoginSuccess = 'Auth_LoginSuccess',
-    Events_EventsUpdated = 'Events_EventsUpdated',
+    Events_UpcomingEventsUpdated = 'Events_UpcomingEventsUpdated',
+    Events_RecentEventsUpdated = 'Events_RecentEventsUpdated',
     Events_Error = 'Events_Error',
 }
 

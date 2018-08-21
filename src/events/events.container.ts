@@ -11,7 +11,8 @@ function mapStateToProps(state: IAppState): Partial<IEventsComponentProperties> 
     return {
         currentUserId: state.auth.userId,
         error: state.events.error,
-        events: state.events.events,
+        recentEvents: state.events.recentEvents,
+        upcomingEvents: state.events.upcomingEvents,
     };
 }
 

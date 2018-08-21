@@ -7,7 +7,8 @@ import { IEvent } from 'src/common/models';
 export interface IEventsComponentProperties {
     readonly currentUserId: string;
     readonly error?: string;
-    readonly events?: IEvent[];
+    readonly recentEvents?: IEvent[];
+    readonly upcomingEvents?: IEvent[];
     readonly attendEvent: (event: IEvent) => void;
     readonly unattendEvent: (event: IEvent) => void;
     readonly addToCalendarEvent: (event: IEvent) => void;
@@ -27,29 +28,34 @@ export class EventsComponent extends React.Component<IEventsComponentProperties>
 
     public render() {
         return <>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Timestamp</th>
-                        <th>Game</th>
-                        <th>Attendees</th>
-                        <th>Open Seats</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {this.renderEvents()}
-                </tbody>
-            </table>
+            <h1>Upcoming Events</h1>
+            {this.renderEventsTable(this.props.upcomingEvents)}
+            <h1>Recent Events</h1>
+            {this.renderEventsTable(this.props.recentEvents)}
             <span>{this.props.error}</span>
         </>;
     }
 
-    private renderEvents() {
-        if (!this.props.events) { return; }
-        this.props.events.sort((e1, e2) => e2.timestamp.toMillis() - e1.timestamp.toMillis());
+    private renderEventsTable(events?: IEvent[]) {
+        return <table>
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Game</th>
+                    <th>Attendees</th>
+                    <th>Open Seats</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {events && this.renderEventsRows(events)}
+            </tbody>
+        </table>;
+    }
 
-        return this.props.events.map((e, index) => {
+    private renderEventsRows(events: IEvent[]) {
+        // events.sort((e1, e2) => e2.timestamp.toMillis() - e1.timestamp.toMillis());
+        return events.map((e, index) => {
             const keys = Object.keys(e.attendees);
             const attendees = keys.map(k => e.attendees[k]).sort((a1, a2) => {
                 if (a1.score !== undefined && a2.score !== undefined) {
