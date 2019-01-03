@@ -6,6 +6,7 @@
     "file-saver": "2.0.0",
     "firebase": "5.7.2",
     "firebaseui": "3.5.1",
+    "formik": "1.4.1",
     "ics-browser": "2.4.1",
     "react": "16.7.0",
     "react-dom": "16.7.0",
