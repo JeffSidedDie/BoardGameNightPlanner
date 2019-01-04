@@ -24,20 +24,22 @@ import './index.css';
 // import registerServiceWorker from './registerServiceWorker';
 
 // app
-import { Games } from './games';
 import { Events, EventsReducer, EventsState } from 'src/events';
+import { Games, GamesReducer, GamesState } from './games';
 
 const history = createBrowserHistory();
 
 export interface AppState {
   readonly auth: AuthState;
   readonly events: EventsState;
+  readonly games: GamesState;
 }
 
 export const store = createStore<AppState, AppAction, {}, {}>(
   combineReducers<AppState, AppAction>({
     auth: AuthReducer,
     events: EventsReducer,
+    games: GamesReducer,
   }),
   applyMiddleware(thunk)
 );
@@ -51,7 +53,7 @@ ReactDOM.render(
             <h1 className="p-0 m-0">Board Game Night Planner</h1>
           </div>
           <Link to={Routes.Root}>Home</Link>
-          <Link to={Routes.Games}>Games</Link>
+          <Link to={Routes.Games_Create}>Games</Link>
           <div>
             <Auth />
           </div>
@@ -59,7 +61,7 @@ ReactDOM.render(
         <div className="container h-100">
           <Switch>
             <AuthRoute path={Routes.Root} exact={true} component={Events} />
-            <AuthRoute path={Routes.Games} component={Games} />
+            <AuthRoute path={Routes.Games_Edit} component={Games} />
           </Switch>
         </div>
       </div>

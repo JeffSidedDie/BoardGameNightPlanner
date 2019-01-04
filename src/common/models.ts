@@ -12,6 +12,11 @@ export interface Game {
     maxPlayers: number;
 }
 
+export interface GameListElement {
+    id: string;
+    data: Game;
+}
+
 export interface Attendee {
     name: string;
     score?: number;

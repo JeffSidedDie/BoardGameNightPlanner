@@ -18,6 +18,11 @@ service cloud.firestore {
       allow update: if isSelf() && !('isAdmin' in request.writeFields)
     }
 
+    match /games/{gameId} {
+      allow read: if isSignedIn()
+      allow write: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true
+    }
+
     match /events/{event} {
       allow read: if isSignedIn()
       allow update: if isSignedIn()
