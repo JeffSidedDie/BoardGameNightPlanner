@@ -25,7 +25,7 @@ import './index.css';
 
 // app
 import { Events, EventsReducer, EventsState } from 'src/events';
-import { Games, GamesReducer, GamesState } from './games';
+import { Games, GamesList, GamesReducer, GamesState } from './games';
 
 const history = createBrowserHistory();
 
@@ -53,7 +53,7 @@ ReactDOM.render(
             <h1 className="p-0 m-0">Board Game Night Planner</h1>
           </div>
           <Link to={Routes.Root}>Home</Link>
-          <Link to={Routes.Games_Create}>Games</Link>
+          <Link to={Routes.Games_List}>Games</Link>
           <div>
             <Auth />
           </div>
@@ -61,6 +61,7 @@ ReactDOM.render(
         <div className="container h-100">
           <Switch>
             <AuthRoute path={Routes.Root} exact={true} component={Events} />
+            <AuthRoute path={Routes.Games_List} component={GamesList} />
             <AuthRoute path={Routes.Games_Edit} component={Games} />
           </Switch>
         </div>

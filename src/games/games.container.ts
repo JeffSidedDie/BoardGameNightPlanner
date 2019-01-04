@@ -9,6 +9,7 @@ import { GamesComponent, GamesComponentProperties } from './games.component';
 // This is used to translate the state of the page to the props on the component
 function mapStateToProps(state: AppState): Partial<GamesComponentProperties> {
     return {
+        error: state.games.error,
         currentGame: state.games.currentGame,
     };
 }

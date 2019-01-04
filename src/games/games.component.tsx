@@ -5,6 +5,7 @@ import { Field } from 'src/_forms/field';
 import { Game } from 'src/common/models';
 
 export interface GamesComponentProperties extends RouteComponentProps<{ id?: string }> {
+    readonly error?: string;
     readonly currentGame?: Game;
     readonly loadGame: (id: string) => void;
     readonly saveGame: (game: Partial<Game>, id?: string) => void;
@@ -24,12 +25,16 @@ export class GamesComponent extends React.Component<GamesComponentProperties> {
     }
 
     public render() {
-        return <Formik
-            enableReinitialize={true}
-            initialValues={this.props.currentGame || { name: '', bggLink: '', maxPlayers: 4 }}
-            onSubmit={this.handleSubmit}
-            render={this.renderForm}
-        />;
+        // TODO: wrap Formik even more to reduce boilerplate
+        return <>
+            <Formik
+                enableReinitialize={true}
+                initialValues={this.props.currentGame || { name: '', bggLink: '', maxPlayers: 4 }}
+                onSubmit={this.handleSubmit}
+                render={this.renderForm}
+            />
+            <span>{this.props.error}</span>
+        </>;
     }
 
     private renderForm(formikBag: FormikProps<Game>) {
