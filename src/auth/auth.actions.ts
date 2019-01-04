@@ -1,29 +1,29 @@
 import { auth, firebaseUiAuthStart } from 'src/common/firebase';
-import { AppActionType, IAppAction } from 'src/common/redux';
+import { AppAction, AppActionType } from 'src/common/redux';
 
-export interface IAuthLogoutAction extends IAppAction {
+export interface AuthLogoutAction extends AppAction {
     readonly type: AppActionType.Auth_Logout;
 }
 
-export function logout(): IAuthLogoutAction {
+export function logout(): AuthLogoutAction {
     auth.signOut();
     return {
         type: AppActionType.Auth_Logout
     };
 }
 
-export interface IAuthLoginStartAction extends IAppAction {
+export interface AuthLoginStartAction extends AppAction {
     readonly type: AppActionType.Auth_LoginStart;
 }
 
-export function loginStart(elementId: string): IAuthLoginStartAction {
+export function loginStart(elementId: string): AuthLoginStartAction {
     firebaseUiAuthStart(elementId);
     return {
         type: AppActionType.Auth_LoginStart,
     };
 }
 
-export interface IAuthLoginSuccessAction extends IAppAction {
+export interface AuthLoginSuccessAction extends AppAction {
     readonly type: AppActionType.Auth_LoginSuccess;
     readonly userId: string;
     readonly displayName: string;
@@ -31,12 +31,12 @@ export interface IAuthLoginSuccessAction extends IAppAction {
     readonly isAdmin: boolean;
 }
 
-export function loginSuccess(userId: string, displayName: string, email: string, isAdmin: boolean): IAuthLoginSuccessAction {
+export function loginSuccess(userId: string, displayName: string, email: string, isAdmin: boolean): AuthLoginSuccessAction {
     return {
+        type: AppActionType.Auth_LoginSuccess,
+        userId,
         displayName,
         email,
         isAdmin,
-        type: AppActionType.Auth_LoginSuccess,
-        userId,
     };
 }

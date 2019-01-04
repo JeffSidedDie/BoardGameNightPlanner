@@ -1,25 +1,25 @@
 import * as firebase from 'firebase';
 
-export interface IUser {
+export interface User {
     displayName: string | null;
     email: string | null;
     isAdmin?: boolean;
 }
 
-export interface IGame {
+export interface Game {
     name: string;
     bggLink: string;
     maxPlayers: number;
 }
 
-export interface IAttendee {
+export interface Attendee {
     name: string;
     score?: number;
 }
 
-export interface IEvent {
+export interface Event {
     id: string;
     timestamp: firebase.firestore.Timestamp;
-    attendees: { [userId: string]: IAttendee };
-    game: IGame;
+    attendees: { [userId: string]: Attendee };
+    game: Game;
 }

@@ -4,7 +4,7 @@ import 'firebase/firestore';
 import * as firebaseui from 'firebaseui';
 import { store } from 'src';
 import { loginSuccess } from 'src/auth/auth.actions';
-import { IUser } from 'src/common/models';
+import { User } from 'src/common/models';
 
 const firebaseApp = firebase.initializeApp({
     apiKey: 'AIzaSyDWMGvNAvl10PX6nP0Fzar6Jtv1g6RNlyk',
@@ -24,6 +24,7 @@ db.settings({
 export enum Collections {
     Users = 'users',
     Events = 'events',
+    Games = 'games',
 }
 
 auth.onAuthStateChanged(async user => {
@@ -40,7 +41,7 @@ export function firebaseUiAuthStart(elementId: string): void {
         callbacks: {
             signInSuccessWithAuthResult: (authResult, redirectUrl) => {
                 if (authResult.user) {
-                    const user: IUser = {
+                    const user: User = {
                         displayName: authResult.user.displayName,
                         email: authResult.user.email,
                     };

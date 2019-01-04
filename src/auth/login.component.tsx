@@ -2,12 +2,12 @@ import 'firebaseui/dist/firebaseui.css';
 import * as React from 'react';
 import './login.css';
 
-export interface ILoginComponentProperties {
+export interface LoginComponentProperties {
   readonly loginStart: (elementId: string) => void;
   readonly userId?: string;
 }
 
-export class Login extends React.Component<ILoginComponentProperties> {
+export class Login extends React.Component<LoginComponentProperties> {
   public componentDidMount() {
     this.props.loginStart('#firebaseui-auth-container');
   }

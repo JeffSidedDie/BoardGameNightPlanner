@@ -1,13 +1,13 @@
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
 import { Field } from 'src/_forms/field';
-import { IGame } from 'src/common/models';
+import { Game } from 'src/common/models';
 
-export interface IGamesComponentProperties {
+export interface GamesComponentProperties {
     readonly userId: string;
 }
 
-export class GamesComponent extends React.Component<IGamesComponentProperties> {
+export class GamesComponent extends React.Component<GamesComponentProperties> {
 
     public render() {
         return <Formik
@@ -17,16 +17,16 @@ export class GamesComponent extends React.Component<IGamesComponentProperties> {
         />;
     }
 
-    private renderForm(formikBag: FormikProps<IGame>) {
+    private renderForm(formikBag: FormikProps<Game>) {
         return <Form>
-            <Field<IGame> name="name" label="Name" type="text" />
-            <Field<IGame> name="bggLink" label="BGG Link" type="text" />
-            <Field<IGame> name="maxPlayers" label="Max Players" type="number" />
+            <Field<Game> name="name" label="Name" type="text" />
+            <Field<Game> name="bggLink" label="BGG Link" type="text" />
+            <Field<Game> name="maxPlayers" label="Max Players" type="number" />
             <button type="submit">Save</button>
         </Form>;
     }
 
-    private handleSubmit(values: IGame) {
+    private handleSubmit(values: Game) {
         alert(JSON.stringify(values));
     }
 }

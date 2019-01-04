@@ -1,12 +1,12 @@
 import * as Formik from 'formik';
 import * as React from 'react';
 
-interface IFieldProperties<T> {
+interface FieldProperties<T> {
     name: keyof T;
     label: string;
 }
 
-export class Field<T> extends React.Component<IFieldProperties<T> & Formik.FieldConfig> {
+export class Field<T> extends React.Component<FieldProperties<T> & Formik.FieldConfig> {
 
     public render() {
         return <>

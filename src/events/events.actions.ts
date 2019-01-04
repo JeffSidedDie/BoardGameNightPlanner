@@ -1,21 +1,21 @@
 import * as firebase from 'firebase/app';
 import { Dispatch } from 'redux';
 import { Collections, db } from 'src/common/firebase';
-import { IEvent } from 'src/common/models';
-import { AppActionType, IAppAction } from 'src/common/redux';
-import { IAppState } from '..';
+import { Event } from 'src/common/models';
+import { AppAction, AppActionType } from 'src/common/redux';
+import { AppState } from '..';
 
 let upcomingEventsListener: () => void;
 let recentEventsListener: () => void;
 
-function handleEventsSnapshot(snapshot: firebase.firestore.QuerySnapshot, action: (events: IEvent[]) => IAppAction) {
-    const events: IEvent[] = [];
-    snapshot.docs.forEach(doc => events.push({ id: doc.id, ...doc.data() } as IEvent));
+function handleEventsSnapshot(snapshot: firebase.firestore.QuerySnapshot, action: (events: Event[]) => AppAction) {
+    const events: Event[] = [];
+    snapshot.docs.forEach(doc => events.push({ id: doc.id, ...doc.data() } as Event));
     action(events);
 }
 
 export function subscribeEvents() {
-    return (dispatch: Dispatch<IAppAction>) => {
+    return (dispatch: Dispatch<AppAction>) => {
         const eventsCollection = db.collection(Collections.Events);
         upcomingEventsListener = eventsCollection.where('timestamp', '>=', new Date()).orderBy('timestamp').onSnapshot(snapshot => {
             handleEventsSnapshot(snapshot, e => dispatch(upcomingEventsUpdated(e)));
@@ -35,51 +35,51 @@ export function unsubscribeEvents() {
     recentEventsListener();
 }
 
-export interface IUpcomingEventsUpdatedAction extends IAppAction {
+export interface UpcomingEventsUpdatedAction extends AppAction {
     readonly type: AppActionType.Events_UpcomingEventsUpdated;
-    readonly upcomingEvents: IEvent[];
+    readonly upcomingEvents: Event[];
 }
 
-export function upcomingEventsUpdated(upcomingEvents: IEvent[]): IUpcomingEventsUpdatedAction {
+export function upcomingEventsUpdated(upcomingEvents: Event[]): UpcomingEventsUpdatedAction {
     return {
         type: AppActionType.Events_UpcomingEventsUpdated,
         upcomingEvents,
     };
 }
 
-export interface IRecentEventsUpdatedAction extends IAppAction {
+export interface RecentEventsUpdatedAction extends AppAction {
     readonly type: AppActionType.Events_RecentEventsUpdated;
-    readonly recentEvents: IEvent[];
+    readonly recentEvents: Event[];
 }
 
-export function recentEventsUpdated(recentEvents: IEvent[]): IRecentEventsUpdatedAction {
+export function recentEventsUpdated(recentEvents: Event[]): RecentEventsUpdatedAction {
     return {
-        recentEvents,
         type: AppActionType.Events_RecentEventsUpdated,
+        recentEvents,
     };
 }
 
-export interface IEventsErrorAction extends IAppAction {
+export interface EventsErrorAction extends AppAction {
     readonly type: AppActionType.Events_Error;
     readonly error: string;
 }
 
-export function eventsError(error: string): IEventsErrorAction {
+export function eventsError(error: string): EventsErrorAction {
     return {
-        error,
         type: AppActionType.Events_Error,
+        error,
     };
 }
 
-export function attendEvent(event: IEvent) {
-    return async (dispatch: Dispatch<IAppAction>, getState: () => IAppState) => {
+export function attendEvent(event: Event) {
+    return async (dispatch: Dispatch<AppAction>, getState: () => AppState) => {
         const state = getState();
         await db.collection(Collections.Events).doc(event.id).update(`attendees.${state.auth.userId}`, { name: state.auth.displayName });
     };
 }
 
-export function unattendEvent(event: IEvent) {
-    return async (dispatch: Dispatch<IAppAction>, getState: () => IAppState) => {
+export function unattendEvent(event: Event) {
+    return async (dispatch: Dispatch<AppAction>, getState: () => AppState) => {
         const state = getState();
         await db.collection(Collections.Events).doc(event.id).update(`attendees.${state.auth.userId}`, firebase.firestore.FieldValue.delete());
     };

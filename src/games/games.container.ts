@@ -1,18 +1,18 @@
 import { connect } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
-import { IAppState } from 'src';
-import { IAppAction } from 'src/common/redux';
-import { GamesComponent, IGamesComponentProperties } from './games.component';
+import { AppState } from 'src';
+import { AppAction } from 'src/common/redux';
+import { GamesComponent, GamesComponentProperties } from './games.component';
 
 // This is used to translate the state of the page to the props on the component
-function mapStateToProps(state: IAppState): Partial<IGamesComponentProperties> {
+function mapStateToProps(state: AppState): Partial<GamesComponentProperties> {
     return {
         userId: state.auth.userId,
     };
 }
 
 // This should create proxy wrappers for actions used by the component
-function mapDispatchToProps(dispatch: ThunkDispatch<IAppState, {}, IAppAction>): Partial<IGamesComponentProperties> {
+function mapDispatchToProps(dispatch: ThunkDispatch<AppState, {}, AppAction>): Partial<GamesComponentProperties> {
     return {
     };
 }

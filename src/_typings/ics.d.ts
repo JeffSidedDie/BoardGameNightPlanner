@@ -1,24 +1,24 @@
 declare module "ics-browser" {
 
-    interface ICalendarEvent {
+    interface CalendarEvent {
         start: number[];
         end?: number[];
-        duration?: IDuration;
+        duration?: Duration;
         title?: string;
         description?: string;
         location?: string;
-        geo?: IGeoPoint;
+        geo?: GeoPoint;
         url?: string;
         status?: 'TENTATIVE' | 'CONFIRMED' | 'CANCELLED';
-        organizer?: IAttendee;
-        attendees?: IAttendee[];
+        organizer?: Attendee;
+        attendees?: Attendee[];
         categories?: string[];
         // alarms?:string; //not sure what type this is
         productId?: string;
         uid?: string;
     }
 
-    interface IDuration {
+    interface Duration {
         weeks?: number;
         days?: number;
         hours?: number;
@@ -26,12 +26,12 @@ declare module "ics-browser" {
         seconds?: number;
     }
 
-    interface IGeoPoint {
+    interface GeoPoint {
         lat: number;
         lon: number;
     }
 
-    interface IAttendee {
+    interface Attendee {
         name: string;
         email: string;
         rsvp?: boolean;
@@ -43,8 +43,8 @@ declare module "ics-browser" {
     }
 
     interface IcsFactory {
-        createEvent: (event: ICalendarEvent) => IcsFactoryResult;
-        createEvents: (events: ICalendarEvent[]) => IcsFactoryResult;
+        createEvent: (event: CalendarEvent) => IcsFactoryResult;
+        createEvents: (events: CalendarEvent[]) => IcsFactoryResult;
     }
 
     const ics: IcsFactory;

@@ -1,32 +1,32 @@
 import { createReducer } from 'src/common/redux';
 import { AppActionType } from 'src/common/redux';
-import { IAuthLoginStartAction, IAuthLoginSuccessAction, IAuthLogoutAction } from './auth.actions';
+import { AuthLoginStartAction, AuthLoginSuccessAction, AuthLogoutAction } from './auth.actions';
 
-export interface IAuthState {
+export interface AuthState {
     readonly userId?: string;
     readonly displayName?: string;
     readonly email?: string;
     readonly isAdmin?: boolean;
 }
 
-const initialState: IAuthState = {
+const initialState: AuthState = {
     userId: undefined,
 };
 
-function handleLogout(state: IAuthState, action: IAuthLogoutAction) {
+function handleLogout(state: AuthState, action: AuthLogoutAction) {
     return {
         ...state,
         userId: undefined,
     };
 }
 
-function handleLoginStart(state: IAuthState, action: IAuthLoginStartAction) {
+function handleLoginStart(state: AuthState, action: AuthLoginStartAction) {
     return {
         ...state,
     };
 }
 
-function handleLoginSuccess(state: IAuthState, action: IAuthLoginSuccessAction) {
+function handleLoginSuccess(state: AuthState, action: AuthLoginSuccessAction) {
     return {
         ...state,
         displayName: action.displayName,

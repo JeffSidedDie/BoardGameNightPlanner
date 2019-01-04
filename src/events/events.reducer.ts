@@ -1,35 +1,35 @@
-import { IEvent } from 'src/common/models';
+import { Event } from 'src/common/models';
 import { createReducer } from 'src/common/redux';
 import { AppActionType } from 'src/common/redux';
-import { IEventsErrorAction, IRecentEventsUpdatedAction, IUpcomingEventsUpdatedAction } from 'src/events/events.actions';
+import { EventsErrorAction, RecentEventsUpdatedAction, UpcomingEventsUpdatedAction } from 'src/events/events.actions';
 
-export interface IEventsState {
+export interface EventsState {
     readonly error: string;
-    readonly recentEvents: IEvent[];
-    readonly upcomingEvents: IEvent[];
+    readonly recentEvents: Event[];
+    readonly upcomingEvents: Event[];
 }
 
-const initialState: IEventsState = {
+const initialState: EventsState = {
     error: '',
     recentEvents: [],
     upcomingEvents: [],
 };
 
-function handleEventsError(state: IEventsState, action: IEventsErrorAction): IEventsState {
+function handleEventsError(state: EventsState, action: EventsErrorAction): EventsState {
     return {
         ...state,
         error: action.error,
     };
 }
 
-function handleUpcomingEventsUpdated(state: IEventsState, action: IUpcomingEventsUpdatedAction): IEventsState {
+function handleUpcomingEventsUpdated(state: EventsState, action: UpcomingEventsUpdatedAction): EventsState {
     return {
         ...state,
         upcomingEvents: action.upcomingEvents,
     };
 }
 
-function handleRecentEventsUpdated(state: IEventsState, action: IRecentEventsUpdatedAction): IEventsState {
+function handleRecentEventsUpdated(state: EventsState, action: RecentEventsUpdatedAction): EventsState {
     return {
         ...state,
         recentEvents: action.recentEvents,

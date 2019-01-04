@@ -8,8 +8,8 @@ import { Router, Switch } from 'react-router';
 import { Link } from 'react-router-dom';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
-import { Auth, AuthReducer, AuthRoute, IAuthState } from 'src/auth';
-import { IAppAction } from 'src/common/redux';
+import { Auth, AuthReducer, AuthRoute, AuthState } from 'src/auth';
+import { AppAction } from 'src/common/redux';
 
 // routing
 import { Routes } from 'src/common/routes';
@@ -24,18 +24,18 @@ import './index.css';
 // import registerServiceWorker from './registerServiceWorker';
 
 // app
-import { Events, EventsReducer, IEventsState } from 'src/events';
 import { Games } from './games';
+import { Events, EventsReducer, EventsState } from 'src/events';
 
 const history = createBrowserHistory();
 
-export interface IAppState {
-  readonly auth: IAuthState;
-  readonly events: IEventsState;
+export interface AppState {
+  readonly auth: AuthState;
+  readonly events: EventsState;
 }
 
-export const store = createStore<IAppState, IAppAction, {}, {}>(
-  combineReducers<IAppState, IAppAction>({
+export const store = createStore<AppState, AppAction, {}, {}>(
+  combineReducers<AppState, AppAction>({
     auth: AuthReducer,
     events: EventsReducer,
   }),

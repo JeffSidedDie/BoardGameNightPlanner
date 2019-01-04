@@ -2,21 +2,21 @@ declare module "firebaseui" {
 
     import * as firebase from 'firebase';
 
-    interface IConfig {
-        callbacks?: ICallbacks;
+    interface Config {
+        callbacks?: Callbacks;
         credentialHelper?: auth.CredentialHelper;
         queryParameterForSignInSuccessUrl?: string;
         queryParameterForWidgetMode?: string;
         signInFlow?: 'redirect' | 'popup';
-        signInOptions: Array<ISignInOption | string>;
+        signInOptions: Array<SignInOption | string>;
         signInSuccessUrl?: string;
         tosUrl?: string;
     }
-    interface ICallbacks {
+    interface Callbacks {
         signInSuccessWithAuthResult?: (authResult: AuthResult, redirectUrl: string) => boolean;
         uiShown?: () => void;
     }
-    interface ISignInOption {
+    interface SignInOption {
         provider: string;
         scopes?: Array<string>;
         requireDisplayName?: boolean;
@@ -33,7 +33,7 @@ declare module "firebaseui" {
         enum CredentialHelper { ACCOUNT_CHOOSER_COM, NONE }
         class AuthUI {
             constructor(auth: firebase.auth.Auth);
-            start(containerCSSselector: string, config: IConfig): void;
+            start(containerCSSselector: string, config: Config): void;
         }
     }
 }

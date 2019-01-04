@@ -1,19 +1,19 @@
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { IAppState } from 'src';
-import { IAppAction } from 'src/common/redux';
+import { AppState } from 'src';
+import { AppAction } from 'src/common/redux';
 import { loginStart, logout } from './auth.actions';
-import { AuthComponent, IAuthComponentProperties } from './auth.component';
+import { AuthComponent, AuthComponentProperties } from './auth.component';
 
 // This is used to translate the state of the page to the props on the component
-function mapStateToProps(state: IAppState): Partial<IAuthComponentProperties> {
+function mapStateToProps(state: AppState): Partial<AuthComponentProperties> {
     return {
         userId: state.auth.userId,
     };
 }
 
 // This should create proxy wrappers for actions used by the component
-function mapDispatchToProps(dispatch: Dispatch<IAppAction>): Partial<IAuthComponentProperties> {
+function mapDispatchToProps(dispatch: Dispatch<AppAction>): Partial<AuthComponentProperties> {
     return {
         loginStart: (elementId: string) => {
             dispatch(loginStart(elementId));

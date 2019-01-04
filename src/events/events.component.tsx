@@ -1,22 +1,22 @@
 import * as FileSaver from 'file-saver';
 import * as ics from 'ics-browser';
 import * as React from 'react';
-import { IEvent } from 'src/common/models';
+import { Event } from 'src/common/models';
 
 
-export interface IEventsComponentProperties {
+export interface EventsComponentProperties {
     readonly currentUserId: string;
     readonly error?: string;
-    readonly recentEvents?: IEvent[];
-    readonly upcomingEvents?: IEvent[];
-    readonly attendEvent: (event: IEvent) => void;
-    readonly unattendEvent: (event: IEvent) => void;
-    readonly addToCalendarEvent: (event: IEvent) => void;
+    readonly recentEvents?: Event[];
+    readonly upcomingEvents?: Event[];
+    readonly attendEvent: (event: Event) => void;
+    readonly unattendEvent: (event: Event) => void;
+    readonly addToCalendarEvent: (event: Event) => void;
     readonly subscribeEvents: () => void;
     readonly unsubscribeEvents: () => void;
 }
 
-export class EventsComponent extends React.Component<IEventsComponentProperties> {
+export class EventsComponent extends React.Component<EventsComponentProperties> {
 
     public componentDidMount() {
         this.props.subscribeEvents();
@@ -36,7 +36,7 @@ export class EventsComponent extends React.Component<IEventsComponentProperties>
         </>;
     }
 
-    private renderEventsTable(events?: IEvent[]) {
+    private renderEventsTable(events?: Event[]) {
         return <table>
             <thead>
                 <tr>
@@ -53,7 +53,7 @@ export class EventsComponent extends React.Component<IEventsComponentProperties>
         </table>;
     }
 
-    private renderEventsRows(events: IEvent[]) {
+    private renderEventsRows(events: Event[]) {
         // events.sort((e1, e2) => e2.timestamp.toMillis() - e1.timestamp.toMillis());
         return events.map((e, index) => {
             const keys = Object.keys(e.attendees);
@@ -82,15 +82,15 @@ export class EventsComponent extends React.Component<IEventsComponentProperties>
         });
     }
 
-    private attendEvent(event: IEvent) {
+    private attendEvent(event: Event) {
         return () => this.props.attendEvent(event);
     }
 
-    private unattendEvent(event: IEvent) {
+    private unattendEvent(event: Event) {
         return () => this.props.unattendEvent(event);
     }
 
-    private addToCalendarEvent(event: IEvent) {
+    private addToCalendarEvent(event: Event) {
         return () => {
             // create calendar event
             const eventDate = event.timestamp.toDate();

@@ -2,13 +2,13 @@ import * as React from 'react';
 import { Login } from './login.component';
 import { Logout } from './logout.component';
 
-export interface IAuthComponentProperties {
+export interface AuthComponentProperties {
     readonly loginStart: (elementId: string) => void;
     readonly logout: () => void;
     readonly userId?: string;
 }
 
-export class AuthComponent extends React.Component<IAuthComponentProperties> {
+export class AuthComponent extends React.Component<AuthComponentProperties> {
 
     public render() {
         return <>

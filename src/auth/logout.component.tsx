@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-export interface ILogoutComponentProperties {
+export interface LogoutComponentProperties {
   readonly logout: () => void;
   readonly userId?: string;
 }
 
-export class Logout extends React.Component<ILogoutComponentProperties> {
+export class Logout extends React.Component<LogoutComponentProperties> {
   public render() {
     return (
       <>

@@ -1,2 +1,2 @@
 export { Events } from './events.container';
-export { IEventsState, EventsReducer } from './events.reducer';
+export { EventsState, EventsReducer } from './events.reducer';

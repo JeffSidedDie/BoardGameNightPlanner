@@ -19,6 +19,6 @@ export enum AppActionType {
     Events_Error = 'Events_Error',
 }
 
-export interface IAppAction extends Action {
+export interface AppAction extends Action {
     readonly type: AppActionType;
 }
