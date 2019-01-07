@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { GeneratedLink } from 'src/common/generatedLink';
 import { GameListElement } from 'src/common/models';
-import { generateRoute, Routes } from 'src/common/routes';
+import { Routes } from 'src/common/routes';
 
 export interface GamesListComponentProperties {
     readonly error?: string;
@@ -44,9 +44,8 @@ export class GamesListComponent extends React.Component<GamesListComponentProper
 
     private renderGamesRows(games: GameListElement[]) {
         return games.map((g, index) => {
-            // TODO: GeneratedLink to reduce boilerplate
-            return <tr key={index}>
-                <td><Link to={generateRoute(Routes.Games_Edit, { id: g.id })}>{g.data.name}</Link></td>
+            return <tr key={index} className="bg-light">
+                <td><GeneratedLink route={Routes.Games_Edit} parameters={{ id: g.id }}>{g.data.name}</GeneratedLink></td>
                 <td>{g.data.maxPlayers}</td>
             </tr>;
         });
