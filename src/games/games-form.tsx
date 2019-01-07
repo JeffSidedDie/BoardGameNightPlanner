@@ -1,33 +1,25 @@
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router';
 import { Field, Form } from 'src/common/forms';
-import { Game } from 'src/common/models';
+import { Game, GameDocument } from 'src/common/models';
 
-export interface GamesComponentProperties extends RouteComponentProps<{ id?: string }> {
+export interface GamesFormComponentProperties {
     readonly error?: string;
-    readonly currentGame?: Game;
-    readonly loadGame: (id: string) => void;
-    readonly saveGame: (game: Partial<Game>, id?: string) => void;
+    readonly game?: GameDocument;
+    readonly saveGame: (game: Game, id?: string) => void;
 }
 
-export class GamesComponent extends React.Component<GamesComponentProperties> {
+export class GamesForm extends React.Component<GamesFormComponentProperties> {
 
-    constructor(props: GamesComponentProperties) {
+    constructor(props: GamesFormComponentProperties) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    public componentDidMount() {
-        if (this.props.match.params.id) {
-            this.props.loadGame(this.props.match.params.id);
-        }
     }
 
     public render() {
         return <>
             <Form<Game>
                 enableReinitialize={true}
-                initialValues={this.props.currentGame || { name: '', bggLink: '', maxPlayers: 4 }}
+                initialValues={this.props.game ? this.props.game.data : { name: '', bggLink: '', maxPlayers: 4 }}
                 onSubmit={this.handleSubmit}
             >
                 <div className="row">
@@ -42,6 +34,6 @@ export class GamesComponent extends React.Component<GamesComponentProperties> {
     }
 
     private handleSubmit(values: Game) {
-        this.props.saveGame(values, this.props.match.params.id);
+        this.props.saveGame(values, this.props.game ? this.props.game.id : '');
     }
 }

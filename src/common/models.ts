@@ -12,8 +12,8 @@ export interface Game {
     maxPlayers: number;
 }
 
-export interface GameListElement {
-    id: string;
+export interface GameDocument {
+    readonly id: string;
     data: Game;
 }
 

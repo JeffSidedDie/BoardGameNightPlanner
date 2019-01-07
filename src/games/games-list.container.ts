@@ -1,15 +1,17 @@
 import { connect } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { AppState } from 'src';
+import { Game, GameDocument } from 'src/common/models';
 import { AppAction } from 'src/common/redux';
 import { GamesListComponent, GamesListComponentProperties } from './games-list.component';
-import { subscribeGames, unsubscribeGames } from './games.actions';
+import { saveGame, selectGame, subscribeGames, unsubscribeGames } from './games.actions';
 
 // This is used to translate the state of the page to the props on the component
 function mapStateToProps(state: AppState): Partial<GamesListComponentProperties> {
     return {
         error: state.games.error,
         games: state.games.games,
+        selectedGame: state.games.selectedGame,
     };
 }
 
@@ -20,6 +22,12 @@ function mapDispatchToProps(dispatch: ThunkDispatch<AppState, {}, AppAction>): P
             dispatch(subscribeGames());
         },
         unsubscribeGames,
+        selectGame: (game: GameDocument) => {
+            dispatch(selectGame(game));
+        },
+        saveGame: (game: Game, id: string) => {
+            dispatch(saveGame(game, id));
+        },
     };
 }
 

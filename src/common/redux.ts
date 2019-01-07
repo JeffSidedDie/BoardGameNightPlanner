@@ -18,8 +18,8 @@ export enum AppActionType {
     Events_RecentEventsUpdated = 'Events_RecentEventsUpdated',
     Events_Error = 'Events_Error',
     Games_GamesUpdated = 'Games_GamesUpdated',
+    Games_GameSelected = 'Games_GameSelected',
     Games_GameSaved = 'Games_GameSaved',
-    Games_GameLoaded = 'Games_GameLoaded',
     Games_Error = 'Games_Error',
 }
 

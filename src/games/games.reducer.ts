@@ -1,11 +1,12 @@
-import { Game, GameListElement } from 'src/common/models';
+import { Game, GameDocument } from 'src/common/models';
 import { createReducer } from 'src/common/redux';
 import { AppActionType } from 'src/common/redux';
-import { GameLoadedAction, GameSavedAction, GamesErrorAction, GamesUpdatedAction } from './games.actions';
+import { GameSavedAction, GameSelectedAction, GamesErrorAction, GamesUpdatedAction } from './games.actions';
 
 export interface GamesState {
     readonly error: string;
-    readonly games: GameListElement[];
+    readonly games: GameDocument[];
+    readonly selectedGame?: GameDocument;
     readonly currentGame?: Game;
 }
 
@@ -28,10 +29,10 @@ function handleGamesUpdated(state: GamesState, action: GamesUpdatedAction): Game
     };
 }
 
-function handleGameLoaded(state: GamesState, action: GameLoadedAction): GamesState {
+function handleGameSelected(state: GamesState, action: GameSelectedAction): GamesState {
     return {
         ...state,
-        currentGame: action.game,
+        selectedGame: action.selectedGame,
     };
 }
 
@@ -39,12 +40,13 @@ function handleGamesSaved(state: GamesState, action: GameSavedAction): GamesStat
     return {
         ...state,
         currentGame: action.game,
+        selectedGame: undefined,
     };
 }
 
 export const GamesReducer = createReducer(initialState, {
     [AppActionType.Games_Error]: handleGamesError,
     [AppActionType.Games_GamesUpdated]: handleGamesUpdated,
-    [AppActionType.Games_GameLoaded]: handleGameLoaded,
+    [AppActionType.Games_GameSelected]: handleGameSelected,
     [AppActionType.Games_GameSaved]: handleGamesSaved,
 });

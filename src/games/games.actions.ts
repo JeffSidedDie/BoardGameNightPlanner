@@ -1,13 +1,13 @@
 import * as firebase from 'firebase/app';
 import { Dispatch } from 'redux';
 import { Collections, db } from 'src/common/firebase';
-import { Game, GameListElement } from 'src/common/models';
+import { Game, GameDocument } from 'src/common/models';
 import { AppAction, AppActionType } from 'src/common/redux';
 
 let gamesListener: () => void;
 
-function handleGamesSnapshot(snapshot: firebase.firestore.QuerySnapshot, action: (games: GameListElement[]) => AppAction) {
-    const games: GameListElement[] = [];
+function handleGamesSnapshot(snapshot: firebase.firestore.QuerySnapshot, action: (games: GameDocument[]) => AppAction) {
+    const games: GameDocument[] = [];
     snapshot.docs.forEach(doc => games.push({ id: doc.id, data: doc.data() as Game }));
     action(games);
 }
@@ -27,18 +27,6 @@ export function unsubscribeGames() {
     gamesListener();
 }
 
-export interface GamesUpdatedAction extends AppAction {
-    readonly type: AppActionType.Games_GamesUpdated;
-    readonly games: GameListElement[];
-}
-
-export function gamesUpdated(games: GameListElement[]): GamesUpdatedAction {
-    return {
-        type: AppActionType.Games_GamesUpdated,
-        games,
-    };
-}
-
 export interface GamesErrorAction extends AppAction {
     readonly type: AppActionType.Games_Error;
     readonly error: string;
@@ -48,6 +36,30 @@ export function gamesError(error: string): GamesErrorAction {
     return {
         type: AppActionType.Games_Error,
         error,
+    };
+}
+
+export interface GamesUpdatedAction extends AppAction {
+    readonly type: AppActionType.Games_GamesUpdated;
+    readonly games: GameDocument[];
+}
+
+export function gamesUpdated(games: GameDocument[]): GamesUpdatedAction {
+    return {
+        type: AppActionType.Games_GamesUpdated,
+        games,
+    };
+}
+
+export interface GameSelectedAction extends AppAction {
+    readonly type: AppActionType.Games_GameSelected;
+    readonly selectedGame: GameDocument;
+}
+
+export function selectGame(game: GameDocument): GameSelectedAction {
+    return {
+        type: AppActionType.Games_GameSelected,
+        selectedGame: game,
     };
 }
 
@@ -73,27 +85,6 @@ export interface GameSavedAction extends AppAction {
 export function gameSaved(id: string, game: Game): GameSavedAction {
     return {
         type: AppActionType.Games_GameSaved,
-        id,
-        game,
-    };
-}
-
-export function loadGame(id: string) {
-    return async (dispatch: Dispatch<AppAction>) => {
-        const gameRef = await db.collection(Collections.Games).doc(id).get();
-        dispatch(gameLoaded(gameRef.id, gameRef.data() as Game));
-    };
-}
-
-export interface GameLoadedAction extends AppAction {
-    readonly type: AppActionType.Games_GameLoaded;
-    readonly id: string;
-    readonly game: Game;
-}
-
-export function gameLoaded(id: string, game: Game): GameLoadedAction {
-    return {
-        type: AppActionType.Games_GameLoaded,
         id,
         game,
     };
