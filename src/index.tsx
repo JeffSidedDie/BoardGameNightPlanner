@@ -25,7 +25,7 @@ import './index.css';
 
 // app
 import { Events, EventsReducer, EventsState } from 'src/events';
-import { Games, GamesList, GamesReducer, GamesState } from './games';
+import { GamesList, GamesReducer, GamesState } from './games';
 
 const history = createBrowserHistory();
 
@@ -62,7 +62,6 @@ ReactDOM.render(
           <Switch>
             <AuthRoute path={Routes.Root} exact={true} component={Events} />
             <AuthRoute path={Routes.Games_List} component={GamesList} />
-            <AuthRoute path={Routes.Games_Edit} component={Games} />
           </Switch>
         </div>
       </div>

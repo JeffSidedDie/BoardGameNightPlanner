@@ -17,7 +17,11 @@ export interface EventsComponentProperties {
     readonly unsubscribeEvents: () => void;
 }
 
-export class EventsComponent extends React.Component<EventsComponentProperties> {
+interface EventsComponentState {
+    [eventId: string]: boolean;
+}
+
+export class EventsComponent extends React.Component<EventsComponentProperties, EventsComponentState> {
 
     public componentDidMount() {
         this.props.subscribeEvents();
@@ -30,8 +34,8 @@ export class EventsComponent extends React.Component<EventsComponentProperties> 
     public render() {
         return <>
             <h1>Upcoming Events</h1>
-            <div className="events-grid">
-                {this.props.upcomingEvents && this.renderEventsCards(this.props.upcomingEvents)}
+            <div className="row events-grid">
+                {this.props.upcomingEvents && this.renderUpcomingEventsCards(this.props.upcomingEvents)}
             </div>
             <h1>Recent Events</h1>
             {this.renderEventsTable(this.props.recentEvents)}
@@ -56,28 +60,77 @@ export class EventsComponent extends React.Component<EventsComponentProperties> 
         </table>;
     }
 
-    private renderEventsCards(events: EventDocument[]) {
-        return events.map((e, index) => {
+    private renderUpcomingEventsCards(upcomingEvents: EventDocument[]) {
+        return upcomingEvents.map((e, index) => {
             const keys = Object.keys(e.data.attendees);
             const openSeats = e.data.game.maxPlayers - keys.length;
             const timestamp = e.data.timestamp.toDate();
             const timestampMidnight = timestamp;
             timestampMidnight.setHours(0, 0, 0, 0);
             const now = new Date();
-            return <div className="four columns" key={index}>
-                <h4>{e.data.game.name}</h4>
+            const attending = e.data.attendees[this.props.currentUserId];
+            const otherAttendees = keys.filter(k => k !== this.props.currentUserId).map(k => e.data.attendees[k]).sort((a1, a2) => {
+                return a1.name.localeCompare(a2.name);
+            });
+
+            let openSeatsText = '';
+            if (attending) {
+                openSeatsText = 'You\'re Attending!';
+            } else if (timestampMidnight <= now) {
+                openSeatsText = 'Closed';
+            } else if (openSeats > 0) {
+                openSeatsText = openSeats + ' Seats Available';
+            } else {
+                openSeatsText = 'Full';
+            }
+
+            let actions = <></>;
+            if (timestampMidnight > now) {
+                if (!attending && openSeats > 0) {
+                    actions = <button type="button" className="button-primary" onClick={this.attendEvent(e)}>Attend</button>;
+                } else if (attending) {
+                    actions = <div>
+                        <button type="button" onClick={this.unattendEvent(e)}>Unattend</button>
+                        &nbsp;
+                        <button type="button" className="button-primary button-fa" onClick={this.addToCalendarEvent(e)}>
+                            <i className="fas fa-calendar-plus fa-2x" />
+                        </button>
+                    </div>;
+                }
+            }
+
+            return <div className="four columns card" key={index}>
+                <h3><a href={e.data.game.bggLink} target="_blank">{e.data.game.name}</a></h3>
                 <p>{timestamp.toDateString()}</p>
-                <p>Open Seats:{openSeats}</p>
-                <div>
-                    {timestampMidnight > now && (!e.data.attendees[this.props.currentUserId] && openSeats > 0
-                        ? <button type="button" className="button-primary" onClick={this.attendEvent(e)}>Attend</button>
-                        : <div>
-                            <button type="button" onClick={this.unattendEvent(e)}>Unattend</button>
-                            <button type="button" className="button-fa" onClick={this.addToCalendarEvent(e)}><i className="fas fa-calendar-plus fa-2x" /></button>
-                        </div>)}
-                </div>
+                <h5>
+                    <em>{openSeatsText}</em>
+                    {openSeats < e.data.game.maxPlayers && <>
+                        &nbsp;
+                        <a onClick={this.handleShowAttendees(e)}>
+                            <i className="fas fa-question-circle" />
+                        </a>
+                    </>}
+                </h5>
+                {this.state && this.state[e.id] && <p>
+                    <strong>Other Attendees:</strong>
+                    <br />
+                    {otherAttendees.map((a, i) => <span key={i}>{a.name}<br /></span>)}
+                </p>}
+                <div>{actions}</div>
             </div>;
         });
+    }
+
+    private handleShowAttendees(event: EventDocument) {
+        const t = this;
+        return (e: React.MouseEvent) => {
+            t.setState((state, props) => {
+                return {
+                    ...state,
+                    [event.id]: state ? !state[event.id] : true
+                };
+            });
+        };
     }
 
     private renderEventsRows(events: EventDocument[]) {
