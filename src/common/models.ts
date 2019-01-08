@@ -6,7 +6,7 @@ export interface User {
     isAdmin?: boolean;
 }
 
-export interface Game {
+export interface GameData {
     name: string;
     bggLink: string;
     maxPlayers: number;
@@ -14,7 +14,7 @@ export interface Game {
 
 export interface GameDocument {
     readonly id: string;
-    data: Game;
+    data: GameData;
 }
 
 export interface Attendee {
@@ -22,9 +22,13 @@ export interface Attendee {
     score?: number;
 }
 
-export interface Event {
-    id: string;
+export interface EventData {
     timestamp: firebase.firestore.Timestamp;
     attendees: { [userId: string]: Attendee };
-    game: Game;
+    game: GameData;
+}
+
+export interface EventDocument {
+    readonly id: string;
+    data: EventData;
 }

@@ -1,4 +1,4 @@
-import { Game, GameDocument } from 'src/common/models';
+import { GameData, GameDocument } from 'src/common/models';
 import { createReducer } from 'src/common/redux';
 import { AppActionType } from 'src/common/redux';
 import { GameSavedAction, GameSelectedAction, GamesErrorAction, GamesUpdatedAction } from './games.actions';
@@ -7,7 +7,7 @@ export interface GamesState {
     readonly error: string;
     readonly games: GameDocument[];
     readonly selectedGame?: GameDocument;
-    readonly currentGame?: Game;
+    readonly currentGame?: GameData;
 }
 
 const initialState: GamesState = {

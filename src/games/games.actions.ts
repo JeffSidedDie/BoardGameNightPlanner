@@ -1,20 +1,20 @@
 import * as firebase from 'firebase/app';
 import { Dispatch } from 'redux';
 import { Collections, db } from 'src/common/firebase';
-import { Game, GameDocument } from 'src/common/models';
+import { GameData, GameDocument } from 'src/common/models';
 import { AppAction, AppActionType } from 'src/common/redux';
 
 let gamesListener: () => void;
 
 function handleGamesSnapshot(snapshot: firebase.firestore.QuerySnapshot, action: (games: GameDocument[]) => AppAction) {
     const games: GameDocument[] = [];
-    snapshot.docs.forEach(doc => games.push({ id: doc.id, data: doc.data() as Game }));
+    snapshot.docs.forEach(doc => games.push({ id: doc.id, data: doc.data() as GameData }));
     action(games);
 }
 
 export function subscribeGames() {
     return (dispatch: Dispatch<AppAction>) => {
-        const gamesCollection = db.collection(Collections.Games);
+        const gamesCollection = db.collection(Collections.Games).orderBy('name', 'desc');
         gamesListener = gamesCollection.onSnapshot(snapshot => {
             handleGamesSnapshot(snapshot, e => dispatch(gamesUpdated(e)));
         }, error => {
@@ -63,7 +63,7 @@ export function selectGame(game: GameDocument): GameSelectedAction {
     };
 }
 
-export function saveGame(game: Game, id?: string) {
+export function saveGame(game: GameData, id?: string) {
     return async (dispatch: Dispatch<AppAction>) => {
         const collection = db.collection(Collections.Games);
         if (id) {
@@ -79,10 +79,10 @@ export function saveGame(game: Game, id?: string) {
 export interface GameSavedAction extends AppAction {
     readonly type: AppActionType.Games_GameSaved;
     readonly id: string;
-    readonly game: Game;
+    readonly game: GameData;
 }
 
-export function gameSaved(id: string, game: Game): GameSavedAction {
+export function gameSaved(id: string, game: GameData): GameSavedAction {
     return {
         type: AppActionType.Games_GameSaved,
         id,

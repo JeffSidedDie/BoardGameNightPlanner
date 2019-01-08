@@ -1,12 +1,12 @@
-import { Event } from 'src/common/models';
+import { EventDocument } from 'src/common/models';
 import { createReducer } from 'src/common/redux';
 import { AppActionType } from 'src/common/redux';
 import { EventsErrorAction, RecentEventsUpdatedAction, UpcomingEventsUpdatedAction } from 'src/events/events.actions';
 
 export interface EventsState {
     readonly error: string;
-    readonly recentEvents: Event[];
-    readonly upcomingEvents: Event[];
+    readonly recentEvents: EventDocument[];
+    readonly upcomingEvents: EventDocument[];
 }
 
 const initialState: EventsState = {

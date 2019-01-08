@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Game, GameDocument } from 'src/common/models';
+import { GameData, GameDocument } from 'src/common/models';
 import { GamesForm } from './games-form';
 
 export interface GamesListComponentProperties {
@@ -9,7 +9,7 @@ export interface GamesListComponentProperties {
     readonly subscribeGames: () => void;
     readonly unsubscribeGames: () => void;
     readonly selectGame: (game: GameDocument) => void;
-    readonly saveGame: (game: Game, id?: string) => void;
+    readonly saveGame: (game: GameData, id?: string) => void;
 }
 
 export class GamesListComponent extends React.Component<GamesListComponentProperties> {

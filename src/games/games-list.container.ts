@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { AppState } from 'src';
-import { Game, GameDocument } from 'src/common/models';
+import { GameData, GameDocument } from 'src/common/models';
 import { AppAction } from 'src/common/redux';
 import { GamesListComponent, GamesListComponentProperties } from './games-list.component';
 import { saveGame, selectGame, subscribeGames, unsubscribeGames } from './games.actions';
@@ -25,7 +25,7 @@ function mapDispatchToProps(dispatch: ThunkDispatch<AppState, {}, AppAction>): P
         selectGame: (game: GameDocument) => {
             dispatch(selectGame(game));
         },
-        saveGame: (game: Game, id: string) => {
+        saveGame: (game: GameData, id: string) => {
             dispatch(saveGame(game, id));
         },
     };

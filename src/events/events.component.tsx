@@ -1,17 +1,17 @@
 import * as FileSaver from 'file-saver';
 import * as ics from 'ics-browser';
 import * as React from 'react';
-import { Event } from 'src/common/models';
+import { EventDocument } from 'src/common/models';
 
 
 export interface EventsComponentProperties {
     readonly currentUserId: string;
     readonly error?: string;
-    readonly recentEvents?: Event[];
-    readonly upcomingEvents?: Event[];
-    readonly attendEvent: (event: Event) => void;
-    readonly unattendEvent: (event: Event) => void;
-    readonly addToCalendarEvent: (event: Event) => void;
+    readonly recentEvents?: EventDocument[];
+    readonly upcomingEvents?: EventDocument[];
+    readonly attendEvent: (event: EventDocument) => void;
+    readonly unattendEvent: (event: EventDocument) => void;
+    readonly addToCalendarEvent: (event: EventDocument) => void;
     readonly subscribeEvents: () => void;
     readonly unsubscribeEvents: () => void;
 }
@@ -36,7 +36,7 @@ export class EventsComponent extends React.Component<EventsComponentProperties> 
         </>;
     }
 
-    private renderEventsTable(events?: Event[]) {
+    private renderEventsTable(events?: EventDocument[]) {
         return <table>
             <thead>
                 <tr>
@@ -53,28 +53,28 @@ export class EventsComponent extends React.Component<EventsComponentProperties> 
         </table>;
     }
 
-    private renderEventsRows(events: Event[]) {
+    private renderEventsRows(events: EventDocument[]) {
         // events.sort((e1, e2) => e2.timestamp.toMillis() - e1.timestamp.toMillis());
         return events.map((e, index) => {
-            const keys = Object.keys(e.attendees);
-            const attendees = keys.map(k => e.attendees[k]).sort((a1, a2) => {
+            const keys = Object.keys(e.data.attendees);
+            const attendees = keys.map(k => e.data.attendees[k]).sort((a1, a2) => {
                 if (a1.score !== undefined && a2.score !== undefined) {
                     return a2.score - a1.score;
                 } else {
                     return a1.name.localeCompare(a2.name);
                 }
             });
-            const openSeats = e.game.maxPlayers - keys.length;
-            const timestamp = e.timestamp.toDate();
+            const openSeats = e.data.game.maxPlayers - keys.length;
+            const timestamp = e.data.timestamp.toDate();
             const timestampMidnight = timestamp;
             timestampMidnight.setHours(0, 0, 0, 0);
             const now = new Date();
             return <tr key={index}>
                 <td>{timestamp.toDateString()}</td>
-                <td><a href={e.game.bggLink} target="_blank">{e.game.name}</a></td>
+                <td><a href={e.data.game.bggLink} target="_blank">{e.data.game.name}</a></td>
                 <td>{attendees.map((a, i) => (<span key={i}>{a.name}{a.score ? `: ${a.score}` : ''}<br /></span>))}</td>
                 <td>{openSeats}</td>
-                <td>{timestampMidnight > now && (!e.attendees[this.props.currentUserId] && openSeats > 0
+                <td>{timestampMidnight > now && (!e.data.attendees[this.props.currentUserId] && openSeats > 0
                     ? <button type="button" onClick={this.attendEvent(e)}>Attend</button>
                     : <div><button type="button" onClick={this.unattendEvent(e)}>Unattend</button><button type="button" onClick={this.addToCalendarEvent(e)}>Add to Calendar</button></div>)}
                 </td>
@@ -82,20 +82,20 @@ export class EventsComponent extends React.Component<EventsComponentProperties> 
         });
     }
 
-    private attendEvent(event: Event) {
+    private attendEvent(event: EventDocument) {
         return () => this.props.attendEvent(event);
     }
 
-    private unattendEvent(event: Event) {
+    private unattendEvent(event: EventDocument) {
         return () => this.props.unattendEvent(event);
     }
 
-    private addToCalendarEvent(event: Event) {
+    private addToCalendarEvent(event: EventDocument) {
         return () => {
             // create calendar event
-            const eventDate = event.timestamp.toDate();
+            const eventDate = event.data.timestamp.toDate();
             const icsResult = ics.createEvent({
-                description: `Jeff's Weekly Board Game Night!\nFeatured Game: ${event.game.name}\nBGG Link: ${event.game.bggLink}`,
+                description: `Jeff's Weekly Board Game Night!\nFeatured Game: ${event.data.game.name}\nBGG Link: ${event.data.game.bggLink}`,
                 duration: { hours: 3 },
                 location: '3464 Roxboro Rd NE\, Apt 409\, Atlanta\, GA 30326\, USA',
                 start: [eventDate.getFullYear(), eventDate.getMonth() + 1, eventDate.getDate(), 19, 0],
