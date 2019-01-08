@@ -62,15 +62,15 @@ export class EventsComponent extends React.Component<EventsComponentProperties, 
                 return a1.name.localeCompare(a2.name);
             });
 
-            let openSeatsText = '';
+            let status = <></>;
             if (attending) {
-                openSeatsText = 'You\'re Attending!';
+                status = <em><i className="fas fa-check" /> You're Attending!</em>;
             } else if (timestampMidnight <= now) {
-                openSeatsText = 'Closed';
+                status = <em><i className="fas fa-times" /> Closed</em>;
             } else if (openSeats > 0) {
-                openSeatsText = openSeats + ' Seats Available';
+                status = <em>{openSeats + ' Seats Available'}</em>;
             } else {
-                openSeatsText = 'Full';
+                status = <em><i className="fas fa-times" /> Full</em>;
             }
 
             let actions = <></>;
@@ -92,7 +92,7 @@ export class EventsComponent extends React.Component<EventsComponentProperties, 
                 <h3><a href={e.data.game.bggLink} target="_blank">{e.data.game.name}</a></h3>
                 <p>{timestamp.toDateString()}</p>
                 <h5>
-                    <em>{openSeatsText}</em>
+                    {status}
                     {openSeats < e.data.game.maxPlayers && <>
                         &nbsp;
                         <a onClick={this.handleShowAttendees(e)}>
