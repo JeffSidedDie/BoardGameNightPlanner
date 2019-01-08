@@ -1,0 +1,14 @@
+.events-grid .column,
+.events-grid .columns {
+    text-align: center;
+    border-radius: 4px;
+    border: 1px solid #212121;
+}
+
+.button-fa {
+    padding: 0 5px;
+}
+
+.button-fa .fas {
+    vertical-align: sub;
+}

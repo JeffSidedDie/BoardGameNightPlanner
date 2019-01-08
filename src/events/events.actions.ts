@@ -17,7 +17,7 @@ function handleEventsSnapshot(snapshot: firebase.firestore.QuerySnapshot, action
 export function subscribeEvents() {
     return (dispatch: Dispatch<AppAction>) => {
         const eventsCollection = db.collection(Collections.Events);
-        upcomingEventsListener = eventsCollection.where('timestamp', '>=', new Date()).orderBy('timestamp').onSnapshot(snapshot => {
+        upcomingEventsListener = eventsCollection.where('timestamp', '>=', new Date()).orderBy('timestamp').limit(3).onSnapshot(snapshot => {
             handleEventsSnapshot(snapshot, e => dispatch(upcomingEventsUpdated(e)));
         }, error => {
             dispatch(eventsError(error.message));

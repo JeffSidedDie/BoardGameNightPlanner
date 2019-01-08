@@ -1,8 +1,9 @@
+import '@fortawesome/fontawesome-free/css/all.css';
 import * as FileSaver from 'file-saver';
 import * as ics from 'ics-browser';
 import * as React from 'react';
 import { EventDocument } from 'src/common/models';
-
+import './events.css';
 
 export interface EventsComponentProperties {
     readonly currentUserId: string;
@@ -29,7 +30,9 @@ export class EventsComponent extends React.Component<EventsComponentProperties> 
     public render() {
         return <>
             <h1>Upcoming Events</h1>
-            {this.renderEventsTable(this.props.upcomingEvents)}
+            <div className="events-grid">
+                {this.props.upcomingEvents && this.renderEventsCards(this.props.upcomingEvents)}
+            </div>
             <h1>Recent Events</h1>
             {this.renderEventsTable(this.props.recentEvents)}
             <span>{this.props.error}</span>
@@ -51,6 +54,30 @@ export class EventsComponent extends React.Component<EventsComponentProperties> 
                 {events && this.renderEventsRows(events)}
             </tbody>
         </table>;
+    }
+
+    private renderEventsCards(events: EventDocument[]) {
+        return events.map((e, index) => {
+            const keys = Object.keys(e.data.attendees);
+            const openSeats = e.data.game.maxPlayers - keys.length;
+            const timestamp = e.data.timestamp.toDate();
+            const timestampMidnight = timestamp;
+            timestampMidnight.setHours(0, 0, 0, 0);
+            const now = new Date();
+            return <div className="four columns" key={index}>
+                <h4>{e.data.game.name}</h4>
+                <p>{timestamp.toDateString()}</p>
+                <p>Open Seats:{openSeats}</p>
+                <div>
+                    {timestampMidnight > now && (!e.data.attendees[this.props.currentUserId] && openSeats > 0
+                        ? <button type="button" className="button-primary" onClick={this.attendEvent(e)}>Attend</button>
+                        : <div>
+                            <button type="button" onClick={this.unattendEvent(e)}>Unattend</button>
+                            <button type="button" className="button-fa" onClick={this.addToCalendarEvent(e)}><i className="fas fa-calendar-plus fa-2x" /></button>
+                        </div>)}
+                </div>
+            </div>;
+        });
     }
 
     private renderEventsRows(events: EventDocument[]) {
