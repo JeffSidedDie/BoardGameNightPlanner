@@ -2,7 +2,7 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import * as FileSaver from 'file-saver';
 import * as ics from 'ics-browser';
 import * as React from 'react';
-import { EventDocument } from 'src/common/models';
+import { Attendee, EventDocument } from 'src/common/models';
 import './events.css';
 
 export interface EventsComponentProperties {
@@ -33,31 +33,20 @@ export class EventsComponent extends React.Component<EventsComponentProperties, 
 
     public render() {
         return <>
-            <h1>Upcoming Events</h1>
-            <div className="row events-grid">
-                {this.props.upcomingEvents && this.renderUpcomingEventsCards(this.props.upcomingEvents)}
+            <div className="section">
+                <h1>Upcoming Events</h1>
+                <div className="row events-grid">
+                    {this.props.upcomingEvents && this.renderUpcomingEventsCards(this.props.upcomingEvents)}
+                </div>
             </div>
-            <h1>Recent Events</h1>
-            {this.renderEventsTable(this.props.recentEvents)}
+            <div className="section">
+                <h1>Recent Events</h1>
+                <div className="row events-grid">
+                    {this.props.recentEvents && this.renderRecentEventsCards(this.props.recentEvents)}
+                </div>
+            </div>
             <span>{this.props.error}</span>
         </>;
-    }
-
-    private renderEventsTable(events?: EventDocument[]) {
-        return <table>
-            <thead>
-                <tr>
-                    <th>Timestamp</th>
-                    <th>Game</th>
-                    <th>Attendees</th>
-                    <th>Open Seats</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {events && this.renderEventsRows(events)}
-            </tbody>
-        </table>;
     }
 
     private renderUpcomingEventsCards(upcomingEvents: EventDocument[]) {
@@ -133,32 +122,32 @@ export class EventsComponent extends React.Component<EventsComponentProperties, 
         };
     }
 
-    private renderEventsRows(events: EventDocument[]) {
-        // events.sort((e1, e2) => e2.timestamp.toMillis() - e1.timestamp.toMillis());
+    private renderRecentEventsCards(events: EventDocument[]) {
         return events.map((e, index) => {
             const keys = Object.keys(e.data.attendees);
-            const attendees = keys.map(k => e.data.attendees[k]).sort((a1, a2) => {
+            let self: Attendee | null = null;
+            const attendees = keys.map(k => {
+                if (k === this.props.currentUserId) {
+                    self = e.data.attendees[k];
+                }
+                return e.data.attendees[k];
+            }).sort((a1, a2) => {
                 if (a1.score !== undefined && a2.score !== undefined) {
                     return a2.score - a1.score;
                 } else {
                     return a1.name.localeCompare(a2.name);
                 }
             });
-            const openSeats = e.data.game.maxPlayers - keys.length;
+            const firstPlace = attendees.slice(0, 1)[0];
+            const otherPlaces = firstPlace.score ? attendees.slice(1, attendees.length) : attendees;
+
             const timestamp = e.data.timestamp.toDate();
-            const timestampMidnight = timestamp;
-            timestampMidnight.setHours(0, 0, 0, 0);
-            const now = new Date();
-            return <tr key={index}>
-                <td>{timestamp.toDateString()}</td>
-                <td><a href={e.data.game.bggLink} target="_blank">{e.data.game.name}</a></td>
-                <td>{attendees.map((a, i) => (<span key={i}>{a.name}{a.score ? `: ${a.score}` : ''}<br /></span>))}</td>
-                <td>{openSeats}</td>
-                <td>{timestampMidnight > now && (!e.data.attendees[this.props.currentUserId] && openSeats > 0
-                    ? <button type="button" onClick={this.attendEvent(e)}>Attend</button>
-                    : <div><button type="button" onClick={this.unattendEvent(e)}>Unattend</button><button type="button" onClick={this.addToCalendarEvent(e)}>Add to Calendar</button></div>)}
-                </td>
-            </tr>;
+            return <div className="four columns card" key={index}>
+                <h3><a href={e.data.game.bggLink} target="_blank">{e.data.game.name}</a></h3>
+                <p>{timestamp.toDateString()}</p>
+                {firstPlace.score && <h5 className={firstPlace === self ? 'italics' : ''}>{firstPlace.name}: {firstPlace.score}</h5>}
+                <p>{otherPlaces.map((a, i) => (<span key={i} className={a === self ? 'italics' : ''}>{a.name}{a.score !== undefined ? `: ${a.score}` : ''}<br /></span>))}</p>
+            </div>;
         });
     }
 

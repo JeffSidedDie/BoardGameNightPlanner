@@ -22,7 +22,7 @@ export function subscribeEvents() {
         }, error => {
             dispatch(eventsError(error.message));
         });
-        recentEventsListener = eventsCollection.where('timestamp', '<', new Date()).orderBy('timestamp', 'desc').limit(4).onSnapshot(snapshot => {
+        recentEventsListener = eventsCollection.where('timestamp', '<', new Date()).orderBy('timestamp', 'desc').limit(3).onSnapshot(snapshot => {
             handleEventsSnapshot(snapshot, e => dispatch(recentEventsUpdated(e)));
         }, error => {
             dispatch(eventsError(error.message));

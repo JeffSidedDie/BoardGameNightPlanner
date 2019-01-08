@@ -11,3 +11,12 @@
 .button-fa .fas {
     vertical-align: sub;
 }
+
+.section {
+    padding-top: 4rem;
+    margin-bottom: 0;
+}
+
+.italics {
+    font-style: italic;
+}
