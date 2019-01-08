@@ -145,7 +145,7 @@ export class EventsComponent extends React.Component<EventsComponentProperties, 
             return <div className="four columns card" key={index}>
                 <h3><a href={e.data.game.bggLink} target="_blank">{e.data.game.name}</a></h3>
                 <p>{timestamp.toDateString()}</p>
-                {firstPlace.score && <h5 className={firstPlace === self ? 'italics' : ''}>{firstPlace.name}: {firstPlace.score}</h5>}
+                {firstPlace.score && <h5 className={firstPlace === self ? 'italics' : ''}><i className="fas fa-star" /> {firstPlace.name}: {firstPlace.score} <i className="fas fa-star" /></h5>}
                 <p>{otherPlaces.map((a, i) => (<span key={i} className={a === self ? 'italics' : ''}>{a.name}{a.score !== undefined ? `: ${a.score}` : ''}<br /></span>))}</p>
             </div>;
         });
