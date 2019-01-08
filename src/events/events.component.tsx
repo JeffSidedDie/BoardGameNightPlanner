@@ -54,7 +54,7 @@ export class EventsComponent extends React.Component<EventsComponentProperties, 
             const keys = Object.keys(e.data.attendees);
             const openSeats = e.data.game.maxPlayers - keys.length;
             const timestamp = e.data.timestamp.toDate();
-            const timestampMidnight = timestamp;
+            const timestampMidnight = new Date(timestamp);
             timestampMidnight.setHours(0, 0, 0, 0);
             const now = new Date();
             const attending = e.data.attendees[this.props.currentUserId];
@@ -90,7 +90,7 @@ export class EventsComponent extends React.Component<EventsComponentProperties, 
 
             return <div className="four columns card" key={index}>
                 <h3><a href={e.data.game.bggLink} target="_blank">{e.data.game.name}</a></h3>
-                <p>{timestamp.toDateString()}</p>
+                <p>{timestamp.toDateString()}<br />{timestamp.toLocaleTimeString()}</p>
                 <h5>
                     {status}
                     {openSeats < e.data.game.maxPlayers && <>
