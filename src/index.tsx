@@ -5,7 +5,7 @@ import * as ReactDOM from 'react-dom';
 // redux
 import { Provider } from 'react-redux';
 import { Router, Switch } from 'react-router';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { Auth, AuthReducer, AuthRoute, AuthState } from 'src/auth';
@@ -52,8 +52,8 @@ ReactDOM.render(
           <div className="flex-fill">
             <h1 className="p-0 m-0">Board Game Night Planner</h1>
           </div>
-          <Link to={Routes.Root}>Home</Link>
-          <Link to={Routes.Games_List}>Games</Link>
+          {/* <Link to={Routes.Root}>Home</Link>
+          <Link to={Routes.Games_List}>Games</Link> */}
           <div>
             <Auth />
           </div>
