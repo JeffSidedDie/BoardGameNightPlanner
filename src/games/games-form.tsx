@@ -10,14 +10,24 @@ export interface GamesFormComponentProperties {
 
 export class GamesForm extends React.Component<GamesFormComponentProperties> {
 
+    private formRef: React.RefObject<Form<GameData>>;
+
     constructor(props: GamesFormComponentProperties) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.formRef = React.createRef<Form<GameData>>();
+    }
+
+    public componentWillUpdate() {
+        if (!this.props.game && this.formRef.current) {
+            this.formRef.current.resetForm();
+        }
     }
 
     public render() {
         return <>
             <Form<GameData>
+                ref={this.formRef}
                 enableReinitialize={true}
                 initialValues={this.props.game ? this.props.game.data : { name: '', bggLink: '', maxPlayers: 4 }}
                 onSubmit={this.handleSubmit}
