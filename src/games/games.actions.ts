@@ -14,7 +14,7 @@ function handleGamesSnapshot(snapshot: firebase.firestore.QuerySnapshot, action:
 
 export function subscribeGames() {
     return (dispatch: Dispatch<AppAction>) => {
-        const gamesCollection = db.collection(Collections.Games).orderBy('name', 'desc');
+        const gamesCollection = db.collection(Collections.Games).orderBy('name', 'asc');
         gamesListener = gamesCollection.onSnapshot(snapshot => {
             handleGamesSnapshot(snapshot, e => dispatch(gamesUpdated(e)));
         }, error => {
