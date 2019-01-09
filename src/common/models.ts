@@ -25,7 +25,7 @@ export interface Attendee {
 export interface EventData {
     timestamp: firebase.firestore.Timestamp;
     attendees: { [userId: string]: Attendee };
-    game: GameData;
+    game: GameDocument;
 }
 
 export interface EventDocument {

@@ -52,7 +52,7 @@ export class EventsComponent extends React.Component<EventsComponentProperties, 
     private renderUpcomingEventsCards(upcomingEvents: EventDocument[]) {
         return upcomingEvents.map((e, index) => {
             const keys = Object.keys(e.data.attendees);
-            const openSeats = e.data.game.maxPlayers - keys.length;
+            const openSeats = e.data.game.data.maxPlayers - keys.length;
             const timestamp = e.data.timestamp.toDate();
             const timestampMidnight = new Date(timestamp);
             timestampMidnight.setHours(0, 0, 0, 0);
@@ -89,11 +89,11 @@ export class EventsComponent extends React.Component<EventsComponentProperties, 
             }
 
             return <div className="four columns card" key={index}>
-                <h3><a href={e.data.game.bggLink} target="_blank">{e.data.game.name}</a></h3>
+                <h3><a href={e.data.game.data.bggLink} target="_blank">{e.data.game.data.name}</a></h3>
                 <p>{timestamp.toDateString()}<br />{timestamp.toLocaleTimeString()}</p>
                 <h5>
                     {status}
-                    {openSeats < e.data.game.maxPlayers && <>
+                    {openSeats < e.data.game.data.maxPlayers && <>
                         &nbsp;
                         <a onClick={this.handleShowAttendees(e)}>
                             <i className="fas fa-question-circle" />
@@ -143,7 +143,7 @@ export class EventsComponent extends React.Component<EventsComponentProperties, 
 
             const timestamp = e.data.timestamp.toDate();
             return <div className="four columns card" key={index}>
-                <h3><a href={e.data.game.bggLink} target="_blank">{e.data.game.name}</a></h3>
+                <h3><a href={e.data.game.data.bggLink} target="_blank">{e.data.game.data.name}</a></h3>
                 <p>{timestamp.toDateString()}</p>
                 {firstPlace.score && <h5 className={firstPlace === self ? 'italics' : ''}><i className="fas fa-star" /> {firstPlace.name}: {firstPlace.score} <i className="fas fa-star" /></h5>}
                 <p>{otherPlaces.map((a, i) => (<span key={i} className={a === self ? 'italics' : ''}>{a.name}{a.score !== undefined ? `: ${a.score}` : ''}<br /></span>))}</p>
@@ -164,7 +164,7 @@ export class EventsComponent extends React.Component<EventsComponentProperties, 
             // create calendar event
             const eventDate = event.data.timestamp.toDate();
             const icsResult = ics.createEvent({
-                description: `Jeff's Weekly Board Game Night!\nFeatured Game: ${event.data.game.name}\nBGG Link: ${event.data.game.bggLink}`,
+                description: `Jeff's Weekly Board Game Night!\nFeatured Game: ${event.data.game.data.name}\nBGG Link: ${event.data.game.data.bggLink}`,
                 duration: { hours: 3 },
                 location: '3464 Roxboro Rd NE\, Apt 409\, Atlanta\, GA 30326\, USA',
                 start: [eventDate.getFullYear(), eventDate.getMonth() + 1, eventDate.getDate(), 19, 0],
