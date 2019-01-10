@@ -60,10 +60,7 @@ export class GamesListComponent extends React.Component<GamesListComponentProper
         });
     }
 
-    private handleSelectGame(game: GameDocument) {
-        const t = this;
-        return (event: React.MouseEvent) => {
-            t.props.selectGame(game);
-        };
+    private handleSelectGame = (game: GameDocument) => (event: React.MouseEvent) => {
+        this.props.selectGame(game);
     }
 }

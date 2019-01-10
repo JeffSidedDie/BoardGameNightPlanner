@@ -15,7 +15,6 @@ export class GamesForm extends React.Component<GamesFormComponentProperties> {
 
     constructor(props: GamesFormComponentProperties) {
         super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.formRef = React.createRef<Formik<GameData>>();
     }
 
@@ -49,7 +48,7 @@ export class GamesForm extends React.Component<GamesFormComponentProperties> {
         </Form>;
     }
 
-    private handleSubmit(values: GameData) {
+    private handleSubmit = (values: GameData) => {
         this.props.saveGame(values, this.props.game ? this.props.game.id : '');
     }
 }

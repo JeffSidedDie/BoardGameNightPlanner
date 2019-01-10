@@ -110,16 +110,13 @@ export class EventsComponent extends React.Component<EventsComponentProperties, 
         });
     }
 
-    private handleShowAttendees(event: EventDocument) {
-        const t = this;
-        return (e: React.MouseEvent) => {
-            t.setState((state, props) => {
-                return {
-                    ...state,
-                    [event.id]: state ? !state[event.id] : true
-                };
-            });
-        };
+    private handleShowAttendees = (event: EventDocument) => (e: React.MouseEvent) => {
+        this.setState((state, props) => {
+            return {
+                ...state,
+                [event.id]: state ? !state[event.id] : true
+            };
+        });
     }
 
     private renderRecentEventsCards(events: EventDocument[]) {
@@ -151,29 +148,27 @@ export class EventsComponent extends React.Component<EventsComponentProperties, 
         });
     }
 
-    private attendEvent(event: EventDocument) {
-        return () => this.props.attendEvent(event);
+    private attendEvent = (event: EventDocument) => (e: React.MouseEvent) => {
+        this.props.attendEvent(event);
     }
 
-    private unattendEvent(event: EventDocument) {
-        return () => this.props.unattendEvent(event);
+    private unattendEvent = (event: EventDocument) => (e: React.MouseEvent) => {
+        this.props.unattendEvent(event);
     }
 
-    private addToCalendarEvent(event: EventDocument) {
-        return () => {
-            // create calendar event
-            const eventDate = event.data.timestamp.toDate();
-            const icsResult = ics.createEvent({
-                description: `Jeff's Weekly Board Game Night!\nFeatured Game: ${event.data.game.data.name}\nBGG Link: ${event.data.game.data.bggLink}`,
-                duration: { hours: 3 },
-                location: '3464 Roxboro Rd NE\, Apt 409\, Atlanta\, GA 30326\, USA',
-                start: [eventDate.getFullYear(), eventDate.getMonth() + 1, eventDate.getDate(), 19, 0],
-                title: 'Board Game Night',
-            });
-            if (icsResult.value) {
-                const blob = new Blob([icsResult.value], { type: 'text/calendar;charset=utf8' });
-                FileSaver.saveAs(blob, `Board Game Night ${eventDate.toDateString()}.ics`);
-            }
-        };
+    private addToCalendarEvent = (event: EventDocument) => (e: React.MouseEvent) => {
+        // create calendar event
+        const eventDate = event.data.timestamp.toDate();
+        const icsResult = ics.createEvent({
+            description: `Jeff's Weekly Board Game Night!\nFeatured Game: ${event.data.game.data.name}\nBGG Link: ${event.data.game.data.bggLink}`,
+            duration: { hours: 3 },
+            location: '3464 Roxboro Rd NE\, Apt 409\, Atlanta\, GA 30326\, USA',
+            start: [eventDate.getFullYear(), eventDate.getMonth() + 1, eventDate.getDate(), 19, 0],
+            title: 'Board Game Night',
+        });
+        if (icsResult.value) {
+            const blob = new Blob([icsResult.value], { type: 'text/calendar;charset=utf8' });
+            FileSaver.saveAs(blob, `Board Game Night ${eventDate.toDateString()}.ics`);
+        }
     }
 }
