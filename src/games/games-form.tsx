@@ -1,5 +1,6 @@
+import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
-import { Field, Form } from 'src/common/forms';
+import { Field } from 'src/common/field';
 import { GameData, GameDocument } from 'src/common/models';
 
 export interface GamesFormComponentProperties {
@@ -10,12 +11,12 @@ export interface GamesFormComponentProperties {
 
 export class GamesForm extends React.Component<GamesFormComponentProperties> {
 
-    private formRef: React.RefObject<Form<GameData>>;
+    private formRef: React.RefObject<Formik<GameData>>;
 
     constructor(props: GamesFormComponentProperties) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.formRef = React.createRef<Form<GameData>>();
+        this.formRef = React.createRef<Formik<GameData>>();
     }
 
     public componentWillUpdate() {
@@ -26,21 +27,26 @@ export class GamesForm extends React.Component<GamesFormComponentProperties> {
 
     public render() {
         return <>
-            <Form<GameData>
+            <Formik
                 ref={this.formRef}
                 enableReinitialize={true}
                 initialValues={this.props.game ? this.props.game.data : { name: '', bggLink: '', maxPlayers: 4 }}
                 onSubmit={this.handleSubmit}
-            >
-                <div className="row">
-                    <Field<GameData> name="name" label="Name" type="text" />
-                    <Field<GameData> name="bggLink" label="BGG Link" type="text" />
-                    <Field<GameData> name="maxPlayers" label="Max Players" type="number" />
-                </div>
-                <button className="button-primary" type="submit">Save</button>
-            </Form>
+                render={this.renderForm}
+            />
             <span>{this.props.error}</span>
         </>;
+    }
+
+    private renderForm = (props: FormikProps<GameData>) => {
+        return <Form>
+            <div className="row">
+                <Field<GameData> name="name" label="Name" type="text" />
+                <Field<GameData> name="bggLink" label="BGG Link" type="text" />
+                <Field<GameData> name="maxPlayers" label="Max Players" type="number" />
+            </div>
+            <button className="button-primary" type="submit">Save</button>
+        </Form>;
     }
 
     private handleSubmit(values: GameData) {
