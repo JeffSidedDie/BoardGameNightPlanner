@@ -1,9 +1,10 @@
 import '@fortawesome/fontawesome-free/css/all.css';
-import * as FileSaver from 'file-saver';
-import * as ics from 'ics-browser';
-import * as React from 'react';
-import { Attendee, EventDocument } from 'src/common/models';
 import './events.css';
+
+import * as React from 'react';
+import { EventDocument } from 'src/common/models';
+import { RecentEventCard } from './recent-event-card';
+import { UpcomingEventCard } from './upcoming-event-card';
 
 export interface EventsComponentProperties {
     readonly currentUserId: string;
@@ -17,11 +18,7 @@ export interface EventsComponentProperties {
     readonly unsubscribeEvents: () => void;
 }
 
-interface EventsComponentState {
-    [eventId: string]: boolean;
-}
-
-export class EventsComponent extends React.Component<EventsComponentProperties, EventsComponentState> {
+export class EventsComponent extends React.Component<EventsComponentProperties> {
 
     public componentDidMount() {
         this.props.subscribeEvents();
@@ -36,139 +33,28 @@ export class EventsComponent extends React.Component<EventsComponentProperties, 
             <div className="section">
                 <h1>Upcoming Events</h1>
                 <div className="row events-grid">
-                    {this.props.upcomingEvents && this.renderUpcomingEventsCards(this.props.upcomingEvents)}
+                    {this.props.upcomingEvents && this.props.upcomingEvents.map((event, index) =>
+                        <UpcomingEventCard key={index}
+                            event={event}
+                            currentUserId={this.props.currentUserId}
+                            attendEvent={this.props.attendEvent}
+                            unattendEvent={this.props.unattendEvent}
+                        />
+                    )}
                 </div>
             </div>
             <div className="section">
                 <h1>Recent Events</h1>
                 <div className="row events-grid">
-                    {this.props.recentEvents && this.renderRecentEventsCards(this.props.recentEvents)}
+                    {this.props.recentEvents && this.props.recentEvents.map((event, index) =>
+                        <RecentEventCard key={index}
+                            event={event}
+                            currentUserId={this.props.currentUserId}
+                        />
+                    )}
                 </div>
             </div>
             <span>{this.props.error}</span>
         </>;
-    }
-
-    private renderUpcomingEventsCards(upcomingEvents: EventDocument[]) {
-        return upcomingEvents.map((e, index) => {
-            const keys = Object.keys(e.data.attendees);
-            const openSeats = e.data.game.data.maxPlayers - keys.length;
-            const timestamp = e.data.timestamp.toDate();
-            const timestampMidnight = new Date(timestamp);
-            timestampMidnight.setHours(0, 0, 0, 0);
-            const now = new Date();
-            const attending = e.data.attendees[this.props.currentUserId];
-            const otherAttendees = keys.filter(k => k !== this.props.currentUserId).map(k => e.data.attendees[k]).sort((a1, a2) => {
-                return a1.name.localeCompare(a2.name);
-            });
-
-            let status = <></>;
-            if (attending) {
-                status = <em><i className="fas fa-check" /> You're Attending!</em>;
-            } else if (timestampMidnight <= now) {
-                status = <em><i className="fas fa-times" /> Closed</em>;
-            } else if (openSeats > 0) {
-                status = <em>{openSeats + ' Seats Available'}</em>;
-            } else {
-                status = <em><i className="fas fa-times" /> Full</em>;
-            }
-
-            let actions = <></>;
-            if (timestampMidnight > now) {
-                if (!attending && openSeats > 0) {
-                    actions = <button type="button" className="button-primary" onClick={this.attendEvent(e)}>Attend</button>;
-                } else if (attending) {
-                    actions = <div>
-                        <button type="button" onClick={this.unattendEvent(e)}>Unattend</button>
-                        &nbsp;
-                        <button type="button" className="button-primary button-fa" onClick={this.addToCalendarEvent(e)}>
-                            <i className="fas fa-calendar-plus fa-2x" />
-                        </button>
-                    </div>;
-                }
-            }
-
-            return <div className="four columns card" key={index}>
-                <h3><a href={e.data.game.data.bggLink} target="_blank">{e.data.game.data.name}</a></h3>
-                <p>{timestamp.toDateString()}<br />{timestamp.toLocaleTimeString()}</p>
-                <h5>
-                    {status}
-                    {openSeats < e.data.game.data.maxPlayers && <>
-                        &nbsp;
-                        <a onClick={this.handleShowAttendees(e)}>
-                            <i className="fas fa-question-circle" />
-                        </a>
-                    </>}
-                </h5>
-                {this.state && this.state[e.id] && <p>
-                    <strong>Other Attendees:</strong>
-                    <br />
-                    {otherAttendees.map((a, i) => <span key={i}>{a.name}<br /></span>)}
-                </p>}
-                <div>{actions}</div>
-            </div>;
-        });
-    }
-
-    private handleShowAttendees = (event: EventDocument) => (e: React.MouseEvent) => {
-        this.setState((state, props) => {
-            return {
-                ...state,
-                [event.id]: state ? !state[event.id] : true
-            };
-        });
-    }
-
-    private renderRecentEventsCards(events: EventDocument[]) {
-        return events.map((e, index) => {
-            const keys = Object.keys(e.data.attendees);
-            let self: Attendee | null = null;
-            const attendees = keys.map(k => {
-                if (k === this.props.currentUserId) {
-                    self = e.data.attendees[k];
-                }
-                return e.data.attendees[k];
-            }).sort((a1, a2) => {
-                if (a1.score !== undefined && a2.score !== undefined) {
-                    return a2.score - a1.score;
-                } else {
-                    return a1.name.localeCompare(a2.name);
-                }
-            });
-            const firstPlace = attendees.slice(0, 1)[0];
-            const otherPlaces = firstPlace.score ? attendees.slice(1, attendees.length) : attendees;
-
-            const timestamp = e.data.timestamp.toDate();
-            return <div className="four columns card" key={index}>
-                <h3><a href={e.data.game.data.bggLink} target="_blank">{e.data.game.data.name}</a></h3>
-                <p>{timestamp.toDateString()}</p>
-                {firstPlace.score && <h5 className={firstPlace === self ? 'italics' : ''}><i className="fas fa-star" /> {firstPlace.name}: {firstPlace.score} <i className="fas fa-star" /></h5>}
-                <p>{otherPlaces.map((a, i) => (<span key={i} className={a === self ? 'italics' : ''}>{a.name}{a.score !== undefined ? `: ${a.score}` : ''}<br /></span>))}</p>
-            </div>;
-        });
-    }
-
-    private attendEvent = (event: EventDocument) => (e: React.MouseEvent) => {
-        this.props.attendEvent(event);
-    }
-
-    private unattendEvent = (event: EventDocument) => (e: React.MouseEvent) => {
-        this.props.unattendEvent(event);
-    }
-
-    private addToCalendarEvent = (event: EventDocument) => (e: React.MouseEvent) => {
-        // create calendar event
-        const eventDate = event.data.timestamp.toDate();
-        const icsResult = ics.createEvent({
-            description: `Jeff's Weekly Board Game Night!\nFeatured Game: ${event.data.game.data.name}\nBGG Link: ${event.data.game.data.bggLink}`,
-            duration: { hours: 3 },
-            location: '3464 Roxboro Rd NE\, Apt 409\, Atlanta\, GA 30326\, USA',
-            start: [eventDate.getFullYear(), eventDate.getMonth() + 1, eventDate.getDate(), 19, 0],
-            title: 'Board Game Night',
-        });
-        if (icsResult.value) {
-            const blob = new Blob([icsResult.value], { type: 'text/calendar;charset=utf8' });
-            FileSaver.saveAs(blob, `Board Game Night ${eventDate.toDateString()}.ics`);
-        }
     }
 }
