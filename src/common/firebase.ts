@@ -1,6 +1,7 @@
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import 'firebase/storage';
 import * as firebaseui from 'firebaseui';
 import { store } from 'src';
 import { loginSuccess } from 'src/auth/auth.actions';
@@ -16,10 +17,11 @@ const firebaseApp = firebase.initializeApp({
 });
 
 export const auth = firebaseApp.auth();
-export const db = firebase.firestore();
+export const db = firebaseApp.firestore();
 db.settings({
     timestampsInSnapshots: true,
 });
+export const storage = firebaseApp.storage();
 
 export enum Collections {
     Users = 'users',
