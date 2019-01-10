@@ -3,24 +3,24 @@ import * as React from 'react';
 import { Field } from 'src/common/field';
 import { GameData, GameDocument } from 'src/common/models';
 
-export interface GamesFormComponentProperties {
+export interface GameFormComponentProperties {
     readonly error?: string;
     readonly game?: GameDocument;
     readonly saveGame: (game: GameData, id?: string) => void;
 }
 
-export class GamesForm extends React.Component<GamesFormComponentProperties> {
+export class GameForm extends React.Component<GameFormComponentProperties> {
 
     private formRef: React.RefObject<Formik<GameData>>;
 
-    constructor(props: GamesFormComponentProperties) {
+    constructor(props: GameFormComponentProperties) {
         super(props);
         this.formRef = React.createRef<Formik<GameData>>();
     }
 
     public componentWillUpdate() {
         if (!this.props.game && this.formRef.current) {
-            this.formRef.current.resetForm();
+            this.formRef.current.resetForm(); // not sure of a better way to do this since submit is async
         }
     }
 

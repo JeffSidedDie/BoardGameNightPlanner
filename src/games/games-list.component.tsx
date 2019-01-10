@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { GameData, GameDocument } from 'src/common/models';
+import { GameForm } from './game-form';
 import { GameListItem } from './game-list-item';
-import { GamesForm } from './games-form';
 
 export interface GamesListComponentProperties {
     readonly error?: string;
@@ -36,12 +36,18 @@ export class GamesListComponent extends React.Component<GamesListComponentProper
                             </tr>
                         </thead>
                         <tbody>
-                            {this.props.games && this.props.games.map((g, index) => <GameListItem key={index} game={g} selected={this.props.selectedGame === g} selectGame={this.props.selectGame} />)}
+                            {this.props.games && this.props.games.map((g, index) =>
+                                <GameListItem key={index}
+                                    game={g}
+                                    selected={this.props.selectedGame === g}
+                                    selectGame={this.props.selectGame}
+                                />
+                            )}
                         </tbody>
                     </table>
                 </div>
                 <div className="six columns">
-                    <GamesForm game={this.props.selectedGame} saveGame={this.props.saveGame} />
+                    <GameForm game={this.props.selectedGame} saveGame={this.props.saveGame} />
                 </div>
             </div>
             <span>{this.props.error}</span>
