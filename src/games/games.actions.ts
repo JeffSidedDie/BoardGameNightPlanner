@@ -63,8 +63,15 @@ export function selectGame(game: GameDocument): GameSelectedAction {
     };
 }
 
-export function saveGame(game: GameData, id?: string) {
+export interface GameDataWithImage extends GameData {
+    image?: File;
+}
+
+export function saveGame(gameWithImage: GameDataWithImage, id?: string) {
     return async (dispatch: Dispatch<AppAction>) => {
+        const game = { ...gameWithImage };
+        delete game.image; // doing it this way to future proof against future GameData fields
+
         const collection = db.collection(Collections.Games);
         if (id) {
             await collection.doc(id).set(game);
