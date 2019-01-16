@@ -42,36 +42,48 @@ export class UpcomingEventCard extends React.Component<UpcomingEventCardProperti
         let actions = <></>;
         if (timestampMidnight > now) {
             if (!attending && openSeats > 0) {
-                actions = <button type="button" className="button-primary" onClick={this.handleAttendEvent}>Attend</button>;
+                actions = <div className="card-footer">
+                    <button type="button" className="card-footer-item" onClick={this.handleAttendEvent}>Attend</button>
+                </div>;
             } else if (attending) {
-                actions = <div>
-                    <button type="button" onClick={this.handleUnattendEvent}>Unattend</button>
+                actions = <div className="card-footer">
+                    <button type="button" className="card-footer-item" onClick={this.handleUnattendEvent}>Unattend</button>
                     &nbsp;
-                    <button type="button" className="button-primary button-fa" onClick={this.addToCalendarEvent}>
+                    <button type="button" className="card-footer-item" onClick={this.addToCalendarEvent}>
                         <i className="fas fa-calendar-plus fa-2x" />
                     </button>
                 </div>;
             }
         }
 
-        return <div className="four columns card">
-            <h3><a href={this.props.event.data.game.data.bggLink} target="_blank">{this.props.event.data.game.data.name}</a></h3>
-            <p>{timestamp.toDateString()}<br />{timestamp.toLocaleTimeString()}</p>
-            <h5>
-                {status}
-                {openSeats < this.props.event.data.game.data.maxPlayers && <>
-                    &nbsp;
-                        <a onClick={this.handleShowAttendees}>
-                        <i className="fas fa-question-circle" />
-                    </a>
-                </>}
-            </h5>
-            {this.state && this.state.showAttendees && <p>
-                <strong>Other Attendees:</strong>
-                <br />
-                {otherAttendees.map((a, i) => <span key={i}>{a.name}<br /></span>)}
-            </p>}
-            <div>{actions}</div>
+        return <div className="column is-one-third">
+            <div className="card">
+                <div className="card-header">
+                    <h3 className="card-header-title">
+                        <a href={this.props.event.data.game.data.bggLink} target="_blank">{this.props.event.data.game.data.name}</a>
+                    </h3>
+                </div>
+                <div className="card-content">
+                    <div className="content">
+                        <p>{timestamp.toDateString()}<br />{timestamp.toLocaleTimeString()}</p>
+                        <h5>
+                            {status}
+                            {openSeats < this.props.event.data.game.data.maxPlayers && <>
+                                &nbsp;
+                                    <a onClick={this.handleShowAttendees}>
+                                    <i className="fas fa-question-circle" />
+                                </a>
+                            </>}
+                        </h5>
+                        {this.state && this.state.showAttendees && <p>
+                            <strong>Other Attendees:</strong>
+                            <br />
+                            {otherAttendees.map((a, i) => <span key={i}>{a.name}<br /></span>)}
+                        </p>}
+                    </div>
+                    {actions}
+                </div>
+            </div>
         </div>;
     }
 

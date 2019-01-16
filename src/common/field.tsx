@@ -9,9 +9,11 @@ interface FieldProperties<T> {
 export class Field<T> extends React.Component<FieldProperties<T> & Formik.FieldConfig> {
 
     public render() {
-        return <>
-            <label htmlFor={this.props.name}>{this.props.label}</label>
-            <Formik.Field id={this.props.name} {...this.props} />
-        </>;
+        return <div className="field">
+            <label className="label" htmlFor={this.props.name}>{this.props.label}</label>
+            <div className="control">
+                <Formik.Field className="input "id={this.props.name} {...this.props} />
+            </div>
+        </div>;
     }
 }

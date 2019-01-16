@@ -9,9 +9,9 @@ export interface GameListItemProperties {
 
 export class GameListItem extends React.Component<GameListItemProperties> {
     public render() {
-        return <tr className={this.props.selected ? 'bg-light' : ''} onClick={this.handleItemClick}>
-            <td>{this.props.game.data.name}</td>
-            <td>{this.props.game.data.maxPlayers}</td>
+        return <tr className={this.props.selected ? 'tr is-selected' : 'tr'} onClick={this.handleItemClick}>
+            <td className="td">{this.props.game.data.name}</td>
+            <td className="td">{this.props.game.data.maxPlayers}</td>
         </tr>;
     }
 

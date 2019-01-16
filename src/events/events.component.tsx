@@ -29,32 +29,32 @@ export class EventsComponent extends React.Component<EventsComponentProperties> 
     }
 
     public render() {
-        return <>
-            <div className="section">
-                <h1>Upcoming Events</h1>
-                <div className="row events-grid">
-                    {this.props.upcomingEvents && this.props.upcomingEvents.map((event, index) =>
-                        <UpcomingEventCard key={index}
-                            event={event}
-                            currentUserId={this.props.currentUserId}
-                            attendEvent={this.props.attendEvent}
-                            unattendEvent={this.props.unattendEvent}
-                        />
-                    )}
-                </div>
+        return (
+          <section className="section">
+            <div className="container">
+              <h1 className="title">Upcoming Events</h1>
+              <div className="columns">
+                {this.props.upcomingEvents && this.props.upcomingEvents.map((event, index) =>
+                    <UpcomingEventCard key={index}
+                        event={event}
+                        currentUserId={this.props.currentUserId}
+                        attendEvent={this.props.attendEvent}
+                        unattendEvent={this.props.unattendEvent}
+                    />
+                )}
+              </div>
+              <h1 className="title">Recent Events</h1>
+              <div className="columns">
+                {this.props.recentEvents && this.props.recentEvents.map((event, index) =>
+                    <RecentEventCard key={index}
+                        event={event}
+                        currentUserId={this.props.currentUserId}
+                    />
+                )}
+              </div>
+              <span>{this.props.error}</span>
             </div>
-            <div className="section">
-                <h1>Recent Events</h1>
-                <div className="row events-grid">
-                    {this.props.recentEvents && this.props.recentEvents.map((event, index) =>
-                        <RecentEventCard key={index}
-                            event={event}
-                            currentUserId={this.props.currentUserId}
-                        />
-                    )}
-                </div>
-            </div>
-            <span>{this.props.error}</span>
-        </>;
+          </section>
+        );
     }
 }
