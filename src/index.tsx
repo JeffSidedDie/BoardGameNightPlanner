@@ -15,10 +15,7 @@ import { AppAction } from 'src/common/redux';
 import { Routes } from 'src/common/routes';
 
 // css
-import 'skeleton-css/css/normalize.css';
-import 'skeleton-css/css/skeleton.css';
-import './bootstrap-utils.css';
-import './index.css';
+import './styles.scss';
 
 // service worker
 // import registerServiceWorker from './registerServiceWorker';
