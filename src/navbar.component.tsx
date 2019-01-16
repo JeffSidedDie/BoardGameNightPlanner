@@ -10,7 +10,12 @@ export interface NavbarComponentProperties {
   readonly userId?: string;
 }
 
-export class NavbarComponent extends React.Component<NavbarComponentProperties> {
+interface NavbarComponentState {
+  readonly showMenu: boolean;
+}
+
+export class NavbarComponent extends React.Component<NavbarComponentProperties, NavbarComponentState> {
+
   public render() {
     return (
       <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -19,9 +24,14 @@ export class NavbarComponent extends React.Component<NavbarComponentProperties> 
             <img src={logo} />
             &nbsp; Board Game Night Planner
           </GeneratedLink>
+          <a role="button" className={this.state && this.state.showMenu ? 'navbar-burger burger is-active' : 'navbar-burger burger'} aria-label="menu" aria-expanded="false" onClick={this.handleShowMenu}>
+            <span aria-hidden="true" />
+            <span aria-hidden="true" />
+            <span aria-hidden="true" />
+          </a>
         </div>
 
-        <div className="navbar-menu">
+        <div className={this.state && this.state.showMenu ? 'navbar-menu is-active' : 'navbar-menu'}>
           {this.props.userId && 
             <div className="navbar-start">
               <GeneratedLink className="navbar-item" route={Routes.Root}>
@@ -42,4 +52,13 @@ export class NavbarComponent extends React.Component<NavbarComponentProperties> 
       </nav>
     );
   }
+
+  private handleShowMenu = (e: React.MouseEvent) => {
+    this.setState((state, props) => {
+        return {
+            ...state,
+            showMenu: state ? !state.showMenu : true,
+        };
+    });
+}
 }
