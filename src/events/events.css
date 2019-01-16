@@ -1,0 +1,17 @@
+/* 
+  Not sure why Bulma doesn't allow <button /> in the card footer,
+  but I don't like using <a /> for elements that are not actually links.
+  So restyling the buttons to look like the <a /> does in Bulma.
+*/
+
+button.card-footer-item {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  color: #3273dc;
+  font-size: 1rem;
+}
+
+button.card-footer-item:hover {
+  color: #363636;
+}

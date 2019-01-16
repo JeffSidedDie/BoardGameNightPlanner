@@ -39,12 +39,19 @@ export class GameForm extends React.Component<GameFormComponentProperties> {
 
     private renderForm = (props: FormikProps<GameData>) => {
         return <Form>
-            <div className="row">
-                <Field<GameData> name="name" label="Name" type="text" />
-                <Field<GameData> name="bggLink" label="BGG Link" type="text" />
-                <Field<GameData> name="maxPlayers" label="Max Players" type="number" />
+            <h2 className="title">Edit Game</h2>
+            <div className="columns">
+                <div className="column is-one-third">
+                    <Field<GameData> name="name" label="Name" type="text" />
+                </div>
+                <div className="column is-one-third">
+                    <Field<GameData> name="bggLink" label="BGG Link" type="text" />
+                </div>
+                <div className="column is-one-third">
+                    <Field<GameData> name="maxPlayers" label="Max Players" type="number" />
+                </div>
             </div>
-            <button className="button-primary" type="submit">Save</button>
+            <button className="button is-primary" type="submit">Save</button>
         </Form>;
     }
 

@@ -10,8 +10,12 @@ export class Logout extends React.Component<LogoutComponentProperties> {
     return (
       <>
         {this.props.userId && (
-          <div>
-            <button className="m-0" type="button" onClick={this.props.logout}>
+          <div className="buttons">
+            <button
+              className="button is-light"
+              type="button"
+              onClick={this.props.logout}
+            >
               Logout
             </button>
           </div>

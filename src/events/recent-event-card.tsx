@@ -27,24 +27,32 @@ export class RecentEventCard extends React.Component<RecentEventCardProperties> 
         const otherPlaces = firstPlace.score ? attendees.slice(1, attendees.length) : attendees;
         const timestamp = this.props.event.data.timestamp.toDate();
 
-        return <div className="four columns card">
-            <h3>
-                <a href={this.props.event.data.game.data.bggLink} target="_blank">{this.props.event.data.game.data.name}</a>
-            </h3>
-            <p>{timestamp.toDateString()}</p>
-            {firstPlace.score &&
-                <h5 className={firstPlace === self ? 'italics' : ''}>
-                    <i className="fas fa-star" /> {firstPlace.name}: {firstPlace.score} <i className="fas fa-star" />
-                </h5>
-            }
-            <p>
-                {otherPlaces.map((a, i) => (
-                    <span key={i} className={a === self ? 'italics' : ''}>
-                        {a.name}{a.score !== undefined ? `: ${a.score}` : ''}
-                        <br />
-                    </span>
-                ))}
-            </p>
+        return <div className="column is-one-third">
+            <div className="card">
+                <div className="card-header">
+                    <h3 className="card-header-title">
+                        <a href={this.props.event.data.game.data.bggLink} target="_blank">{this.props.event.data.game.data.name}</a>
+                    </h3>
+                </div>
+                <div className="card-content">
+                    <div className="content">
+                        <p>{timestamp.toDateString()}</p>
+                        {firstPlace.score &&
+                            <h5 className={firstPlace === self ? 'italics' : ''}>
+                                <i className="fas fa-star" /> {firstPlace.name}: {firstPlace.score} <i className="fas fa-star" />
+                            </h5>
+                        }
+                        <p>
+                            {otherPlaces.map((a, i) => (
+                                <span key={i} className={a === self ? 'italics' : ''}>
+                                    {a.name}{a.score !== undefined ? `: ${a.score}` : ''}
+                                    <br />
+                                </span>
+                            ))}
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>;
     }
 }

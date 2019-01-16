@@ -24,33 +24,29 @@ export class GamesListComponent extends React.Component<GamesListComponentProper
     }
 
     public render() {
-        return <>
-            <h1>Games</h1>
-            <div className="row">
-                <div className="six columns">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Max Players</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.props.games && this.props.games.map((g, index) =>
-                                <GameListItem key={index}
-                                    game={g}
-                                    selected={this.props.selectedGame === g}
-                                    selectGame={this.props.selectGame}
-                                />
-                            )}
-                        </tbody>
-                    </table>
-                </div>
-                <div className="six columns">
-                    <GameForm game={this.props.selectedGame} saveGame={this.props.saveGame} />
-                </div>
+        return <section className="section">
+            <div className="container">
+                <h1 className="title">Games</h1>
+                <table className="table">
+                    <thead className="thead">
+                        <tr className="tr">
+                            <th className="th">Name</th>
+                            <th className="th">Max Players</th>
+                        </tr>
+                    </thead>
+                    <tbody className="tbody">
+                        {this.props.games && this.props.games.map((g, index) =>
+                            <GameListItem key={index}
+                                game={g}
+                                selected={this.props.selectedGame === g}
+                                selectGame={this.props.selectGame}
+                            />
+                        )}
+                    </tbody>
+                </table>
+                <GameForm game={this.props.selectedGame} saveGame={this.props.saveGame} />
+                <span>{this.props.error}</span>
             </div>
-            <span>{this.props.error}</span>
-        </>;
+        </section>;
     }
 }
