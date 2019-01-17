@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import logo from './assets/logo.jpg';
+import logo from 'src/assets/logo.jpg';
 
 import { Auth } from 'src/auth';
 import { GeneratedLink } from 'src/common/components/generatedLink';
