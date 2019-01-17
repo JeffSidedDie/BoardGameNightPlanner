@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { generateRoute, Routes } from './routes';
+import { generateRoute, Routes } from 'src/common/routes';
 
 export interface GeneratedLinkProperties {
     readonly route: Routes;

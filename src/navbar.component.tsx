@@ -3,7 +3,7 @@ import * as React from 'react';
 import logo from './assets/logo.jpg';
 
 import { Auth } from 'src/auth';
-import { GeneratedLink } from 'src/common/generatedLink';
+import { GeneratedLink } from 'src/common/components/generatedLink';
 import { Routes } from 'src/common/routes';
 
 export interface NavbarComponentProperties {

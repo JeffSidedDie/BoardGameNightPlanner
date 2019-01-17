@@ -1,26 +1,23 @@
 import { Form, Formik, FormikProps } from 'formik';
 import * as React from 'react';
-import { Field } from 'src/common/field';
-import { GameData, GameDocument } from 'src/common/models';
+import { Field } from 'src/common/components/field';
+import { FileField } from 'src/common/components/file-field';
+import { GameDocument } from 'src/common/models';
+import { GameDataWithImage } from './games.actions';
 
 export interface GameFormComponentProperties {
     readonly error?: string;
     readonly game?: GameDocument;
-    readonly saveGame: (game: GameData, id?: string) => void;
+    readonly saveGame: (game: GameDataWithImage, id?: string) => void;
 }
 
 export class GameForm extends React.Component<GameFormComponentProperties> {
 
-    private formRef: React.RefObject<Formik<GameData>>;
+    private formRef: React.RefObject<Formik<GameDataWithImage>> = React.createRef<Formik<GameDataWithImage>>();
 
-    constructor(props: GameFormComponentProperties) {
-        super(props);
-        this.formRef = React.createRef<Formik<GameData>>();
-    }
-
-    public componentWillUpdate() {
-        if (!this.props.game && this.formRef.current) {
-            this.formRef.current.resetForm(); // not sure of a better way to do this since submit is async
+    public componentDidUpdate(prevProps: Readonly<GameFormComponentProperties>) {
+        if (prevProps.game && !this.props.game && this.formRef.current) {
+            this.formRef.current.resetForm();
         }
     }
 
@@ -37,25 +34,28 @@ export class GameForm extends React.Component<GameFormComponentProperties> {
         </>;
     }
 
-    private renderForm = (props: FormikProps<GameData>) => {
+    private renderForm = (props: FormikProps<GameDataWithImage>) => {
         return <Form>
             <h2 className="title">Edit Game</h2>
             <div className="columns">
                 <div className="column is-one-third">
-                    <Field<GameData> name="name" label="Name" type="text" />
+                    <Field<GameDataWithImage> name="name" label="Name" type="text" />
                 </div>
                 <div className="column is-one-third">
-                    <Field<GameData> name="bggLink" label="BGG Link" type="text" />
+                    <Field<GameDataWithImage> name="bggLink" label="BGG Link" type="text" />
                 </div>
                 <div className="column is-one-third">
-                    <Field<GameData> name="maxPlayers" label="Max Players" type="number" />
+                    <Field<GameDataWithImage> name="maxPlayers" label="Max Players" type="number" />
+                </div>
+                <div className="column is-one-third">
+                    <Field<GameDataWithImage> name="image" label="Image" type="file" component={FileField} />
                 </div>
             </div>
             <button className="button is-primary" type="submit">Save</button>
         </Form>;
     }
 
-    private handleSubmit = (values: GameData) => {
+    private handleSubmit = (values: GameDataWithImage) => {
         this.props.saveGame(values, this.props.game ? this.props.game.id : '');
     }
 }

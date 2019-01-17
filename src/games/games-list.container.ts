@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { AppState } from 'src';
-import { GameData, GameDocument } from 'src/common/models';
+import { GameDocument } from 'src/common/models';
 import { AppAction } from 'src/common/redux';
 import { GamesListComponent, GamesListComponentProperties } from './games-list.component';
-import { saveGame, selectGame, subscribeGames, unsubscribeGames } from './games.actions';
+import { GameDataWithImage, saveGame, selectGame, subscribeGames, unsubscribeGames } from './games.actions';
 
 function mapStateToProps(state: AppState): Partial<GamesListComponentProperties> {
     return {
@@ -23,7 +23,7 @@ function mapDispatchToProps(dispatch: ThunkDispatch<AppState, {}, AppAction>): P
         selectGame: (game: GameDocument) => {
             dispatch(selectGame(game));
         },
-        saveGame: (game: GameData, id: string) => {
+        saveGame: (game: GameDataWithImage, id: string) => {
             dispatch(saveGame(game, id));
         },
     };

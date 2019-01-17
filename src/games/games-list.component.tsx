@@ -5,8 +5,8 @@ import { GameListItem } from './game-list-item';
 
 export interface GamesListComponentProperties {
     readonly error?: string;
-    readonly games?: GameDocument[];
     readonly selectedGame?: GameDocument;
+    readonly games: GameDocument[];
     readonly subscribeGames: () => void;
     readonly unsubscribeGames: () => void;
     readonly selectGame: (game: GameDocument) => void;
@@ -35,7 +35,7 @@ export class GamesListComponent extends React.Component<GamesListComponentProper
                         </tr>
                     </thead>
                     <tbody className="tbody">
-                        {this.props.games && this.props.games.map((g, index) =>
+                        {this.props.games.map((g, index) =>
                             <GameListItem key={index}
                                 game={g}
                                 selected={this.props.selectedGame === g}
