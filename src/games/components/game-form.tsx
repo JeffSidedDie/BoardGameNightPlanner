@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Field } from 'src/common/components/field';
 import { FileField } from 'src/common/components/file-field';
 import { GameDocument } from 'src/common/models';
-import { GameDataWithImage } from './games.actions';
+import { GameDataWithImage } from '../games.actions';
 
 export interface GameFormComponentProperties {
     readonly error?: string;

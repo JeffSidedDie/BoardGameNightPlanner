@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Login } from './login.component';
-import { Logout } from './logout.component';
+import { Login } from './components/login';
+import { Logout } from './components/logout';
 
 export interface AuthComponentProperties {
     readonly loginStart: (elementId: string) => void;

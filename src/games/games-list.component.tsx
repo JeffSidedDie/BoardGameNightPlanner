@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { GameData, GameDocument } from 'src/common/models';
-import { GameForm } from './game-form';
-import { GameListItem } from './game-list-item';
+import { GameForm } from './components/game-form';
+import { GameListItem } from './components/game-list-item';
 
 export interface GamesListComponentProperties {
     readonly error?: string;

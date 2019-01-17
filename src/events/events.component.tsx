@@ -3,8 +3,8 @@ import './events.css';
 
 import * as React from 'react';
 import { EventDocument } from 'src/common/models';
-import { RecentEventCard } from './recent-event-card';
-import { UpcomingEventCard } from './upcoming-event-card';
+import { RecentEventCard } from './components/recent-event-card';
+import { UpcomingEventCard } from './components/upcoming-event-card';
 
 export interface EventsComponentProperties {
     readonly currentUserId: string;
@@ -30,31 +30,31 @@ export class EventsComponent extends React.Component<EventsComponentProperties> 
 
     public render() {
         return (
-          <section className="section">
-            <div className="container">
-              <h1 className="title">Upcoming Events</h1>
-              <div className="columns">
-                {this.props.upcomingEvents && this.props.upcomingEvents.map((event, index) =>
-                    <UpcomingEventCard key={index}
-                        event={event}
-                        currentUserId={this.props.currentUserId}
-                        attendEvent={this.props.attendEvent}
-                        unattendEvent={this.props.unattendEvent}
-                    />
-                )}
-              </div>
-              <h1 className="title">Recent Events</h1>
-              <div className="columns">
-                {this.props.recentEvents && this.props.recentEvents.map((event, index) =>
-                    <RecentEventCard key={index}
-                        event={event}
-                        currentUserId={this.props.currentUserId}
-                    />
-                )}
-              </div>
-              <span>{this.props.error}</span>
-            </div>
-          </section>
+            <section className="section">
+                <div className="container">
+                    <h1 className="title">Upcoming Events</h1>
+                    <div className="columns">
+                        {this.props.upcomingEvents && this.props.upcomingEvents.map((event, index) =>
+                            <UpcomingEventCard key={index}
+                                event={event}
+                                currentUserId={this.props.currentUserId}
+                                attendEvent={this.props.attendEvent}
+                                unattendEvent={this.props.unattendEvent}
+                            />
+                        )}
+                    </div>
+                    <h1 className="title">Recent Events</h1>
+                    <div className="columns">
+                        {this.props.recentEvents && this.props.recentEvents.map((event, index) =>
+                            <RecentEventCard key={index}
+                                event={event}
+                                currentUserId={this.props.currentUserId}
+                            />
+                        )}
+                    </div>
+                    <span>{this.props.error}</span>
+                </div>
+            </section>
         );
     }
 }
