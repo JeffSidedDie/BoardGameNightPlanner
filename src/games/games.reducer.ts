@@ -4,13 +4,12 @@ import { AppActionType } from 'src/common/redux';
 import { GameSavedAction, GameSelectedAction, GamesErrorAction, GamesUpdatedAction } from './games.actions';
 
 export interface GamesState {
-    readonly error: string;
+    readonly error?: string;
     readonly games: GameDocument[];
     readonly selectedGame?: GameDocument;
 }
 
 const initialState: GamesState = {
-    error: '',
     games: [],
 };
 

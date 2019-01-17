@@ -10,7 +10,7 @@ export interface GamesListComponentProperties {
     readonly subscribeGames: () => void;
     readonly unsubscribeGames: () => void;
     readonly selectGame: (game: GameDocument) => void;
-    readonly saveGame: (game: GameData, id?: string) => void;
+    readonly saveGame: (game: GameData, id?: string) => Promise<void>;
 }
 
 export class GamesListComponent extends React.Component<GamesListComponentProperties> {

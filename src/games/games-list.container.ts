@@ -24,7 +24,7 @@ function mapDispatchToProps(dispatch: ThunkDispatch<AppState, {}, AppAction>): P
             dispatch(selectGame(game));
         },
         saveGame: (game: GameDataWithImage, id: string) => {
-            dispatch(saveGame(game, id));
+            return dispatch(saveGame(game, id));
         },
     };
 }
