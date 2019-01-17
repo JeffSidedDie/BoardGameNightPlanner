@@ -4,6 +4,10 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    function isAdmin() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }
@@ -23,7 +27,11 @@ service cloud.firestore {
       allow write: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true
     }
 
-    match /events/{event} {
+    match /games/{gameId} {
+      allow read, write: if isSignedIn() && isAdmin();
+    }
+
+    match /events/{eventId} {
       allow read: if isSignedIn()
       allow update: if isSignedIn()
         && resource.data.timestamp > request.time
