@@ -20,8 +20,8 @@ import 'node_modules/bulma/css/bulma.css';
 // import registerServiceWorker from './registerServiceWorker';
 
 // app
+import { Navbar } from 'src/common/components/navbar.container';
 import { Events, EventsReducer, EventsState } from 'src/events';
-import { Navbar } from 'src/navbar.container';
 import { GamesList, GamesReducer, GamesState } from './games';
 
 const history = createBrowserHistory();
