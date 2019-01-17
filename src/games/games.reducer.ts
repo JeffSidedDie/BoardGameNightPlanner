@@ -35,7 +35,7 @@ function handleGameSelected(state: GamesState, action: GameSelectedAction): Game
     };
 }
 
-function handleGamesSaved(state: GamesState, action: GameSavedAction): GamesState {
+function handleGameSaved(state: GamesState, action: GameSavedAction): GamesState {
     return {
         ...state,
         selectedGame: undefined,
@@ -46,5 +46,5 @@ export const GamesReducer = createReducer(initialState, {
     [AppActionType.Games_Error]: handleGamesError,
     [AppActionType.Games_GamesUpdated]: handleGamesUpdated,
     [AppActionType.Games_GameSelected]: handleGameSelected,
-    [AppActionType.Games_GameSaved]: handleGamesSaved,
+    [AppActionType.Games_GameSaved]: handleGameSaved,
 });
