@@ -1,6 +1,6 @@
 import * as firebase from 'firebase/app';
 import { Dispatch } from 'redux';
-import { Collections, db } from 'src/common/firebase';
+import { Collections, db, storage } from 'src/common/firebase';
 import { GameData, GameDocument } from 'src/common/models';
 import { AppAction, AppActionType } from 'src/common/redux';
 
@@ -75,11 +75,16 @@ export function saveGame(gameWithImage: GameDataWithImage, id?: string) {
         const collection = db.collection(Collections.Games);
         if (id) {
             await collection.doc(id).set(game);
-            dispatch(gameSaved(id, game));
         } else {
             const gameRef = await collection.add(game);
-            dispatch(gameSaved(gameRef.id, game));
+            id = gameRef.id;
         }
+
+        if (gameWithImage.image) {
+            storage.ref(id).put(gameWithImage.image);
+        }
+
+        dispatch(gameSaved(id, game));
     };
 }
 
