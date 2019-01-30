@@ -1,14 +1,15 @@
 import { connect } from 'react-redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { AppState } from 'src';
-import { EventDocument } from 'src/common/models';
+import { AttendeeDocument, EventDocument } from 'src/common/models';
 import { AppAction } from 'src/common/redux';
 import { EventsComponent, EventsComponentProperties } from 'src/events/events.component';
-import { attendEvent, subscribeEvents, unattendEvent, unsubscribeEvents } from './events.actions';
+import { attendEvent, subscribeEvents, unattendEvent, unsubscribeEvents, updateScore } from './events.actions';
 
 function mapStateToProps(state: AppState): Partial<EventsComponentProperties> {
     return {
         currentUserId: state.auth.userId,
+        currentUserIsAdmin: state.auth.isAdmin,
         error: state.events.error,
         recentEvents: state.events.recentEvents,
         upcomingEvents: state.events.upcomingEvents,
@@ -25,6 +26,9 @@ function mapDispatchToProps(dispatch: ThunkDispatch<AppState, {}, AppAction>): P
         },
         unattendEvent: (event: EventDocument) => {
             dispatch(unattendEvent(event));
+        },
+        updateScores: (eventId: string, attendees: AttendeeDocument[]) => {
+            return dispatch(updateScore(eventId, attendees));
         },
         unsubscribeEvents,
     };

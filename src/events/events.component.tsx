@@ -2,12 +2,13 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import './events.css';
 
 import * as React from 'react';
-import { EventDocument } from 'src/common/models';
+import { AttendeeDocument, EventDocument } from 'src/common/models';
 import { RecentEventCard } from './components/recent-event-card';
 import { UpcomingEventCard } from './components/upcoming-event-card';
 
 export interface EventsComponentProperties {
     readonly currentUserId: string;
+    readonly currentUserIsAdmin: boolean;
     readonly error?: string;
     readonly recentEvents?: EventDocument[];
     readonly upcomingEvents?: EventDocument[];
@@ -16,6 +17,7 @@ export interface EventsComponentProperties {
     readonly addToCalendarEvent: (event: EventDocument) => void;
     readonly subscribeEvents: () => void;
     readonly unsubscribeEvents: () => void;
+    readonly updateScores: (eventId: string, attendees: AttendeeDocument[]) => Promise<void>;
 }
 
 export class EventsComponent extends React.Component<EventsComponentProperties> {
@@ -49,6 +51,8 @@ export class EventsComponent extends React.Component<EventsComponentProperties> 
                             <RecentEventCard key={index}
                                 event={event}
                                 currentUserId={this.props.currentUserId}
+                                currentUserIsAdmin={this.props.currentUserIsAdmin}
+                                updateScores={this.props.updateScores}
                             />
                         )}
                     </div>

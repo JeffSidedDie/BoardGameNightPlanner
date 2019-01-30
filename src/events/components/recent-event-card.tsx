@@ -5,6 +5,8 @@ import { EventScoreForm } from './event-score-form';
 export interface RecentEventCardProperties {
     readonly event: EventDocument;
     readonly currentUserId: string;
+    readonly currentUserIsAdmin: boolean;
+    readonly updateScores: (eventId: string, attendees: AttendeeDocument[]) => Promise<void>;
 }
 
 interface RecentEventCardState {
@@ -38,7 +40,7 @@ export class RecentEventCard extends React.Component<RecentEventCardProperties, 
         return <div className="column is-one-third">
             <div className="card">
                 <div className="card-header">
-                    <h3 className="card-header-title">
+                    <h3 className="card-header-title is-size-3">
                         <a href={this.props.event.data.game.data.bggLink} target="_blank">{this.props.event.data.game.data.name}</a>
                     </h3>
                 </div>
@@ -46,7 +48,11 @@ export class RecentEventCard extends React.Component<RecentEventCardProperties, 
                     <div className="content">
                         <p>{timestamp.toDateString()}</p>
                         {this.state && this.state.scoresModeActive ?
-                            <EventScoreForm attendees={attendees} self={self} onCancel={this.toggleScoresModeActive} />
+                            <EventScoreForm eventId={this.props.event.id}
+                                attendees={attendees}
+                                self={self}
+                                updateScores={this.props.updateScores}
+                                onCancel={this.toggleScoresModeActive} />
                             : this.renderAttendees(firstPlace, otherPlaces, self)
                         }
                     </div>
@@ -70,7 +76,9 @@ export class RecentEventCard extends React.Component<RecentEventCardProperties, 
                     </span>
                 ))}
             </p>
-            <button type="button" className="button is-primary" onClick={this.handleEditScores}>Edit Scores</button>
+            {this.props.currentUserIsAdmin &&
+                <button type="button" className="button is-primary" onClick={this.handleEditScores}>Edit Scores</button>
+            }
         </>;
     }
 
