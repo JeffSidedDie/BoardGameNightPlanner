@@ -24,23 +24,20 @@ service cloud.firestore {
 
     match /games/{gameId} {
       allow read: if isSignedIn()
-      allow write: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true
-    }
-
-    match /games/{gameId} {
-      allow read, write: if isSignedIn() && isAdmin();
+      allow write: if isSignedIn() && isAdmin()
     }
 
     match /events/{eventId} {
       allow read: if isSignedIn()
       allow update: if isSignedIn()
-        && resource.data.timestamp > request.time
-        && request.writeFields.size() == 1
-        && (('attendees.' + request.auth.uid) in request.writeFields)
-        && (((request.resource.data.attendees[(request.auth.uid)].name == (request.auth.token.name)
-          && resource.data.attendees.size() < resource.data.game.data.maxPlayers)
-          && !('score' in request.resource.data.attendees[(request.auth.uid)]))
-          || !(request.auth.uid in request.resource.data.attendees))
+        && (isAdmin()
+          || (resource.data.timestamp > request.time
+            && request.writeFields.size() == 1
+            && (('attendees.' + request.auth.uid) in request.writeFields)
+            && (((request.resource.data.attendees[(request.auth.uid)].name == (request.auth.token.name)
+              && resource.data.attendees.size() < resource.data.game.data.maxPlayers)
+              && !('score' in request.resource.data.attendees[(request.auth.uid)]))
+              || !(request.auth.uid in request.resource.data.attendees)))
     }
   }
 }
