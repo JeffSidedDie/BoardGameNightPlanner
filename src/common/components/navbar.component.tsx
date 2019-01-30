@@ -8,6 +8,7 @@ import { Routes } from 'src/common/routes';
 
 export interface NavbarComponentProperties {
     readonly userId?: string;
+    readonly userIsAdmin?: boolean;
 }
 
 interface NavbarComponentState {
@@ -31,7 +32,7 @@ export class NavbarComponent extends React.Component<NavbarComponentProperties, 
                 </div>
 
                 <div className={this.state && this.state.showMenu ? 'navbar-menu is-active' : 'navbar-menu'}>
-                    {this.props.userId &&
+                    {this.props.userIsAdmin &&
                         <div className="navbar-start">
                             <GeneratedLink className="navbar-item" route={Routes.Root}>Home</GeneratedLink>
                             <GeneratedLink className="navbar-item" route={Routes.Games_List}>Games</GeneratedLink>
