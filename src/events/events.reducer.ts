@@ -7,6 +7,7 @@ export interface EventsState {
     readonly error: string;
     readonly recentEvents: EventDocument[];
     readonly upcomingEvents: EventDocument[];
+    readonly selectedEvent?: EventDocument;
 }
 
 const initialState: EventsState = {

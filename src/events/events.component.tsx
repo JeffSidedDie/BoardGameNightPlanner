@@ -10,8 +10,8 @@ export interface EventsComponentProperties {
     readonly currentUserId: string;
     readonly currentUserIsAdmin: boolean;
     readonly error?: string;
-    readonly recentEvents?: EventDocument[];
-    readonly upcomingEvents?: EventDocument[];
+    readonly recentEvents: EventDocument[];
+    readonly upcomingEvents: EventDocument[];
     readonly attendEvent: (event: EventDocument) => void;
     readonly unattendEvent: (event: EventDocument) => void;
     readonly addToCalendarEvent: (event: EventDocument) => void;
@@ -36,7 +36,7 @@ export class EventsComponent extends React.Component<EventsComponentProperties> 
                 <div className="container">
                     <h1 className="title">Upcoming Events</h1>
                     <div className="columns">
-                        {this.props.upcomingEvents && this.props.upcomingEvents.map((event, index) =>
+                        {this.props.upcomingEvents.map((event, index) =>
                             <UpcomingEventCard key={index}
                                 event={event}
                                 currentUserId={this.props.currentUserId}
@@ -47,7 +47,7 @@ export class EventsComponent extends React.Component<EventsComponentProperties> 
                     </div>
                     <h1 className="title">Recent Events</h1>
                     <div className="columns">
-                        {this.props.recentEvents && this.props.recentEvents.map((event, index) =>
+                        {this.props.recentEvents.map((event, index) =>
                             <RecentEventCard key={index}
                                 event={event}
                                 currentUserId={this.props.currentUserId}

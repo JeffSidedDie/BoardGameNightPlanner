@@ -21,7 +21,7 @@ import 'node_modules/bulma/css/bulma.css';
 
 // app
 import { Navbar } from 'src/common/components/navbar.container';
-import { Events, EventsReducer, EventsState } from 'src/events';
+import { EventForm, Events, EventsReducer, EventsState } from 'src/events';
 import { GamesList, GamesReducer, GamesState } from './games';
 
 const history = createBrowserHistory();
@@ -48,6 +48,7 @@ ReactDOM.render(
                 <Navbar />
                 <Switch>
                     <AuthRoute path={Routes.Root} exact={true} component={Events} />
+                    <AuthRoute path={Routes.Events_Edit} component={EventForm} />
                     <AuthRoute path={Routes.Games_List} component={GamesList} />
                 </Switch>
             </div>

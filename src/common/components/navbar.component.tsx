@@ -35,6 +35,7 @@ export class NavbarComponent extends React.Component<NavbarComponentProperties, 
                     {this.props.userIsAdmin &&
                         <div className="navbar-start">
                             <GeneratedLink className="navbar-item" route={Routes.Root}>Home</GeneratedLink>
+                            <GeneratedLink className="navbar-item" route={Routes.Events_Edit}>Events</GeneratedLink>
                             <GeneratedLink className="navbar-item" route={Routes.Games_List}>Games</GeneratedLink>
                         </div>
                     }
