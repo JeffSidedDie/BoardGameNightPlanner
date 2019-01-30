@@ -37,7 +37,7 @@ service cloud.firestore {
             && (((request.resource.data.attendees[(request.auth.uid)].name == (request.auth.token.name)
               && resource.data.attendees.size() < resource.data.game.data.maxPlayers)
               && !('score' in request.resource.data.attendees[(request.auth.uid)]))
-              || !(request.auth.uid in request.resource.data.attendees)))
+              || !(request.auth.uid in request.resource.data.attendees))))
     }
   }
 }
