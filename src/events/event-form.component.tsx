@@ -1,8 +1,8 @@
 import * as firebase from 'firebase';
-import { FieldProps, Form, Formik, FormikActions, FormikProps } from 'formik';
+import { Form, Formik, FormikActions, FormikProps } from 'formik';
 import * as React from 'react';
 import { Field } from 'src/common/components/field';
-import { ObjectSelectField } from 'src/common/components/object-select-field';
+import { GamesSelect } from 'src/common/components/games-select.container';
 import { EventData, EventDocument, GameDocument } from 'src/common/models';
 
 export interface EventFormComponentProperties {
@@ -49,21 +49,21 @@ export class EventFormComponent extends React.Component<EventFormComponentProper
         return <Form>
             <h2 className="title">Edit Event</h2>
             <Field<EventData> name="timestamp" label="Timestamp" type="date" />
-            <Field<EventData> name="game" label="Game" render={this.renderGamesSelect} />
+            <Field<EventData> name="game" label="Game" type="file" component={GamesSelect} />
             <button className="button is-primary" type="submit">Save</button>
         </Form>;
     }
 
-    private renderGamesSelect = (props: FieldProps<EventData>) => {
-        return <ObjectSelectField<EventData, GameDocument>
-            values={this.props.games}
-            keySelector={this.gameKeySelector}
-            labelSelector={this.gameLabelSelector}
-            {...props} />;
-    }
+    // private renderGamesSelect = (props: FieldProps<EventData>) => {
+    //     return <ObjectSelectField<EventData, GameDocument>
+    //         values={this.props.games}
+    //         keySelector={this.gameKeySelector}
+    //         labelSelector={this.gameLabelSelector}
+    //         {...props} />;
+    // }
 
-    private gameKeySelector = (game: GameDocument) => game.id;
-    private gameLabelSelector = (game: GameDocument) => game.data.name;
+    // private gameKeySelector = (game: GameDocument) => game.id;
+    // private gameLabelSelector = (game: GameDocument) => game.data.name;
 
     private handleSubmit = async (values: EventData, formikActions: FormikActions<EventData>) => {
         await this.props.saveEvent(values, this.props.event ? this.props.event.id : '');
