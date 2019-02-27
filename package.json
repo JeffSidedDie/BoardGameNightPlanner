@@ -12,6 +12,7 @@
     "ics-browser": "2.4.1",
     "path-to-regexp": "2.4.0",
     "react": "16.7.0",
+    "react-datetime": "2.16.3",
     "react-dom": "16.7.0",
     "react-redux": "6.0.0",
     "react-router": "4.3.1",
