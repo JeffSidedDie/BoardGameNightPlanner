@@ -81,8 +81,8 @@ export class UpcomingEventCard extends React.Component<UpcomingEventCardProperti
                             {otherAttendees.map((a, i) => <span key={i}>{a.name}<br /></span>)}
                         </p>}
                     </div>
-                    {actions}
                 </div>
+                {actions}
             </div>
         </div>;
     }
