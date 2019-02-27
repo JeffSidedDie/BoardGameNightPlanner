@@ -17,7 +17,7 @@ export class RecentEventCard extends React.Component<RecentEventCardProperties, 
 
     public render() {
         const keys = Object.keys(this.props.event.data.attendees);
-        let self: AttendeeData | null = null;
+        let self: AttendeeData | undefined;
         const attendees: AttendeeDocument[] = keys.map(k => {
             if (k === this.props.currentUserId) {
                 self = this.props.event.data.attendees[k];
@@ -50,10 +50,9 @@ export class RecentEventCard extends React.Component<RecentEventCardProperties, 
                         {this.state && this.state.scoresModeActive ?
                             <EventScoreForm eventId={this.props.event.id}
                                 attendees={attendees}
-                                self={self}
                                 updateScores={this.props.updateScores}
                                 onCancel={this.toggleScoresModeActive} />
-                            : this.renderAttendees(firstPlace, otherPlaces, self)
+                            : this.renderAttendees(firstPlace.data, otherPlaces, self)
                         }
                     </div>
                 </div>
@@ -61,16 +60,16 @@ export class RecentEventCard extends React.Component<RecentEventCardProperties, 
         </div>;
     }
 
-    private renderAttendees(firstPlace: AttendeeDocument, otherPlaces: AttendeeDocument[], self: AttendeeDocument | null) {
+    private renderAttendees(firstPlace: AttendeeData, otherPlaces: AttendeeDocument[], self: AttendeeData | undefined) {
         return <>
-            {firstPlace.data.score !== undefined &&
+            {firstPlace.score !== undefined &&
                 <h5 className={firstPlace === self ? 'is-italic' : ''}>
-                    <i className="fas fa-star" /> {firstPlace.data.name}: {firstPlace.data.score} <i className="fas fa-star" />
+                    <i className="fas fa-star" /> {firstPlace.name}: {firstPlace.score} <i className="fas fa-star" />
                 </h5>
             }
             <p>
                 {otherPlaces.map((a, i) => (
-                    <span key={i} className={a === self ? 'is-italic' : ''}>
+                    <span key={i} className={a.data === self ? 'is-italic' : ''}>
                         {a.data.name}{a.data.score !== undefined ? `: ${a.data.score}` : ''}
                         <br />
                     </span>

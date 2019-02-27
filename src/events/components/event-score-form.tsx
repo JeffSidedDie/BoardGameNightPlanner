@@ -7,7 +7,6 @@ import { AttendeeData, AttendeeDocument } from 'src/common/models';
 export interface EventScoreFormProperties {
     readonly eventId: string;
     readonly attendees: AttendeeDocument[];
-    readonly self: AttendeeDocument | null;
     readonly onCancel: () => void;
     readonly updateScores: (eventId: string, attendees: AttendeeDocument[]) => Promise<void>;
 }
