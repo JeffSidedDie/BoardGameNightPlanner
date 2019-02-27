@@ -1,7 +1,8 @@
 import * as Formik from 'formik';
 import * as React from 'react';
+import { Omit } from './omit';
 
-type FileFieldProperties<T> = Formik.FieldProps<T> & React.InputHTMLAttributes<HTMLInputElement>;
+type FileFieldProperties<T> = Formik.FieldProps<T> & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'form'>;
 
 export class FileField<T> extends React.Component<FileFieldProperties<T>> {
 
