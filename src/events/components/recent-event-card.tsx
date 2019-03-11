@@ -38,7 +38,7 @@ export class RecentEventCard extends React.Component<RecentEventCardProperties, 
         const timestamp = this.props.event.data.timestamp.toDate();
 
         return <div className="column is-one-third">
-            <div className="card">
+            <div className="card" data-key={this.props.event.id}>
                 <div className="card-header">
                     <h3 className="card-header-title is-size-3">
                         <a href={this.props.event.data.game.data.bggLink} target="_blank">{this.props.event.data.game.data.name}</a>
