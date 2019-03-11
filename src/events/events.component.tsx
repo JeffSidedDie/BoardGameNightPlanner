@@ -37,23 +37,27 @@ export class EventsComponent extends React.Component<EventsComponentProperties> 
                     <h1 className="title">Upcoming Events</h1>
                     <div className="columns">
                         {this.props.upcomingEvents.map((event, index) =>
-                            <UpcomingEventCard key={index}
-                                event={event}
-                                currentUserId={this.props.currentUserId}
-                                attendEvent={this.props.attendEvent}
-                                unattendEvent={this.props.unattendEvent}
-                            />
+                            <div className="column is-one-third" key={index}>
+                                <UpcomingEventCard
+                                    event={event}
+                                    currentUserId={this.props.currentUserId}
+                                    attendEvent={this.props.attendEvent}
+                                    unattendEvent={this.props.unattendEvent}
+                                />
+                            </div>
                         )}
                     </div>
                     <h1 className="title">Recent Events</h1>
                     <div className="columns">
                         {this.props.recentEvents.map((event, index) =>
-                            <RecentEventCard key={index}
-                                event={event}
-                                currentUserId={this.props.currentUserId}
-                                currentUserIsAdmin={this.props.currentUserIsAdmin}
-                                updateScores={this.props.updateScores}
-                            />
+                            <div className="column is-one-third" key={index}>
+                                <RecentEventCard
+                                    event={event}
+                                    currentUserId={this.props.currentUserId}
+                                    currentUserIsAdmin={this.props.currentUserIsAdmin}
+                                    updateScores={this.props.updateScores}
+                                />
+                            </div>
                         )}
                     </div>
                     <span>{this.props.error}</span>

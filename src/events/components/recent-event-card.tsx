@@ -37,24 +37,22 @@ export class RecentEventCard extends React.Component<RecentEventCardProperties, 
         const otherPlaces = firstPlace.data.score !== undefined ? attendees.slice(1, attendees.length) : attendees;
         const timestamp = this.props.event.data.timestamp.toDate();
 
-        return <div className="column is-one-third">
-            <div className="card" data-key={this.props.event.id}>
-                <div className="card-header">
-                    <h3 className="card-header-title is-size-3">
-                        <a href={this.props.event.data.game.data.bggLink} target="_blank">{this.props.event.data.game.data.name}</a>
-                    </h3>
-                </div>
-                <div className="card-content">
-                    <div className="content">
-                        <p>{timestamp.toDateString()}</p>
-                        {this.state && this.state.scoresModeActive ?
-                            <EventScoreForm eventId={this.props.event.id}
-                                attendees={attendees}
-                                updateScores={this.props.updateScores}
-                                onCancel={this.toggleScoresModeActive} />
-                            : this.renderAttendees(firstPlace.data, otherPlaces, self)
-                        }
-                    </div>
+        return <div className="card" data-key={this.props.event.id}>
+            <div className="card-header">
+                <h3 className="card-header-title is-size-3">
+                    <a href={this.props.event.data.game.data.bggLink} target="_blank">{this.props.event.data.game.data.name}</a>
+                </h3>
+            </div>
+            <div className="card-content">
+                <div className="content">
+                    <p>{timestamp.toDateString()}</p>
+                    {this.state && this.state.scoresModeActive ?
+                        <EventScoreForm eventId={this.props.event.id}
+                            attendees={attendees}
+                            updateScores={this.props.updateScores}
+                            onCancel={this.toggleScoresModeActive} />
+                        : this.renderAttendees(firstPlace.data, otherPlaces, self)
+                    }
                 </div>
             </div>
         </div>;

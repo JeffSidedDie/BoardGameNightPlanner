@@ -56,34 +56,32 @@ export class UpcomingEventCard extends React.Component<UpcomingEventCardProperti
             }
         }
 
-        return <div className="column is-one-third">
-            <div className="card" data-key={this.props.event.id}>
-                <div className="card-header">
-                    <h3 className="card-header-title is-size-3">
-                        <a href={this.props.event.data.game.data.bggLink} target="_blank">{this.props.event.data.game.data.name}</a>
-                    </h3>
-                </div>
-                <div className="card-content">
-                    <div className="content">
-                        <p>{timestamp.toDateString()}<br />{timestamp.toLocaleTimeString()}</p>
-                        <h5>
-                            {status}
-                            {openSeats < this.props.event.data.game.data.maxPlayers && <>
-                                &nbsp;
-                                    <a onClick={this.handleShowAttendees}>
-                                    <i className="fas fa-question-circle" />
-                                </a>
-                            </>}
-                        </h5>
-                        {this.state && this.state.showAttendees && <p>
-                            <strong>Other Attendees:</strong>
-                            <br />
-                            {otherAttendees.map((a, i) => <span key={i}>{a.name}<br /></span>)}
-                        </p>}
-                    </div>
-                </div>
-                {actions}
+        return <div className="card" data-key={this.props.event.id}>
+            <div className="card-header">
+                <h3 className="card-header-title is-size-3">
+                    <a href={this.props.event.data.game.data.bggLink} target="_blank">{this.props.event.data.game.data.name}</a>
+                </h3>
             </div>
+            <div className="card-content">
+                <div className="content">
+                    <p>{timestamp.toDateString()}<br />{timestamp.toLocaleTimeString()}</p>
+                    <h5>
+                        {status}
+                        {openSeats < this.props.event.data.game.data.maxPlayers && <>
+                            &nbsp;
+                                    <a onClick={this.handleShowAttendees}>
+                                <i className="fas fa-question-circle" />
+                            </a>
+                        </>}
+                    </h5>
+                    {this.state && this.state.showAttendees && <p>
+                        <strong>Other Attendees:</strong>
+                        <br />
+                        {otherAttendees.map((a, i) => <span key={i}>{a.name}<br /></span>)}
+                    </p>}
+                </div>
+            </div>
+            {actions}
         </div>;
     }
 
