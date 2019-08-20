@@ -1,6 +1,5 @@
 import * as Formik from 'formik';
 import * as React from 'react';
-import { Omit } from './omit';
 
 export interface ObjectSelectFieldProperties<T, V> extends Formik.FieldProps<T>, Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'form'> {
     readonly values: V[];
@@ -11,11 +10,11 @@ export interface ObjectSelectFieldProperties<T, V> extends Formik.FieldProps<T>,
 export class ObjectSelectField<T, V> extends React.Component<ObjectSelectFieldProperties<T, V>> {
 
     private selectRef: React.RefObject<HTMLSelectElement> = React.createRef<HTMLSelectElement>();
-    private valuesByKeyLookup: Map<string, V>;
+    private valuesByKeyLookup: Map<string, V> = new Map();
 
     public componentDidUpdate(prevProps: Readonly<ObjectSelectFieldProperties<T, V>>) {
         // Reload value map
-        this.valuesByKeyLookup = new Map();
+        this.valuesByKeyLookup.clear();
         this.props.values.forEach((v, i) => this.valuesByKeyLookup.set(this.props.keySelector(v), v));
 
         // Reset inner value if form was reset

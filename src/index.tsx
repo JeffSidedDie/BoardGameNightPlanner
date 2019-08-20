@@ -1,59 +1,11 @@
-import { createBrowserHistory } from 'history';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import * as serviceWorker from 'serviceWorker';
+import { App } from 'app';
 
-// redux
-import { Provider } from 'react-redux';
-import { Router, Switch } from 'react-router';
-import { applyMiddleware, combineReducers, createStore } from 'redux';
-import thunk from 'redux-thunk';
-import { AuthReducer, AuthRoute, AuthState } from 'src/auth';
-import { AppAction } from 'src/common/redux';
+ReactDOM.render(<App />, document.getElementById('root'));
 
-// routing
-import { Routes } from 'src/common/routes';
-
-// css
-import 'node_modules/bulma/css/bulma.css';
-
-// service worker
-// import registerServiceWorker from './registerServiceWorker';
-
-// app
-import { Navbar } from 'src/common/components/navbar.container';
-import { EventForm, Events, EventsReducer, EventsState } from 'src/events';
-import { GamesList, GamesReducer, GamesState } from './games';
-
-const history = createBrowserHistory();
-
-export interface AppState {
-    readonly auth: AuthState;
-    readonly events: EventsState;
-    readonly games: GamesState;
-}
-
-export const store = createStore<AppState, AppAction, {}, {}>(
-    combineReducers<AppState, AppAction>({
-        auth: AuthReducer,
-        events: EventsReducer,
-        games: GamesReducer,
-    }),
-    applyMiddleware(thunk)
-);
-
-ReactDOM.render(
-    <Provider store={store}>
-        <Router history={history}>
-            <div>
-                <Navbar />
-                <Switch>
-                    <AuthRoute path={Routes.Root} exact={true} component={Events} />
-                    <AuthRoute path={Routes.Events_Edit} component={EventForm} />
-                    <AuthRoute path={Routes.Games_List} component={GamesList} />
-                </Switch>
-            </div>
-        </Router>
-    </Provider>,
-    document.getElementById('root') as HTMLElement
-);
-// registerServiceWorker();
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();

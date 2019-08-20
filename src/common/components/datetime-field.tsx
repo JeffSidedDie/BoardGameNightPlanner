@@ -3,8 +3,7 @@ import 'react-datetime/css/react-datetime.css';
 import * as Formik from 'formik';
 import { Moment } from 'moment';
 import * as React from 'react';
-import * as Datetime from 'react-datetime';
-import { Omit } from './omit';
+import Datetime from 'react-datetime';
 
 type DateTimeFieldProperties<T> = Formik.FieldProps<T> & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'form'>;
 
