@@ -30,11 +30,13 @@ export const Navbar: React.FC<NavbarProperties> = (props) => {
             </div>
 
             <div className={showMenu ? 'navbar-menu is-active' : 'navbar-menu'}>
-                {props.user && props.user.data.isAdmin &&
+                {props.user &&
                     <div className="navbar-start">
                         <GeneratedLink className="navbar-item" route={Routes.Root}>Home</GeneratedLink>
-                        <GeneratedLink className="navbar-item" route={Routes.Events_Edit}>Events</GeneratedLink>
-                        <GeneratedLink className="navbar-item" route={Routes.Games_List}>Games</GeneratedLink>
+                        {props.user.data.isAdmin && <>
+                            <GeneratedLink className="navbar-item" route={Routes.Events_Edit}>Events</GeneratedLink>
+                            <GeneratedLink className="navbar-item" route={Routes.Games_List}>Games</GeneratedLink>
+                        </>}
                     </div>
                 }
 
