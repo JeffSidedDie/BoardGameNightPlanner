@@ -35,6 +35,13 @@ export async function saveGame(gameWithMetadata: GameWithMetadata, id?: string) 
         imageLink: gameWithMetadata.imageLink,
     };
 
+    const collection = db.collection(Collections.Games);
+    let gameRef: firebase.firestore.DocumentReference;
+    if (!id) {
+        gameRef = collection.doc();
+        id = gameRef.id;
+    }
+
     // Save image
     if (gameWithMetadata.image) {
         const snapshot = await storage.ref(id).put(gameWithMetadata.image);
@@ -43,13 +50,7 @@ export async function saveGame(gameWithMetadata: GameWithMetadata, id?: string) 
     }
 
     // Update game
-    const collection = db.collection(Collections.Games);
-    if (id) {
-        await collection.doc(id).set(game);
-    } else {
-        const gameRef = await collection.add(game);
-        id = gameRef.id;
-    }
+    await collection.doc(id).set(game);
 
     if (gameWithMetadata.updateExistingEvents) {
         // Update existing games

@@ -16,13 +16,12 @@ export interface Game {
     imageLink?: string;
 }
 
-export interface Attendee {
-    name: string;
-    score?: number;
-}
+export type Attendees = { [userId: string]: string };
+export type Scores = { [userId: string]: number };
 
 export interface Event {
-    timestamp: firebase.firestore.Timestamp;
-    attendees: { [userId: string]: Attendee };
     game: Document<Game>;
+    timestamp: firebase.firestore.Timestamp;
+    attendees: Attendees;
+    scores?: Scores;
 }

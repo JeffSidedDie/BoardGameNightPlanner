@@ -5,7 +5,7 @@ import { Game, Document } from 'models';
 import { useGames } from 'firebase-hooks/games';
 
 export const GamesSelect = <T,>(props: Formik.FieldProps<T> & Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'form'>): JSX.Element => {
-    const [games, gamesError] = useGames();
+    const [games] = useGames();
 
     return <ObjectSelectField<T, Document<Game>>
         values={games}

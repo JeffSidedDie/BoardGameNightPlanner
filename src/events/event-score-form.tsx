@@ -2,25 +2,26 @@ import { Form, Formik, FormikActions, FormikProps } from 'formik';
 import * as React from 'react';
 import { Field } from 'common/components/field';
 import { FieldWrapper } from 'common/components/field-wrapper';
-import { Attendee, Document } from 'models';
+import { Scores } from 'models';
 import { updateScores } from 'firebase-hooks/events';
+import { AttendeeWithScore } from './attendee-with-score';
 
 export interface EventScoreFormProperties {
     readonly eventId: string;
-    readonly attendees: Document<Attendee>[];
+    readonly attendees: AttendeeWithScore[];
     readonly onCancel: () => void;
 }
 
 // Defining this because Formik doesn't like Arrays being root object
 interface AttendeesList {
-    readonly attendees: Document<Attendee>[];
+    readonly attendees: AttendeeWithScore[];
 }
 
 export const EventScoreForm: React.FC<EventScoreFormProperties> = (props) => {
     // Do this to deep clone the array and initialize any undefined scores to 0
     // Otherwise, React complains about uncontrolled inputs
-    const list = JSON.parse(JSON.stringify(props.attendees)) as Document<Attendee>[];
-    list.forEach((a) => a.data.score = a.data.score || 0);
+    const list = JSON.parse(JSON.stringify(props.attendees)) as AttendeeWithScore[];
+    list.forEach((a) => a.score = a.score || 0);
 
     return <Formik<AttendeesList>
         enableReinitialize={true}
@@ -35,9 +36,7 @@ export const EventScoreForm: React.FC<EventScoreFormProperties> = (props) => {
                 <div className="field" key={i}>
                     <div className="control">
                         <FieldWrapper<AttendeesList, 'attendees'> name="attendees">
-                            <FieldWrapper<Document<Attendee>, 'data'> name="data" index={i}>
-                                <Field<Attendee> name="score" label={a.data.name} type="number" className="input" />
-                            </FieldWrapper>
+                            <Field<AttendeeWithScore> name="score" label={a.name} type="number" className="input" index={i} />
                         </FieldWrapper>
                     </div>
                 </div>
@@ -54,7 +53,9 @@ export const EventScoreForm: React.FC<EventScoreFormProperties> = (props) => {
     }
 
     async function handleSubmit(values: AttendeesList, formikActions: FormikActions<AttendeesList>) {
-        await updateScores(props.eventId, values.attendees);
+        const scores: Scores = {};
+        values.attendees.forEach((a, i) => scores[a.id] = a.score!);
+        await updateScores(props.eventId, scores);
         formikActions.resetForm();
         props.onCancel();
     }

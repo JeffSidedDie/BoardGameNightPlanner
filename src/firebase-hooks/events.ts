@@ -1,6 +1,6 @@
 import * as firebase from 'firebase';
 import { Collections, convertDocument, db } from 'firebase-hooks/common';
-import { Document, Event, User, Attendee } from 'models';
+import { Document, Event, User, Scores } from 'models';
 import { useEffect, useState } from 'react';
 
 export function useMyEvents(user: Document<User>, page: number): [Document<Event>[], Error | null] {
@@ -11,6 +11,7 @@ export function useMyEvents(user: Document<User>, page: number): [Document<Event
         const myEventsListener = db.collection(Collections.Events)
             .where(`attendees.${user.id}`, '==', user.data.displayName)
             .where('timestamp', '<', new Date())
+            .orderBy('timestamp', 'asc')
             .limit(3)
             .onSnapshot(snapshot => {
                 setMyEvents(snapshot.docs.map(e => convertDocument(e)));
@@ -20,7 +21,7 @@ export function useMyEvents(user: Document<User>, page: number): [Document<Event
         return function cleanup() {
             myEventsListener();
         };
-    }, []);
+    }, [user]);
 
     return [myEvents, error];
 }
@@ -70,15 +71,13 @@ export function useRecentEvents(): [Document<Event>[], Error | null] {
 }
 
 export async function attendEvent(eventId: string, user: Document<User>) {
-    await db.collection(Collections.Events).doc(eventId).update(`attendees.${user.id}`, { name: user.data.displayName });
+    await db.collection(Collections.Events).doc(eventId).update(`attendees.${user.id}`, user.data.displayName);
 }
 
 export async function unattendEvent(eventId: string, userId: string) {
     await db.collection(Collections.Events).doc(eventId).update(`attendees.${userId}`, firebase.firestore.FieldValue.delete());
 }
 
-export async function updateScores(eventId: string, attendees: Document<Attendee>[]) {
-    const updatedScores: { [field: string]: number | undefined } = {};
-    attendees.forEach((a, i) => updatedScores[`attendees.${a.id}.score`] = a.data.score);
-    await db.collection(Collections.Events).doc(eventId).update(updatedScores);
+export async function updateScores(eventId: string, scores: Scores) {
+    await db.collection(Collections.Events).doc(eventId).update({ scores });
 }

@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Document, Event, User, Attendee } from 'models';
+import { Document, Event, User } from 'models';
 import { EventScoreForm } from './event-score-form';
 import { useState } from 'react';
+import { AttendeeWithScore } from './attendee-with-score';
 
 export interface RecentEventCardProperties {
     readonly event: Document<Event>;
@@ -12,24 +13,20 @@ export const RecentEventCard: React.FC<RecentEventCardProperties> = (props) => {
     const [scoresMode, setScoresMode] = useState<boolean>(false);
 
     const keys = Object.keys(props.event.data.attendees);
-    let self: Attendee | undefined;
-    const attendees: Document<Attendee>[] = keys.map(k => {
-        if (k === props.user.id) {
-            self = props.event.data.attendees[k];
-        }
+    const attendees: AttendeeWithScore[] = keys.map(k => {
         return {
             id: k,
-            data: props.event.data.attendees[k],
+            name: props.event.data.attendees[k],
+            score: props.event.data.scores && props.event.data.scores[k],
+            isSelf: k === props.user.id
         };
     }).sort((a1, a2) => {
-        if (a1.data.score !== undefined && a2.data.score !== undefined) {
-            return a2.data.score - a1.data.score;
+        if (a1.score !== undefined && a2.score !== undefined) {
+            return a2.score - a1.score;
         } else {
-            return a1.data.name.localeCompare(a2.data.name);
+            return a1.name.localeCompare(a2.name);
         }
     });
-    const firstPlace = attendees.slice(0, 1)[0];
-    const otherPlaces = firstPlace.data.score !== undefined ? attendees.slice(1, attendees.length) : attendees;
     const timestamp = props.event.data.timestamp.toDate();
 
     return <div className="card" data-key={props.event.id}>
@@ -50,23 +47,25 @@ export const RecentEventCard: React.FC<RecentEventCardProperties> = (props) => {
                     <EventScoreForm eventId={props.event.id}
                         attendees={attendees}
                         onCancel={setScoresModeInactive} />
-                    : renderAttendees(firstPlace.data, otherPlaces, self)
+                    : renderAttendees(attendees)
                 }
             </div>
         </div>
     </div>;
 
-    function renderAttendees(firstPlace: Attendee, otherPlaces: Document<Attendee>[], self: Attendee | undefined) {
+    function renderAttendees(attendees: AttendeeWithScore[]) {
+        const firstPlace = attendees.slice(0, 1)[0];
+        const otherPlaces = firstPlace.score !== undefined ? attendees.slice(1, attendees.length) : attendees;
         return <>
             {firstPlace.score !== undefined &&
-                <h5 className={firstPlace === self ? 'is-italic' : ''}>
+                <h5 className={firstPlace.isSelf ? 'is-italic' : ''}>
                     <i className="fas fa-star" /> {firstPlace.name}: {firstPlace.score} <i className="fas fa-star" />
                 </h5>
             }
             <p>
                 {otherPlaces.map((a, i) => (
-                    <span key={i} className={a.data === self ? 'is-italic' : ''}>
-                        {a.data.name}{a.data.score !== undefined ? `: ${a.data.score}` : ''}
+                    <span key={i} className={a.isSelf ? 'is-italic' : ''}>
+                        {a.name}{a.score !== undefined ? `: ${a.score}` : ''}
                         <br />
                     </span>
                 ))}

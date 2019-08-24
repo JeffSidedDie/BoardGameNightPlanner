@@ -21,7 +21,7 @@ export const UpcomingEventCard: React.FC<UpcomingEventCardProperties> = (props) 
     const now = new Date();
     const attending = props.event.data.attendees[props.user.id];
     const otherAttendees = keys.filter(k => k !== props.user.id).map(k => props.event.data.attendees[k]).sort((a1, a2) => {
-        return a1.name.localeCompare(a2.name);
+        return a1.localeCompare(a2);
     });
 
     let status = <></>;
@@ -79,7 +79,7 @@ export const UpcomingEventCard: React.FC<UpcomingEventCardProperties> = (props) 
                 {showAttendees && <p>
                     <strong>Other Attendees:</strong>
                     <br />
-                    {otherAttendees.map((a, i) => <span key={i}>{a.name}<br /></span>)}
+                    {otherAttendees.map((a, i) => <span key={i}>{a}<br /></span>)}
                 </p>}
             </div>
         </div>
