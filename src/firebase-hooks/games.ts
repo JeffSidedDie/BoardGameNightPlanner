@@ -54,11 +54,11 @@ export async function saveGame(gameWithMetadata: GameWithMetadata, id?: string) 
     if (gameWithMetadata.updateExistingEvents) {
         // Update existing games
         const snapshot = await db.collection(Collections.Events)
-            .where("game.id", "==", id)
+            .where('game.id', '==', id)
             .get();
         const batch = db.batch();
         for (const g of snapshot.docs) {
-            batch.update(g.ref, "game.data", game);
+            batch.update(g.ref, 'game.data', game);
         }
         await batch.commit();
     }

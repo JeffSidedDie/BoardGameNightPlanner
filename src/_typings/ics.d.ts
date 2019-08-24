@@ -1,4 +1,4 @@
-declare module "ics-browser" {
+declare module 'ics-browser' {
 
     interface CalendarEvent {
         start: number[];

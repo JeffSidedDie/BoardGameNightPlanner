@@ -26,7 +26,7 @@ export class Field<T> extends React.Component<FieldProperties<T> & Formik.FieldC
                 }
                 inputName += name;
 
-                if (inputProps.type === "checkbox") {
+                if (inputProps.type === 'checkbox') {
                     return <div className="field">
                         <label className="checkbox">
                             <Formik.Field id={inputName} name={inputName} {...inputProps} />
