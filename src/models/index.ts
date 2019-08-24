@@ -13,6 +13,7 @@ export interface Game {
     name: string;
     bggLink: string;
     maxPlayers: number;
+    imageLink?: string;
 }
 
 export interface Attendee {

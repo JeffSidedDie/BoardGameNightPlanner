@@ -8,7 +8,7 @@ interface FieldProperties<T> {
     index?: number;
 }
 
-export class Field<T> extends React.Component<FieldProperties<T> & Formik.FieldConfig & React.HTMLAttributes<HTMLInputElement>> {
+export class Field<T> extends React.Component<FieldProperties<T> & Formik.FieldConfig & React.InputHTMLAttributes<HTMLInputElement>> {
 
     public render() {
         return <FieldWrapperContext.Consumer>
@@ -26,12 +26,21 @@ export class Field<T> extends React.Component<FieldProperties<T> & Formik.FieldC
                 }
                 inputName += name;
 
-                return <div className="field">
-                    <label className="label" htmlFor={inputName}>{label}</label>
-                    <div className="control">
-                        <Formik.Field className="input" id={inputName} name={inputName} {...inputProps} />
-                    </div>
-                </div>;
+                if (inputProps.type === "checkbox") {
+                    return <div className="field">
+                        <label className="checkbox">
+                            <Formik.Field id={inputName} name={inputName} {...inputProps} />
+                            {label}
+                        </label>
+                    </div>;
+                } else {
+                    return <div className="field">
+                        <label className="label" htmlFor={inputName}>{label}</label>
+                        <div className="control">
+                            <Formik.Field className="input" id={inputName} name={inputName} {...inputProps} />
+                        </div>
+                    </div>;
+                }
             }}
         </FieldWrapperContext.Consumer>;
     }

@@ -3,16 +3,18 @@ import * as React from 'react';
 import { Field } from 'common/components/field';
 import { FileField } from 'common/components/file-field';
 import { Game, Document } from 'models';
-import { GameWithImage, saveGame } from 'firebase-hooks/games';
+import { GameWithMetadata, saveGame } from 'firebase-hooks/games';
 
 export interface GameFormProperties {
     readonly game: Document<Game> | null;
+    readonly onSubmit: () => void;
 }
 
-const defaultGame: GameWithImage = {
+const defaultGame: GameWithMetadata = {
     name: '',
     bggLink: '',
-    maxPlayers: 4
+    maxPlayers: 4,
+    updateExistingEvents: false,
 };
 
 export const GameForm: React.FC<GameFormProperties> = (props) => {
@@ -26,29 +28,26 @@ export const GameForm: React.FC<GameFormProperties> = (props) => {
         />
     </>;
 
-    function renderForm(props: FormikProps<GameWithImage>) {
+    function renderForm(props: FormikProps<GameWithMetadata>) {
         return <Form>
-            <h2 className="title">Edit Game</h2>
-            <div className="columns">
-                <div className="column is-one-third">
-                    <Field<GameWithImage> name="name" label="Name" type="text" />
-                </div>
-                <div className="column is-one-third">
-                    <Field<GameWithImage> name="bggLink" label="BGG Link" type="text" />
-                </div>
-                <div className="column is-one-third">
-                    <Field<GameWithImage> name="maxPlayers" label="Max Players" type="number" />
-                </div>
-                <div className="column is-one-third">
-                    <Field<GameWithImage> name="image" label="Image" type="file" component={FileField} />
-                </div>
-            </div>
-            <button className="button is-primary" type="submit">Save</button>
+            {/* <h2 className="title">Edit Game</h2> */}
+            <Field<GameWithMetadata> name="name" label="Name" type="text" />
+            <Field<GameWithMetadata> name="bggLink" label="BGG Link" type="text" />
+            <Field<GameWithMetadata> name="maxPlayers" label="Max Players" type="number" />
+            {props.values.imageLink &&
+                <figure className="image is-128x128">
+                    <img alt="Game" src={props.values.imageLink} />
+                </figure>
+            }
+            <Field<GameWithMetadata> name="image" label="Image" type="file" component={FileField} />
+            <Field<GameWithMetadata> name="updateExistingEvents" label="Update Existing Events?" type="checkbox" checked={props.values.updateExistingEvents || false} />
+            <button className="button is-primary" type="submit" disabled={props.isSubmitting}>Save</button>
         </Form>;
     }
 
-    async function handleSubmit(values: GameWithImage, formikActions: FormikActions<GameWithImage>) {
+    async function handleSubmit(values: GameWithMetadata, formikActions: FormikActions<GameWithMetadata>) {
         await saveGame(values, props.game ? props.game.id : '');
         formikActions.resetForm(defaultGame);
+        props.onSubmit();
     }
 }

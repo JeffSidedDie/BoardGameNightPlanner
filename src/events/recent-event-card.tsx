@@ -33,6 +33,11 @@ export const RecentEventCard: React.FC<RecentEventCardProperties> = (props) => {
     const timestamp = props.event.data.timestamp.toDate();
 
     return <div className="card" data-key={props.event.id}>
+        <div className="card-image">
+            <figure className="image is-square">
+                <img alt={`${props.event.data.game.data.name} Box Art`} src={props.event.data.game.data.imageLink} />
+            </figure>
+        </div>
         <div className="card-header">
             <h3 className="card-header-title is-size-3">
                 <a href={props.event.data.game.data.bggLink} target="_blank" rel="noopener noreferrer">{props.event.data.game.data.name}</a>

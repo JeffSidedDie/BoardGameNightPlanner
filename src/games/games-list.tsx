@@ -12,25 +12,35 @@ export const GamesList: React.FC = () => {
     return <section className="section">
         <div className="container">
             <h1 className="title">Games</h1>
-            <table className="table">
-                <thead className="thead">
-                    <tr className="tr">
-                        <th className="th">Name</th>
-                        <th className="th">Max Players</th>
-                    </tr>
-                </thead>
-                <tbody className="tbody">
-                    {games.map((g, i) =>
-                        <GameListItem key={i}
-                            game={g}
-                            selected={selectedGame === g}
-                            selectGame={setSelectedGame}
-                        />
-                    )}
-                </tbody>
-            </table>
-            <GameForm game={selectedGame} />
-            <span>{gamesError}</span>
+            <div className="columns">
+                <div className="column is-half">
+                    <table className="table">
+                        <thead className="thead">
+                            <tr className="tr">
+                                <th className="th">Name</th>
+                                <th className="th">Max Players</th>
+                            </tr>
+                        </thead>
+                        <tbody className="tbody">
+                            {games.map((g, i) =>
+                                <GameListItem key={g.id}
+                                    game={g}
+                                    selected={selectedGame === g}
+                                    selectGame={setSelectedGame}
+                                />
+                            )}
+                        </tbody>
+                    </table>
+                    <span>{gamesError}</span>
+                </div>
+                <div className="column is-half">
+                    <GameForm game={selectedGame} onSubmit={clearSelectedGame} />
+                </div>
+            </div>
         </div>
-    </section >;
+    </section>;
+
+    function clearSelectedGame() {
+        setSelectedGame(null);
+    }
 }

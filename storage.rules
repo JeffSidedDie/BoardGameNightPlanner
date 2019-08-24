@@ -1,0 +1,12 @@
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    match /{allPaths=**} {
+      allow read: if isSignedIn()
+      allow write: if isSignedIn() // TODO: restrict to admin
+    }
+  }
+}

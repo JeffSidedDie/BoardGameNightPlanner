@@ -22,14 +22,27 @@ export function useGames(): [Document<Game>[], Error | null] {
     return [games, error];
 }
 
-export interface GameWithImage extends Game {
+export interface GameWithMetadata extends Game {
     image?: File;
+    updateExistingEvents?: boolean;
 }
 
-export async function saveGame(gameWithImage: GameWithImage, id?: string) {
-    const game = { ...gameWithImage };
-    delete game.image; // doing it this way to future proof against future GameData fields
+export async function saveGame(gameWithMetadata: GameWithMetadata, id?: string) {
+    const game: Game = {
+        name: gameWithMetadata.name,
+        bggLink: gameWithMetadata.bggLink,
+        maxPlayers: gameWithMetadata.maxPlayers,
+        imageLink: gameWithMetadata.imageLink,
+    };
 
+    // Save image
+    if (gameWithMetadata.image) {
+        const snapshot = await storage.ref(id).put(gameWithMetadata.image);
+        const url = await snapshot.ref.getDownloadURL();
+        game.imageLink = url;
+    }
+
+    // Update game
     const collection = db.collection(Collections.Games);
     if (id) {
         await collection.doc(id).set(game);
@@ -38,7 +51,15 @@ export async function saveGame(gameWithImage: GameWithImage, id?: string) {
         id = gameRef.id;
     }
 
-    if (gameWithImage.image) {
-        storage.ref(id).put(gameWithImage.image);
+    if (gameWithMetadata.updateExistingEvents) {
+        // Update existing games
+        const snapshot = await db.collection(Collections.Events)
+            .where("game.id", "==", id)
+            .get();
+        const batch = db.batch();
+        for (const g of snapshot.docs) {
+            batch.update(g.ref, "game.data", game);
+        }
+        await batch.commit();
     }
 }
