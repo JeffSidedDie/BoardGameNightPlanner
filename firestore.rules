@@ -5,21 +5,11 @@ service cloud.firestore {
     }
 
     function isAdmin() {
-      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin;
+      return request.auth.token.admin == true;
     }
 
     match /{document=**} {
       allow read, write: if false;
-    }
-
-    match /users/{userId} {
-      function isSelf() {
-        return request.auth.uid == userId;
-      }
-
-      allow get: if isSelf()
-      allow create: if isSelf() && !('isAdmin' in request.writeFields)
-      allow update: if isSelf() && !('isAdmin' in request.writeFields)
     }
 
     match /games/{gameId} {

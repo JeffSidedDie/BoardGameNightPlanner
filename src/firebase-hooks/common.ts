@@ -25,7 +25,6 @@ export const db = fbApp.firestore();
 export const storage = fbApp.storage();
 
 export enum Collections {
-    Users = 'users',
     Events = 'events',
     Games = 'games',
 }
