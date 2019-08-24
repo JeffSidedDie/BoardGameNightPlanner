@@ -3,7 +3,7 @@ import { Form, Formik, FormikActions, FormikProps } from 'formik';
 import * as React from 'react';
 import { DateTimeField } from 'common/components/datetime-field';
 import { Field } from 'common/components/field';
-import { GamesSelect } from 'games/games-select';
+import { GamesSelect } from 'games';
 import { Event, Document, Game } from 'models';
 
 export interface EventFormProperties {

@@ -5,8 +5,7 @@ import { GeneratedLink } from 'common/components/generatedLink';
 import { Routes } from 'common/routes';
 import { useState } from 'react';
 import { Document, User } from 'models';
-import { Logout } from 'auth/logout';
-import { Login } from 'auth/login';
+import { Logout, Login } from 'auth';
 
 export interface NavbarProperties {
     readonly user: Document<User> | null;
@@ -32,7 +31,7 @@ export const Navbar: React.FC<NavbarProperties> = (props) => {
             <div className={showMenu ? 'navbar-menu is-active' : 'navbar-menu'}>
                 {props.user &&
                     <div className="navbar-start">
-                        <GeneratedLink className="navbar-item" route={Routes.Root}>Home</GeneratedLink>
+                        <GeneratedLink className="navbar-item" route={Routes.Events_MyEvents}>My Events</GeneratedLink>
                         {props.user.data.isAdmin && <>
                             <GeneratedLink className="navbar-item" route={Routes.Events_Edit}>Events</GeneratedLink>
                             <GeneratedLink className="navbar-item" route={Routes.Games_List}>Games</GeneratedLink>

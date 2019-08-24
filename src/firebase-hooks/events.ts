@@ -3,6 +3,28 @@ import { Collections, convertDocument, db } from 'firebase-hooks/common';
 import { Document, Event, User, Attendee } from 'models';
 import { useEffect, useState } from 'react';
 
+export function useMyEvents(user: Document<User>, page: number): [Document<Event>[], Error | null] {
+    const [myEvents, setMyEvents] = useState<Document<Event>[]>([]);
+    const [error, setError] = useState<Error | null>(null);
+
+    useEffect(() => {
+        const myEventsListener = db.collection(Collections.Events)
+            .where(`attendees.${user.id}`, '==', user.data.displayName)
+            .where('timestamp', '<', new Date())
+            .limit(3)
+            .onSnapshot(snapshot => {
+                setMyEvents(snapshot.docs.map(e => convertDocument(e)));
+            }, error => {
+                setError(error);
+            });
+        return function cleanup() {
+            myEventsListener();
+        };
+    }, []);
+
+    return [myEvents, error];
+}
+
 export function useUpcomingEvents(): [Document<Event>[], Error | null] {
     const [upcomingEvents, setUpcomingEvents] = useState<Document<Event>[]>([]);
     const [error, setError] = useState<Error | null>(null);
