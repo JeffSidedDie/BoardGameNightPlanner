@@ -1,7 +1,7 @@
-import * as firebase from 'firebase';
 import { Collections, convertDocument, db } from 'firebase-hooks/common';
 import { Document, Event, User, Scores } from 'models';
 import { useEffect, useState } from 'react';
+import * as firebase from 'firebase/app';
 
 export function useMyEvents(user: Document<User>, page: number): [Document<Event>[], Error | null] {
     const [myEvents, setMyEvents] = useState<Document<Event>[]>([]);
@@ -67,6 +67,32 @@ export function useRecentEvents(): [Document<Event>[], Error | null] {
     }, []);
 
     return [recentEvents, error];
+}
+
+export function useEvent(id?: string): Document<Event> | null {
+    const [event, setEvent] = useState<Document<Event> | null>(null);
+
+    useEffect(() => {
+        async function getEvent() {
+            const e = await db.collection(Collections.Events).doc(id).get();
+            setEvent(convertDocument(e));
+        }
+        if (id) {
+            getEvent();
+        } else {
+            setEvent(null);
+        }
+    }, [id]);
+
+    return event;
+}
+
+export async function saveEvent(eventId: string | undefined, event: Event) {
+    if (eventId) {
+        await db.collection(Collections.Events).doc(eventId).update(event);
+    } else {
+        await db.collection(Collections.Events).add(event);
+    }
 }
 
 export async function attendEvent(eventId: string, user: Document<User>) {

@@ -43,7 +43,7 @@ export const EventScoreForm: React.FC<EventScoreFormProperties> = (props) => {
             ))}
             <div className="field is-grouped">
                 <div className="control">
-                    <button type="submit" className="button is-primary">Save</button>
+                    <button type="submit" className="button is-primary" disabled={props.isSubmitting}>Save</button>
                 </div>
                 <div className="control">
                     <button type="button" className="button" onClick={handleCancel}>Cancel</button>

@@ -19,16 +19,15 @@ service cloud.firestore {
 
     match /events/{eventId} {
       allow read: if isSignedIn()
+      allow write: if isSignedIn() && isAdmin()
       allow update: if isSignedIn()
-        && (isAdmin()
-          || (resource.data.timestamp > request.time
+        && (resource.data.timestamp > request.time
             && request.writeFields.size() == 1
             && (('attendees.' + request.auth.uid) in request.writeFields)
             && (((request.resource.data.attendees[(request.auth.uid)] == (request.auth.token.name)
               && resource.data.attendees.size() < resource.data.game.data.maxPlayers))
               || !(request.auth.uid in request.resource.data.attendees))
             )
-          )
     }
   }
 }

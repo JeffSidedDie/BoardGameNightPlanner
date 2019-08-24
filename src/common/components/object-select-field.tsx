@@ -24,8 +24,11 @@ export class ObjectSelectField<T, V> extends React.Component<ObjectSelectFieldPr
     }
 
     public render() {
+        const currentKey = this.props.keySelector(this.props.field.value);
+
         return <div className="select">
-            <select ref={this.selectRef} id={this.props.field.name} name={this.props.field.name} onChange={this.handleSelectChange}>
+            <select ref={this.selectRef} id={this.props.field.name} name={this.props.field.name} onChange={this.handleSelectChange} value={currentKey}>
+                {!currentKey && <option></option> /* blank option if value doesn't exist in options */}
                 {this.props.values.map((v, i) => <option key={i} value={this.props.keySelector(v)}>{this.props.labelSelector(v)}</option>)}
             </select>
         </div>;

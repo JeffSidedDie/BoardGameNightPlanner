@@ -3,7 +3,7 @@ import { compile, PathFunction } from 'path-to-regexp';
 export enum Routes {
     Root = '/',
     Events_MyEvents = '/my-events',
-    Events_Edit = '/events',
+    Events_Edit = '/events/:id?',
     Games_List = '/games',
     Games_Edit = '/game/:id?',
 }

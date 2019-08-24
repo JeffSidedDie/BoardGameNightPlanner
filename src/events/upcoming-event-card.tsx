@@ -4,6 +4,8 @@ import * as React from 'react';
 import { Document, Event, User } from 'models';
 import { useState } from 'react';
 import { attendEvent, unattendEvent } from 'firebase-hooks/events';
+import { GeneratedLink } from 'common/components/generatedLink';
+import { Routes } from 'common/routes';
 
 export interface UpcomingEventCardProperties {
     readonly event: Document<Event>;
@@ -81,6 +83,10 @@ export const UpcomingEventCard: React.FC<UpcomingEventCardProperties> = (props) 
                     <br />
                     {otherAttendees.map((a, i) => <span key={i}>{a}<br /></span>)}
                 </p>}
+
+                {props.user.data.isAdmin &&
+                    <GeneratedLink className="button is-primary" route={Routes.Events_Edit} parameters={{ id: props.event.id }}>Edit Event</GeneratedLink>
+                }
             </div>
         </div>
         {actions}

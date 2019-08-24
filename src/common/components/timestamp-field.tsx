@@ -1,13 +1,15 @@
 import 'react-datetime/css/react-datetime.css';
 
+import * as firebase from 'firebase/app';
 import * as Formik from 'formik';
+import moment from 'moment';
 import { Moment } from 'moment';
 import * as React from 'react';
 import Datetime from 'react-datetime';
 
-type DateTimeFieldProperties<T> = Formik.FieldProps<T> & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'form'>;
+type TimestampFieldProperties<T> = Formik.FieldProps<T> & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'form'>;
 
-export class DateTimeField<T> extends React.Component<DateTimeFieldProperties<T>> {
+export class TimestampField<T> extends React.Component<TimestampFieldProperties<T>> {
 
     private datetimeRef: React.RefObject<Datetime> = React.createRef<Datetime>();
 
@@ -18,10 +20,13 @@ export class DateTimeField<T> extends React.Component<DateTimeFieldProperties<T>
     // }
 
     public render() {
+        const date = (this.props.field.value as firebase.firestore.Timestamp).toDate();
+        const m = moment(date);
+
         return <Datetime
             ref={this.datetimeRef}
-            value={this.props.field.value}
-            onChange={this.handleFileInputChange}
+            value={m}
+            onChange={this.handleInputChange}
             inputProps={{
                 className: 'input',
                 id: this.props.field.name,
@@ -31,7 +36,11 @@ export class DateTimeField<T> extends React.Component<DateTimeFieldProperties<T>
         // return <input ref={this.inputRef} id={this.props.field.name} name={this.props.field.name} type={this.props.type} onChange={this.handleFileInputChange} />;
     }
 
-    private handleFileInputChange = (value: Moment | string) => {
-        this.props.form.setFieldValue(this.props.field.name, value);
+    private handleInputChange = (value: Moment | string) => {
+        if (typeof value === 'object') {
+            const date = value.toDate();
+            const timestamp = firebase.firestore.Timestamp.fromDate(date);
+            this.props.form.setFieldValue(this.props.field.name, timestamp);
+        }
     }
 }
