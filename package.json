@@ -1,6 +1,6 @@
 {
   "name": "board-game-night-planner",
-  "version": "0.5.5",
+  "version": "0.6.0",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.10.1",
