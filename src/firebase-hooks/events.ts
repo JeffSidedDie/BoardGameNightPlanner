@@ -10,8 +10,8 @@ export function useMyEvents(user: Document<User>, page: number): [Document<Event
     useEffect(() => {
         const myEventsListener = db.collection(Collections.Events)
             .where(`attendees.${user.id}`, '==', user.data.displayName)
-            .where('timestamp', '<', new Date())
-            .orderBy('timestamp', 'asc')
+            // .where('timestamp', '<', new Date())
+            // .orderBy('timestamp', 'asc')
             .onSnapshot(snapshot => {
                 setMyEvents(snapshot.docs.map(e => convertDocument(e)));
             }, error => {
