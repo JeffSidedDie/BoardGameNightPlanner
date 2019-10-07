@@ -54,6 +54,8 @@ export const RecentEventCard: React.FC<RecentEventCardProperties> = (props) => {
     </div>;
 
     function renderAttendees(attendees: AttendeeWithScore[]) {
+        if (attendees.length === 0) return <></>;
+
         const firstPlace = attendees.slice(0, 1)[0];
         const otherPlaces = firstPlace.score !== undefined ? attendees.slice(1, attendees.length) : attendees;
         return <>
