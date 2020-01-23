@@ -1,4 +1,4 @@
-import { Form, Formik, FormikActions, FormikProps } from 'formik';
+import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
 import * as React from 'react';
 import { TimestampField } from 'common/components/timestamp-field';
 import { Field } from 'common/components/field';
@@ -40,8 +40,8 @@ export const EventForm: React.FC<RouteComponentProps<{ id?: string }>> = (props)
         </Form>;
     }
 
-    async function handleSubmit(values: Event, formikActions: FormikActions<Event>) {
+    async function handleSubmit(values: Event, formikHelpers: FormikHelpers<Event>) {
         await saveEvent(props.match.params.id, values);
-        formikActions.resetForm(defaultEvent);
+        formikHelpers.resetForm({ values: defaultEvent });
     }
 }

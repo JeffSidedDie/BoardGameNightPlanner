@@ -1,4 +1,4 @@
-import { Form, Formik, FormikActions, FormikProps } from 'formik';
+import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
 import * as React from 'react';
 import { Field } from 'common/components/field';
 import { FieldWrapper } from 'common/components/field-wrapper';
@@ -52,11 +52,11 @@ export const EventScoreForm: React.FC<EventScoreFormProperties> = (props) => {
         </Form >;
     }
 
-    async function handleSubmit(values: AttendeesList, formikActions: FormikActions<AttendeesList>) {
+    async function handleSubmit(values: AttendeesList, formikHelpers: FormikHelpers<AttendeesList>) {
         const scores: Scores = {};
         values.attendees.forEach((a, i) => scores[a.id] = a.score!);
         await updateScores(props.eventId, scores);
-        formikActions.resetForm();
+        formikHelpers.resetForm();
         props.onCancel();
     }
 

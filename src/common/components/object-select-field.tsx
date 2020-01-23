@@ -1,18 +1,18 @@
 import * as Formik from 'formik';
 import * as React from 'react';
 
-export interface ObjectSelectFieldProperties<T, V> extends Formik.FieldProps<T>, Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'form'> {
-    readonly values: V[];
-    readonly keySelector: (value: V) => string;
-    readonly labelSelector: (value: V) => string;
+export interface ObjectSelectFieldProperties<T> extends Formik.FieldProps<T>, Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'form'> {
+    readonly values: T[];
+    readonly keySelector: (value: T) => string;
+    readonly labelSelector: (value: T) => string;
 }
 
-export class ObjectSelectField<T, V> extends React.Component<ObjectSelectFieldProperties<T, V>> {
+export class ObjectSelectField<T> extends React.Component<ObjectSelectFieldProperties<T>> {
 
     private selectRef: React.RefObject<HTMLSelectElement> = React.createRef<HTMLSelectElement>();
-    private valuesByKeyLookup: Map<string, V> = new Map();
+    private valuesByKeyLookup: Map<string, T> = new Map();
 
-    public componentDidUpdate(prevProps: Readonly<ObjectSelectFieldProperties<T, V>>) {
+    public componentDidUpdate(prevProps: Readonly<ObjectSelectFieldProperties<T>>) {
         // Reload value map
         this.valuesByKeyLookup.clear();
         this.props.values.forEach((v, i) => this.valuesByKeyLookup.set(this.props.keySelector(v), v));

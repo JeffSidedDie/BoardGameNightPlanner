@@ -1,4 +1,4 @@
-import { Form, Formik, FormikActions, FormikProps } from 'formik';
+import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
 import * as React from 'react';
 import { Field } from 'common/components/field';
 import { FileField } from 'common/components/file-field';
@@ -45,9 +45,9 @@ export const GameForm: React.FC<GameFormProperties> = (props) => {
         </Form>;
     }
 
-    async function handleSubmit(values: GameWithMetadata, formikActions: FormikActions<GameWithMetadata>) {
+    async function handleSubmit(values: GameWithMetadata, formikHelpers: FormikHelpers<GameWithMetadata>) {
         await saveGame(values, props.game ? props.game.id : '');
-        formikActions.resetForm(defaultGame);
+        formikHelpers.resetForm({ values: defaultGame });
         props.onSubmit();
     }
 }

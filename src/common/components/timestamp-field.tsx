@@ -7,9 +7,9 @@ import { Moment } from 'moment';
 import * as React from 'react';
 import Datetime from 'react-datetime';
 
-type TimestampFieldProperties<T> = Formik.FieldProps<T> & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'form'>;
+type TimestampFieldProperties = Formik.FieldProps<firebase.firestore.Timestamp> & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'form'>;
 
-export class TimestampField<T> extends React.Component<TimestampFieldProperties<T>> {
+export class TimestampField extends React.Component<TimestampFieldProperties> {
 
     private datetimeRef: React.RefObject<Datetime> = React.createRef<Datetime>();
 
@@ -20,7 +20,7 @@ export class TimestampField<T> extends React.Component<TimestampFieldProperties<
     // }
 
     public render() {
-        const date = (this.props.field.value as firebase.firestore.Timestamp).toDate();
+        const date = this.props.field.value.toDate();
         const m = moment(date);
 
         return <Datetime
