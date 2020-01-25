@@ -16,6 +16,34 @@ export interface Game {
     imageLink?: string;
 }
 
+export interface EventGroup {
+    ownerUserId: string;
+    name: string;
+    defaultLocation: string;
+    defaultDay: number;
+    defaultHour: number;
+    defaultMinute: number;
+    description: string;
+    slug: string;
+    followerUserIds: string[];
+}
+
+export interface Attendee {
+    userId: string;
+    name: string;
+    score?: number;
+}
+
+export interface NewEvent {
+    ownerUserId: string;
+    eventGroupId: string;
+    game: Document<Game>;
+    timestamp: firebase.firestore.Timestamp;
+    location: string;
+    description: string;
+    attendees: Attendee[];
+}
+
 export type Attendees = { [userId: string]: string };
 export type Scores = { [userId: string]: number };
 
