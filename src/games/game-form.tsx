@@ -2,13 +2,9 @@ import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
 import * as React from 'react';
 import { Field } from 'common/components/field';
 import { FileField } from 'common/components/file-field';
-import { Game, Document } from 'models';
 import { GameWithMetadata, saveGame } from 'firebase-hooks/games';
-
-export interface GameFormProperties {
-    readonly game: Document<Game> | null;
-    readonly onSubmit: () => void;
-}
+import { useContext } from 'react';
+import { SelectedGameContext } from './games-list';
 
 const defaultGame: GameWithMetadata = {
     name: '',
@@ -17,15 +13,17 @@ const defaultGame: GameWithMetadata = {
     updateExistingEvents: false,
 };
 
-export const GameForm: React.FC<GameFormProperties> = (props) => {
+export const GameForm: React.FC = () => {
+    const selectedGameContext = useContext(SelectedGameContext);
 
     return <>
         <Formik
             enableReinitialize={true}
-            initialValues={props.game ? props.game.data : defaultGame}
+            initialValues={selectedGameContext.selectedGame ? selectedGameContext.selectedGame.data : defaultGame}
             onSubmit={handleSubmit}
-            render={renderForm}
-        />
+        >
+            {renderForm}
+        </Formik>
     </>;
 
     function renderForm(props: FormikProps<GameWithMetadata>) {
@@ -46,9 +44,9 @@ export const GameForm: React.FC<GameFormProperties> = (props) => {
     }
 
     async function handleSubmit(values: GameWithMetadata, formikHelpers: FormikHelpers<GameWithMetadata>) {
-        await saveGame(values, props.game ? props.game.id : '');
+        await saveGame(values, selectedGameContext.selectedGame ? selectedGameContext.selectedGame.id : '');
         formikHelpers.resetForm({ values: defaultGame });
-        props.onSubmit();
+        selectedGameContext.setSelectedGame(null);
     }
 }
 GameForm.whyDidYouRender = true;
