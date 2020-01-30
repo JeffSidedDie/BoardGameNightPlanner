@@ -51,3 +51,4 @@ export const GameForm: React.FC<GameFormProperties> = (props) => {
         props.onSubmit();
     }
 }
+GameForm.whyDidYouRender = true;

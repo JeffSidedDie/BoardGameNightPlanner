@@ -64,3 +64,4 @@ export const EventScoreForm: React.FC<EventScoreFormProperties> = (props) => {
         props.onCancel();
     }
 }
+EventScoreForm.whyDidYouRender = true;

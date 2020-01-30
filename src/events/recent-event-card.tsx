@@ -86,3 +86,4 @@ export const RecentEventCard: React.FC<RecentEventCardProperties> = (props) => {
         setScoresMode(false);
     }
 }
+RecentEventCard.whyDidYouRender = true;

@@ -30,3 +30,4 @@ export const MyEvents: React.FC<EventsProperties> = (props) => {
         </div>
     </section>;
 }
+MyEvents.whyDidYouRender = true;

@@ -9,3 +9,4 @@ export interface AuthRouteProperties extends RouteProps {
 export const AuthRoute: React.FC<AuthRouteProperties> = (props) => {
     return props.user ? <Route {...props} /> : null;
 }
+AuthRoute.whyDidYouRender = true;

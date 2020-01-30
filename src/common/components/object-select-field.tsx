@@ -8,6 +8,7 @@ export interface ObjectSelectFieldProperties<T> extends Formik.FieldProps<T>, Om
 }
 
 export class ObjectSelectField<T> extends React.Component<ObjectSelectFieldProperties<T>> {
+    static whyDidYouRender = true;
 
     private selectRef: React.RefObject<HTMLSelectElement> = React.createRef<HTMLSelectElement>();
     private valuesByKeyLookup: Map<string, T> = new Map();

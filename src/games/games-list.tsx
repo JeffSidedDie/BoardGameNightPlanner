@@ -44,3 +44,4 @@ export const GamesList: React.FC = () => {
         setSelectedGame(null);
     }
 }
+GamesList.whyDidYouRender = true;

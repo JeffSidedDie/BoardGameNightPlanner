@@ -17,3 +17,4 @@ export const GameListItem: React.FC<GameListItemProperties> = (props) => {
         props.selectGame(props.game);
     }
 }
+GameListItem.whyDidYouRender = true;

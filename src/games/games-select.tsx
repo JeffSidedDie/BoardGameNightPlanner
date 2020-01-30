@@ -4,7 +4,9 @@ import { ObjectSelectField } from 'common/components/object-select-field';
 import { Game, Document } from 'models';
 import { useGames } from 'firebase-hooks/games';
 
-export const GamesSelect = (props: Formik.FieldProps<Document<Game>> & Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'form'>): JSX.Element => {
+type GamesSelectProps = Formik.FieldProps<Document<Game>> & Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'form'>;
+
+export const GamesSelect: React.FC<GamesSelectProps> = (props: GamesSelectProps): JSX.Element => {
     const [games] = useGames();
 
     return <ObjectSelectField<Document<Game>>
@@ -21,3 +23,4 @@ export const GamesSelect = (props: Formik.FieldProps<Document<Game>> & Omit<Reac
         return game.data.name;
     }
 }
+GamesSelect.whyDidYouRender = true;

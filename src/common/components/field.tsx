@@ -9,6 +9,7 @@ interface FieldProperties<T> {
 }
 
 export class Field<T> extends React.Component<FieldProperties<T> & Formik.FieldConfig & React.InputHTMLAttributes<HTMLInputElement>> {
+    static whyDidYouRender = true;
 
     public render() {
         return <FieldWrapperContext.Consumer>

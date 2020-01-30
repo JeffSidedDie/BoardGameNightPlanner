@@ -112,3 +112,4 @@ export const UpcomingEventCard: React.FC<UpcomingEventCardProperties> = (props) 
         }
     }
 }
+UpcomingEventCard.whyDidYouRender = true;

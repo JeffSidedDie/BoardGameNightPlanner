@@ -9,5 +9,7 @@ export interface GeneratedLinkProperties {
 }
 
 export const GeneratedLink: React.FC<GeneratedLinkProperties> = (props) => {
-    return <Link className={props.className} to={generateRoute(props.route, props.parameters)}>{props.children}</Link>;
+    const route = generateRoute(props.route, props.parameters);
+    return <Link className={props.className} to={route}>{props.children}</Link>;
 }
+GeneratedLink.whyDidYouRender = true;

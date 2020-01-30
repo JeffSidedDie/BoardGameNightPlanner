@@ -4,6 +4,7 @@ import * as React from 'react';
 type FileFieldProperties<T> = Formik.FieldProps<T> & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'form'>;
 
 export class FileField<T> extends React.Component<FileFieldProperties<T>> {
+    static whyDidYouRender = true;
 
     private inputRef: React.RefObject<HTMLInputElement> = React.createRef<HTMLInputElement>();
 

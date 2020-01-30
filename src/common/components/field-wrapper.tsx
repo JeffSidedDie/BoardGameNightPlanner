@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Field } from './field';
 
-export interface FieldWrapperProperties<T, TKey extends keyof T=keyof T> {
+export interface FieldWrapperProperties<T, TKey extends keyof T = keyof T> {
     name: TKey;
     index?: number;
     children: Array<React.ReactElement<Field<T[TKey]> | FieldWrapper<T[TKey]>>> | React.ReactElement<Field<T[TKey]> | FieldWrapper<T[TKey]>>;
@@ -9,7 +9,8 @@ export interface FieldWrapperProperties<T, TKey extends keyof T=keyof T> {
 
 export const FieldWrapperContext = React.createContext('');
 
-export class FieldWrapper<T, TKey extends keyof T=keyof T> extends React.Component<FieldWrapperProperties<T, TKey>> {
+export class FieldWrapper<T, TKey extends keyof T = keyof T> extends React.Component<FieldWrapperProperties<T, TKey>> {
+    static whyDidYouRender = true;
 
     public render() {
         return <FieldWrapperContext.Consumer>

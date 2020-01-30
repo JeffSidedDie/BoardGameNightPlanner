@@ -52,3 +52,4 @@ export const Navbar: React.FC<NavbarProperties> = (props) => {
         setShowMenu(!showMenu);
     }
 }
+Navbar.whyDidYouRender = true;

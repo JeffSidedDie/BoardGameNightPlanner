@@ -10,6 +10,7 @@ import Datetime from 'react-datetime';
 type TimestampFieldProperties = Formik.FieldProps<firebase.firestore.Timestamp> & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'form'>;
 
 export class TimestampField extends React.Component<TimestampFieldProperties> {
+    static whyDidYouRender = true;
 
     private datetimeRef: React.RefObject<Datetime> = React.createRef<Datetime>();
 

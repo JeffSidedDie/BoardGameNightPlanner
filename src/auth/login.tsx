@@ -11,3 +11,4 @@ export const Login: React.FC = () => {
         <div id="firebaseui-auth-container" />
     );
 }
+Login.whyDidYouRender = true;
