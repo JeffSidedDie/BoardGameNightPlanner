@@ -11,6 +11,13 @@ export interface NavbarProperties {
     readonly user: Document<User> | null;
 }
 
+const Logo: React.FC = () => {
+    return <>
+        <img src={logo} alt="logo" /> Board Game Night Planner
+    </>;
+}
+const NavbarLogo = <Logo />;
+
 export const Navbar: React.FC<NavbarProperties> = (props) => {
     const [showMenu, setShowMenu] = useState<boolean>(false);
 
@@ -18,7 +25,7 @@ export const Navbar: React.FC<NavbarProperties> = (props) => {
         <nav className="navbar" role="navigation" aria-label="main navigation">
             <div className="navbar-brand">
                 <GeneratedLink className="navbar-item" route={Routes.Root}>
-                    <img src={logo} alt="logo" /> Board Game Night Planner
+                    {NavbarLogo}
                 </GeneratedLink>
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <a role="button" className={showMenu ? 'navbar-burger burger is-active' : 'navbar-burger burger'} aria-label="menu" aria-expanded="false" onClick={toggleShowMenu}>
