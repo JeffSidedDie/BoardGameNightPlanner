@@ -4,7 +4,9 @@ import * as serviceWorker from 'serviceWorker';
 import { App } from 'app';
 import whyDidYouRender from '@welldone-software/why-did-you-render';
 
-whyDidYouRender(React);
+const whyDidYouRender2 = require('@welldone-software/why-did-you-render/dist/no-classes-transpile/umd/whyDidYouRender.min.js') || whyDidYouRender;
+whyDidYouRender2(React);
+
 ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
