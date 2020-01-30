@@ -11,37 +11,50 @@ export interface EventsProperties {
     readonly user: Document<User>;
 }
 
-export const Events: React.FC<EventsProperties> = (props) => {
+const UpcomingEvents: React.FC<EventsProperties> = (props) => {
     const [upcomingEvents, upcomingEventsError] = useUpcomingEvents();
-    const [recentEvents, recentEventsError] = useRecentEvents();
 
+    return <>
+        <h1 className="title">Upcoming Events</h1>
+        <div className="columns">
+            {upcomingEvents.map((event, index) =>
+                <div className="column is-one-third" key={index}>
+                    <UpcomingEventCard
+                        event={event}
+                        user={props.user}
+                    />
+                </div>
+            )}
+        </div>
+        <span>{upcomingEventsError}</span>
+    </>;
+}
+UpcomingEvents.whyDidYouRender = true;
+
+const RecentEvents: React.FC<EventsProperties> = (props) => {
+    const [recentEvents, recentEventsError] = useRecentEvents();
+    return <>
+        <h1 className="title">Recent Events</h1>
+        <div className="columns">
+            {recentEvents.map((event, index) =>
+                <div className="column is-one-third" key={index}>
+                    <RecentEventCard
+                        event={event}
+                        user={props.user}
+                    />
+                </div>
+            )}
+        </div>
+        <span>{recentEventsError}</span>
+    </>;
+}
+RecentEvents.whyDidYouRender = true;
+
+export const Events: React.FC<EventsProperties> = (props) => {
     return <section className="section">
         <div className="container">
-            <h1 className="title">Upcoming Events</h1>
-            <div className="columns">
-                {upcomingEvents.map((event, index) =>
-                    <div className="column is-one-third" key={index}>
-                        <UpcomingEventCard
-                            event={event}
-                            user={props.user}
-                        />
-                    </div>
-                )}
-            </div>
-            <span>{upcomingEventsError}</span>
-
-            <h1 className="title">Recent Events</h1>
-            <div className="columns">
-                {recentEvents.map((event, index) =>
-                    <div className="column is-one-third" key={index}>
-                        <RecentEventCard
-                            event={event}
-                            user={props.user}
-                        />
-                    </div>
-                )}
-            </div>
-            <span>{recentEventsError}</span>
+            <UpcomingEvents user={props.user} />
+            <RecentEvents user={props.user} />
         </div>
     </section>;
 }
