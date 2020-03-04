@@ -32,6 +32,7 @@ export interface Attendee {
     userId: string;
     name: string;
     score?: number;
+    winner?: boolean;
 }
 
 export interface NewEvent {
