@@ -6,42 +6,39 @@ import moment from 'moment';
 import { Moment } from 'moment';
 import * as React from 'react';
 import Datetime from 'react-datetime';
+import { useField } from 'formik';
 
-type TimestampFieldProperties = Formik.FieldProps<firebase.firestore.Timestamp> & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'form'>;
+interface TimestampFieldProperties<T> {
+    name: keyof T;
+    label: string;
+}
+// type TimestampFieldProperties = Formik.FieldProps<firebase.firestore.Timestamp> & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'form'>;
 
-export class TimestampField extends React.Component<TimestampFieldProperties> {
-    static whyDidYouRender = true;
+export const TimestampField = <T,>(props: TimestampFieldProperties<T>) => {
+    const [field, meta, helpers] = useField<firebase.firestore.Timestamp>(props.name as string);
 
-    private datetimeRef: React.RefObject<Datetime> = React.createRef<Datetime>();
-
-    // public componentDidUpdate(prevProps: Readonly<DateTimeFieldProperties<T>>) {
-    //     if (prevProps.field.value && !this.props.field.value && this.datetimeRef.current && this.datetimeRef.current.props.onChange) {
-
-    //     }
-    // }
-
-    public render() {
-        const date = this.props.field.value.toDate();
-        const m = moment(date);
-
-        return <Datetime
-            ref={this.datetimeRef}
-            value={m}
-            onChange={this.handleInputChange}
-            inputProps={{
-                className: 'input',
-                id: this.props.field.name,
-                name: this.props.field.name,
-            }}
-        />;
-        // return <input ref={this.inputRef} id={this.props.field.name} name={this.props.field.name} type={this.props.type} onChange={this.handleFileInputChange} />;
-    }
-
-    private handleInputChange = (value: Moment | string) => {
+    const handleInputChange = (value: Moment | string) => {
         if (typeof value === 'object') {
             const date = value.toDate();
             const timestamp = firebase.firestore.Timestamp.fromDate(date);
-            this.props.form.setFieldValue(this.props.field.name, timestamp);
+            helpers.setValue(timestamp);
         }
-    }
-}
+    };
+
+    const date = field.value.toDate();
+    const m = moment(date);
+
+    return <>
+        <label className="label" htmlFor={props.name as string}>{props.label}</label>
+        <Datetime
+            value={m}
+            onChange={handleInputChange}
+            inputProps={{
+                className: 'input',
+                id: field.name,
+                name: field.name,
+            }}
+        />
+    </>;
+};
+TimestampField.whyDidYouRender = true;

@@ -10,7 +10,7 @@ interface TypedFieldProperties<T> {
     type: string;
 }
 
-export const TypedField = <T,>(props: TypedFieldProperties<T>): React.ReactNode => {
+export const TypedField = <T,>(props: TypedFieldProperties<T>) => {
     const fieldWrapper = React.useContext(FieldWrapperContext);
     let inputName = '';
     if (fieldWrapper) {
@@ -41,4 +41,4 @@ export const TypedField = <T,>(props: TypedFieldProperties<T>): React.ReactNode 
             </div>
         </div>;
     }
-}
+};
