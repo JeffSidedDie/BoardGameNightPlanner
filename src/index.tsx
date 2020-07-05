@@ -4,8 +4,12 @@ import * as serviceWorker from 'serviceWorker';
 import { App } from 'app';
 import whyDidYouRender from '@welldone-software/why-did-you-render';
 
-const whyDidYouRender2 = require('@welldone-software/why-did-you-render/dist/no-classes-transpile/umd/whyDidYouRender.min.js') || whyDidYouRender;
-whyDidYouRender2(React);
+if (process.env.NODE_ENV === 'development') {
+    const whyDidYouRender2 = require('@welldone-software/why-did-you-render/dist/no-classes-transpile/umd/whyDidYouRender.min.js') || whyDidYouRender;
+    whyDidYouRender2(React, {
+        trackAllPureComponents: true,
+    });
+}
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
