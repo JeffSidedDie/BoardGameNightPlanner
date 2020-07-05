@@ -27,10 +27,13 @@ export const storage = fbApp.storage();
 export enum Collections {
     Users = 'users',
     Events = 'events',
+    Events2 = 'events2',
     Games = 'games',
+    Attendees = 'attendees',
 }
 
 export function convertDocument<T>(document: firebase.firestore.DocumentSnapshot): Document<T> {
+    document.ref.collection(Collections.Attendees).get()
     return {
         id: document.id,
         data: document.data() as T

@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Document, Event, User } from 'models';
+import { Document, Event2, User } from 'models';
 import { EventScoreForm } from './event-score-form';
 import { useState } from 'react';
 import { AttendeeWithScore } from './attendee-with-score';
 
 export interface RecentEventCardProperties {
-    readonly event: Document<Event>;
+    readonly event: Document<Event2>;
     readonly user: Document<User>;
 }
 

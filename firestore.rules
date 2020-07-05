@@ -37,5 +37,16 @@ service cloud.firestore {
               || !(request.auth.uid in request.resource.data.attendees))
             )
     }
+
+    match /events2/{eventId} {
+      allow read: if isSignedIn()
+      allow write: if isSignedIn() && isAdmin()
+
+      match /attendees/{attendeeId} {
+        allow read: if isSignedIn()
+        allow write: if isSignedIn() && isAdmin()
+        allow create, delete: if isSignedIn() && attendeeId == request.auth.uid
+      }
+    }
   }
 }

@@ -6,7 +6,7 @@ import { Routes } from 'common/routes';
 import { useCurrentUser } from 'firebase-hooks/auth';
 import { createBrowserHistory } from 'history';
 import * as React from 'react';
-import { Router, Switch } from 'react-router';
+import { Router, Switch, RouteComponentProps } from 'react-router';
 import { Events, EventForm, MyEvents } from './events'; //Have to do this one relative to prevent conflict with events NodeJS module
 import { GamesList } from 'games';
 
@@ -21,7 +21,7 @@ export const App: React.FC = () => {
             <Switch>
                 <AuthRoute path={Routes.Root} exact={true} user={user} render={renderEvents} />
                 <AuthRoute path={Routes.Events_MyEvents} user={user} render={renderMyEvents} />
-                <AuthRoute path={Routes.Events_Edit} user={user} component={EventForm} />
+                <AuthRoute path={Routes.Events_Edit} user={user} render={renderEventsForm} />
                 <AuthRoute path={Routes.Games_List} user={user} component={GamesList} />
             </Switch>
         </Router>
@@ -33,5 +33,9 @@ export const App: React.FC = () => {
 
     function renderEvents() {
         return <Events user={user!} />
+    }
+
+    function renderEventsForm(props: RouteComponentProps<any>) {
+        return <EventForm user={user!}  {...props} />
     }
 }

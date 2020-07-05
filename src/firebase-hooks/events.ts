@@ -1,17 +1,16 @@
 import { Collections, convertDocument, db } from 'firebase-hooks/common';
-import { Document, Event, User, Scores } from 'models';
+import { Document, Event2, User, Scores } from 'models';
 import { useEffect, useState } from 'react';
 import * as firebase from 'firebase/app';
 
-export function useMyEvents(user: Document<User>, page: number): [Document<Event>[], Error | null] {
-    const [myEvents, setMyEvents] = useState<Document<Event>[]>([]);
+export function useMyEvents(user: Document<User>, gameId: string): [Document<Event2>[], Error | null] {
+    const [myEvents, setMyEvents] = useState<Document<Event2>[]>([]);
     const [error, setError] = useState<Error | null>(null);
 
     useEffect(() => {
-        const myEventsListener = db.collection(Collections.Events)
-            .where(`attendees.${user.id}`, '==', user.data.displayName)
-            // .where('timestamp', '<', new Date())
-            // .orderBy('timestamp', 'asc')
+        const myEventsListener = db.collection(Collections.Events2)
+            .where('attendeeIds', 'array-contains', user.id)
+            .where('game.id', '==', gameId)
             .onSnapshot(snapshot => {
                 setMyEvents(snapshot.docs.map(e => convertDocument(e)));
             }, error => {
@@ -25,12 +24,12 @@ export function useMyEvents(user: Document<User>, page: number): [Document<Event
     return [myEvents, error];
 }
 
-export function useUpcomingEvents(): [Document<Event>[], Error | null] {
-    const [upcomingEvents, setUpcomingEvents] = useState<Document<Event>[]>([]);
+export function useUpcomingEvents(): [Document<Event2>[], Error | null] {
+    const [upcomingEvents, setUpcomingEvents] = useState<Document<Event2>[]>([]);
     const [error, setError] = useState<Error | null>(null);
 
     useEffect(() => {
-        const upcomingEventsListener = db.collection(Collections.Events)
+        const upcomingEventsListener = db.collection(Collections.Events2)
             .where('timestamp', '>=', new Date())
             .orderBy('timestamp')
             .limit(3)
@@ -47,12 +46,12 @@ export function useUpcomingEvents(): [Document<Event>[], Error | null] {
     return [upcomingEvents, error];
 }
 
-export function useRecentEvents(): [Document<Event>[], Error | null] {
-    const [recentEvents, setRecentEvents] = useState<Document<Event>[]>([]);
+export function useRecentEvents(): [Document<Event2>[], Error | null] {
+    const [recentEvents, setRecentEvents] = useState<Document<Event2>[]>([]);
     const [error, setError] = useState<Error | null>(null);
 
     useEffect(() => {
-        const recentEventsListener = db.collection(Collections.Events)
+        const recentEventsListener = db.collection(Collections.Events2)
             .where('timestamp', '<', new Date())
             .orderBy('timestamp', 'desc')
             .limit(3)
@@ -69,12 +68,12 @@ export function useRecentEvents(): [Document<Event>[], Error | null] {
     return [recentEvents, error];
 }
 
-export function useEvent(id?: string): Document<Event> | null {
-    const [event, setEvent] = useState<Document<Event> | null>(null);
+export function useEvent(id?: string): Document<Event2> | null {
+    const [event, setEvent] = useState<Document<Event2> | null>(null);
 
     useEffect(() => {
         async function getEvent() {
-            const e = await db.collection(Collections.Events).doc(id).get();
+            const e = await db.collection(Collections.Events2).doc(id).get();
             setEvent(convertDocument(e));
         }
         if (id) {
@@ -87,22 +86,22 @@ export function useEvent(id?: string): Document<Event> | null {
     return event;
 }
 
-export async function saveEvent(eventId: string | undefined, event: Event) {
+export async function saveEvent(eventId: string | undefined, event: Event2) {
     if (eventId) {
-        await db.collection(Collections.Events).doc(eventId).update(event);
+        await db.collection(Collections.Events2).doc(eventId).update(event);
     } else {
-        await db.collection(Collections.Events).add(event);
+        await db.collection(Collections.Events2).add(event);
     }
 }
 
 export async function attendEvent(eventId: string, user: Document<User>) {
-    await db.collection(Collections.Events).doc(eventId).update(`attendees.${user.id}`, user.data.displayName);
+    await db.collection(Collections.Events2).doc(eventId).update(`attendees.${user.id}`, user.data.displayName);
 }
 
 export async function unattendEvent(eventId: string, userId: string) {
-    await db.collection(Collections.Events).doc(eventId).update(`attendees.${userId}`, firebase.firestore.FieldValue.delete());
+    await db.collection(Collections.Events2).doc(eventId).update(`attendees.${userId}`, firebase.firestore.FieldValue.delete());
 }
 
 export async function updateScores(eventId: string, scores: Scores) {
-    await db.collection(Collections.Events).doc(eventId).update({ scores });
+    await db.collection(Collections.Events2).doc(eventId).update({ scores });
 }

@@ -1,14 +1,14 @@
 import * as FileSaver from 'file-saver';
 import * as ics from 'ics-browser';
 import * as React from 'react';
-import { Document, Event, User } from 'models';
+import { Document, Event2, User } from 'models';
 import { useState } from 'react';
 import { attendEvent, unattendEvent } from 'firebase-hooks/events';
 import { GeneratedLink } from 'common/components/generatedLink';
 import { Routes } from 'common/routes';
 
 export interface UpcomingEventCardProperties {
-    readonly event: Document<Event>;
+    readonly event: Document<Event2>;
     readonly user: Document<User>;
 }
 

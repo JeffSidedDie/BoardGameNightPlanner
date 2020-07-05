@@ -11,7 +11,7 @@ export interface EventsProperties {
 }
 
 export const MyEvents: React.FC<EventsProperties> = (props) => {
-    const [myEvents, myEventsError] = useMyEvents(props.user, 0);
+    const [myEvents, myEventsError] = useMyEvents(props.user, '');
 
     return <section className="section">
         <div className="container">
